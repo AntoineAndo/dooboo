@@ -1,9 +1,9 @@
 import { StyleSheet, Platform, StatusBar } from "react-native";
 import { useDimensions } from "@react-native-community/hooks";
-import MainContainer from "./src/MainContainer";
+import RootNavigator from "./src/screens/RootNavigator";
 
 export default function App() {
-  return <MainContainer />;
+  return <RootNavigator />;
 }
 
 const styles = StyleSheet.create({

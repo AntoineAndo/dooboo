@@ -1,31 +1,42 @@
 import React from "react";
 
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Screen imports
-import HomeScreen from "./screens/HomeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import colors from "./config/colors";
-import AddScreen from "./screens/AddScreen";
+import HomeScreen from "./main/home/HomeScreen";
+import ProfileScreen from "./profile/ProfileScreen";
+import AddScreen from "./add/AddScreen";
+
+//Style import
+import colors from "../config/colors";
+import HomeNavigation from "./main/MainNavigator";
 
 //Screen names
 const homeName = "Home";
 const profileName = "Profile";
 const addName = "Add";
 
-const Tab = createBottomTabNavigator();
+export type RootStackParams = {
+  Home: any;
+  Profile: any;
+  Add: any;
+};
+
+const Tab = createBottomTabNavigator<RootStackParams>();
 
 type Props = {};
 
-function MainContainer({}: Props) {
+function RootNavigator({}: Props) {
   return (
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName={homeName}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+        screenOptions={({ route }: any) => ({
+          tabBarStyle: styles.tabBar,
+          tabBarIcon: ({ focused, color, size }: any) => {
             let iconName;
             let rn = route.name;
             color = colors.primary;
@@ -40,15 +51,16 @@ function MainContainer({}: Props) {
               iconName = "";
             }
 
-            return <IonIcons name={iconName} size={30} color={color} />;
+            return <IonIcons name={iconName} size={40} color={color} />;
           },
         })}
       >
         <Tab.Screen
           name={homeName}
-          component={HomeScreen}
+          component={HomeNavigation}
           options={{
             tabBarShowLabel: false,
+            headerShown: false,
           }}
         ></Tab.Screen>
         <Tab.Screen
@@ -56,6 +68,7 @@ function MainContainer({}: Props) {
           component={AddScreen}
           options={{
             tabBarShowLabel: false,
+            headerShown: false,
           }}
         ></Tab.Screen>
         <Tab.Screen
@@ -63,6 +76,7 @@ function MainContainer({}: Props) {
           component={ProfileScreen}
           options={{
             tabBarShowLabel: false,
+            headerShown: false,
           }}
         ></Tab.Screen>
       </Tab.Navigator>
@@ -70,4 +84,10 @@ function MainContainer({}: Props) {
   );
 }
 
-export default MainContainer;
+const styles = StyleSheet.create({
+  tabBar: {
+    height: 70,
+  },
+});
+
+export default RootNavigator;
