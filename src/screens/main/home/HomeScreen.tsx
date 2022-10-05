@@ -69,6 +69,8 @@ function getProducts(done: Function) {
         console.error(error.hint);
       }
 
+      console.log(products);
+
       done(products as Array<Product>);
     });
 }

@@ -14,7 +14,7 @@ type Props = {
 function SearchScreen({ navigation }: Props) {
   return (
     <View style={styles.page}>
-      <View style={styles.input}>
+      <View style={styles.page.input}>
         <SearchInput
           onSubmit={(value: string) => search(navigation, value)}
         ></SearchInput>
@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
   page: {
     backgroundColor: "#fff",
     height: "100%",
-  },
-  input: {
-    margin: 20,
+    input: {
+      margin: 20,
+    },
   },
   content: {
     flex: 1,
