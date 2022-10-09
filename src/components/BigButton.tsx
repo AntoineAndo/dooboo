@@ -5,11 +5,15 @@ import commonStyles from "../config/stylesheet";
 type Props = {
   imageSource: any;
   children: any;
+  onPress: Function;
 };
 
-function BigButton({ imageSource, children }: Props) {
+function BigButton({ imageSource, children, onPress }: Props) {
   return (
-    <TouchableOpacity style={[styles.button, commonStyles.bottomShadow]}>
+    <TouchableOpacity
+      style={[styles.button, commonStyles.bottomShadow]}
+      onPress={() => onPress()}
+    >
       <Image style={styles.image} source={imageSource}></Image>
       <Text style={styles.text}>{children}</Text>
     </TouchableOpacity>

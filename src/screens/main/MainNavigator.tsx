@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./home/HomeScreen";
 import SearchScreen from "./search/SearchScreen";
 import SearchResultScreen from "./searchResult/searchResultScreen";
+import SearchCategoriesScreen from "./SearchCategoriesScreen/SearchCategoriesScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,10 @@ function HomeNavigation({ navigation }: Props) {
       <Stack.Screen name="Home" component={HomeScreen} options={{}} />
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Search result" component={SearchResultScreen} />
+      <Stack.Screen
+        name="Search categories"
+        component={SearchCategoriesScreen}
+      />
     </Stack.Navigator>
   );
 }

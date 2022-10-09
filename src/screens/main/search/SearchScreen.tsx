@@ -12,6 +12,10 @@ type Props = {
 };
 
 function SearchScreen({ navigation }: Props) {
+  const navToSearch = function () {
+    navigation.navigate("Search categories");
+  };
+
   return (
     <View style={styles.page}>
       <View style={styles.page.input}>
@@ -22,22 +26,28 @@ function SearchScreen({ navigation }: Props) {
       <View style={styles.content}>
         <Text style={commonStyles.label}>Quick search</Text>
         <View style={styles.quickSearchContainer}>
-          <BigButton imageSource={require("../../../assets/store.svg")}>
+          <BigButton
+            imageSource={require("../../../assets/store.svg")}
+            onPress={() => {}}
+          >
             Store chain
           </BigButton>
-          <BigButton imageSource={require("../../../assets/store.svg")}>
-            Product brand
+          <BigButton
+            imageSource={require("../../../assets/store.svg")}
+            onPress={navToSearch}
+          >
+            Categories
           </BigButton>
         </View>
       </View>
-      <View style={styles.footer}>
+      {/* <View style={styles.footer}>
         <View style={styles.linkContainer}>
           <Text style={styles.link} onPress={() => navigation.goBack()}>
             {"< Back"}
           </Text>
           <Text style={styles.link}>Change country</Text>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -64,24 +74,24 @@ const styles = StyleSheet.create({
   quickSearchContainer: {
     flexDirection: "row",
   },
-  footer: {
-    height: 90,
-    borderTopWidth: 1,
-    paddingHorizontal: 20,
-  },
-  linkContainer: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  link: {
-    textDecorationLine: "underline",
-    textDecorationStyle: "solid",
-    fontSize: 18,
-    margin: 20,
-    color: colors.primary,
-  },
+  // footer: {
+  //   height: 90,
+  //   borderTopWidth: 1,
+  //   paddingHorizontal: 20,
+  // },
+  // linkContainer: {
+  //   flex: 1,
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  // },
+  // link: {
+  //   textDecorationLine: "underline",
+  //   textDecorationStyle: "solid",
+  //   fontSize: 18,
+  //   margin: 20,
+  //   color: colors.primary,
+  // },
 });
 
 export default SearchScreen;

@@ -4,8 +4,6 @@ import ListComponent from "../../../components/ListComponent";
 import SearchBarComponent from "../../../components/SearchBarComponent";
 import { supabase } from "../../../lib/supabase";
 
-import { TabActions } from "@react-navigation/native";
-
 import { LayoutAnimation } from "react-native";
 
 //Style import
