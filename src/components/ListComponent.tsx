@@ -16,8 +16,8 @@ function ListComponent({ itemList }: Props) {
 function renderChildItems(list: Array<Product>) {
   return list.map((element, index) => {
     return (
-      <View style={styles.listElement}>
-        <ListItemComponent key={index}>{element}</ListItemComponent>
+      <View style={styles.listElement} key={index}>
+        <ListItemComponent>{element}</ListItemComponent>
       </View>
     );
   });

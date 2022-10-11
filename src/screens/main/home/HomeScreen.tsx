@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import ListComponent from "../../../components/ListComponent";
 import SearchBarComponent from "../../../components/SearchBarComponent";
-import { supabase } from "../../../lib/supabase";
-
-import { LayoutAnimation } from "react-native";
+import { getProducts } from "../../../lib/supabase";
 
 //Style import
 import commonStyles from "../../../config/stylesheet";
@@ -20,7 +18,7 @@ function HomeScreen({ navigation }: Props) {
   let [productList, setProductList]: [Array<Product>, Function] = useState([]);
 
   useEffect(() => {
-    getProducts((products: Array<Product>) => {
+    getProducts(1, (products: Array<Product>) => {
       setProductList(products);
     });
   }, []);
@@ -39,38 +37,7 @@ function HomeScreen({ navigation }: Props) {
 }
 
 function startSearch(navigation: any) {
-  // const nav = TabActions.jumpTo("Search");
-  // navigation.dispatch(nav);
-  LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
   navigation.navigate("Search");
-}
-
-function getProducts(done: Function) {
-  supabase
-    .from("product")
-
-    .select(
-      `
-        id,
-        name,
-        product_store (
-          count,
-          store (
-            name
-          )
-        )
-      `
-    )
-    .then(({ data: products, error }) => {
-      if (error != undefined) {
-        console.error(error.message);
-        console.error(error.hint);
-      }
-
-      console.log(products);
-
-      done(products as Array<Product>);
-    });
 }
 
 const styles = StyleSheet.create({

@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Style import
 import commonStyles from "../../../config/stylesheet";
@@ -20,6 +21,11 @@ function SearchResultScreen({ route, navigation }: Props) {
             onTouchStart={() => navigation.goBack()}
           >
             <Text style={styles.actionText}>←</Text>
+            <IonIcons
+              name={"search-outline"}
+              style={styles.headerAction}
+              size={40}
+            />
           </View>
           <Text style={styles.headerText}>Search result</Text>
           <View style={styles.headerAction}>
@@ -53,7 +59,7 @@ const styles = StyleSheet.create({
   headerAction: {
     width: 40,
     height: 40,
-    borderWidth: 1,
+    margin: 5,
   },
   actionImage: {
     flex: 1,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
-import { Image } from "react-native-elements/dist/image/Image";
+import IonIcons from "react-native-vector-icons/Ionicons";
 
 type Props = {
   onSubmit: Function;
@@ -11,10 +11,7 @@ function SearchInput({ onSubmit }: Props) {
 
   return (
     <View style={styles.searchBar}>
-      <Image
-        style={styles.image}
-        source={require("../assets/icons/search.svg")}
-      ></Image>
+      <IonIcons name={"search-outline"} style={styles.image} size={40} />
       <TextInput
         style={styles.input}
         placeholder="Type text here"

@@ -5,7 +5,6 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import Product from "../types/product";
 
 type Props = {
-  key: number;
   children: Product;
 };
 

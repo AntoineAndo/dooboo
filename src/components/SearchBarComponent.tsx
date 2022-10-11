@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Text } from "react-native-elements";
-import { Image } from "react-native-elements/dist/image/Image";
+import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Style import
 import colors from "../config/colors";
@@ -18,10 +18,7 @@ function SearchBarComponent({ onTouch }: Props) {
       style={styles.searchBar}
       onPress={() => navigation.navigate("Search")}
     >
-      <Image
-        style={styles.image}
-        source={require("../assets/icons/search.svg")}
-      ></Image>
+      <IonIcons name={"search-outline"} style={styles.image} size={40} />
       <View style={styles.textContainer}>
         <Text style={styles.text1}>Search</Text>
         <Text style={styles.text2}>Product name, brand, etc</Text>
@@ -42,7 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    flex: 1,
     margin: 5,
     width: 40,
     height: 40,
