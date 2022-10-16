@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { useTranslation } from "../hooks/translation";
 
 type Props = {
   onSubmit: Function;
@@ -9,12 +10,14 @@ type Props = {
 function SearchInput({ onSubmit }: Props) {
   let [text, setText] = useState("");
 
+  const translation = useTranslation();
+
   return (
     <View style={styles.searchBar}>
       <IonIcons name={"search-outline"} style={styles.image} size={40} />
       <TextInput
         style={styles.input}
-        placeholder="Type text here"
+        placeholder={translation.t("search_placeholder")}
         placeholderTextColor={"#888"}
         returnKeyType="search"
         onChangeText={setText}

@@ -31,7 +31,6 @@ function HeaderComponent({ title, showBackButton = true, subtitle }: Props) {
 const styles = StyleSheet.create({
   header: {
     width: "100%",
-    borderBottomWidth: 1,
     position: "relative",
     paddingVertical: 30,
     justifyContent: "center",

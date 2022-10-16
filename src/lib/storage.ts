@@ -1,22 +1,53 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { supabase } from "./supabase";
 
-export const storeData = async (key: string, value: string) => {
+const storeData = async (key: string, value: string) => {
   try {
-    console.log(key, value);
     await AsyncStorage.setItem(key, value);
   } catch (e) {
     // saving error
   }
 };
 
-export const getAllConfiguration = async () => {
+const merge = async (key: string, value: string) => {
   try {
-    const keys = await AsyncStorage.getAllKeys();
-    const configuration = await AsyncStorage.multiGet(keys);
-    return configuration;
-  } catch (e) {}
+    AsyncStorage.mergeItem(key, value);
+  } catch (e) {
+    // error reading value
+  }
 };
 
-export const clearData = async () => {
+const getData = async (key: string) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return JSON.parse(value);
+    }
+  } catch (e) {
+    // error reading value
+  }
+};
+
+const clearData = async () => {
   await AsyncStorage.clear();
+};
+
+const uploadFile = async (file: File) => {
+  const { data, error } = await supabase.storage
+    .from("images")
+    .upload("public/" + file?.name, file as File);
+
+  if (data) {
+    console.log(data);
+  } else if (error) {
+    console.log(error);
+  }
+};
+
+export default {
+  merge,
+  getData,
+  storeData,
+  clearData,
+  uploadFile,
 };

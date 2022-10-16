@@ -19,12 +19,13 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 //Get all the products from a given country, joined with the store presence info
 //Main request to list products
-export function getProducts(countryId: number, done: Function) {
-  supabase
-    .from("product")
+export function getProducts(countryId: number): Promise<any> {
+  return new Promise((res, rej) => {
+    supabase
+      .from("product")
 
-    .select(
-      `
+      .select(
+        `
         id,
         name,
         product_store!inner(
@@ -34,14 +35,16 @@ export function getProducts(countryId: number, done: Function) {
           )
         )
       `
-    )
-    .eq("product_store.fk_country_id", countryId)
-    .then(({ data: products, error }) => {
-      if (error != undefined) {
-        console.error(error.message);
-        console.error(error.hint);
-      }
+      )
+      .eq("product_store.fk_country_id", countryId)
+      .then(({ data: products, error }) => {
+        if (error != undefined) {
+          console.error(error.message);
+          console.error(error.hint);
+          rej(error);
+        }
 
-      done(products as Array<Product>);
-    });
+        res(products as Array<Product>);
+      });
+  });
 }

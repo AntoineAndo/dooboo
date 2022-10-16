@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import ListComponent from "../../../../components/ListComponent";
+import Loader from "../../../../components/Loader";
 
 //Style import
-import commonStyles from "../../../config/stylesheet";
+import commonStyles from "../../../../config/stylesheet";
+import { getProducts } from "../../../../lib/supabase";
+import Product from "../../../../types/product";
 
 type Props = {
   route: any;
@@ -12,29 +16,40 @@ type Props = {
 
 function SearchResultScreen({ route, navigation }: Props) {
   const { search } = route.params;
+
+  let [isLoaded, setLoaded] = useState(false);
+  let [products, setProducts] = useState();
+
+  useEffect(() => {
+    getProducts(1, (products: any) => {
+      setProducts(products);
+    });
+  }, []);
+
   return (
     <View style={styles.page}>
       <View style={[styles.header, commonStyles.bottomShadow]}>
         <View style={styles.container}>
-          <View
+          <IonIcons
+            name={"arrow-back-outline"}
             style={styles.headerAction}
-            onTouchStart={() => navigation.goBack()}
-          >
-            <Text style={styles.actionText}>←</Text>
-            <IonIcons
-              name={"search-outline"}
-              style={styles.headerAction}
-              size={40}
-            />
-          </View>
+            size={40}
+            onPress={() => navigation.goBack()}
+          />
           <Text style={styles.headerText}>Search result</Text>
           <View style={styles.headerAction}>
             <Image
               style={styles.actionImage}
-              source={require("../../../assets/icons/filter.svg")}
+              source={require("../../../../assets/icons/filter.svg")}
             ></Image>
           </View>
         </View>
+      </View>
+      <View>
+        {products == undefined && <Loader />}
+        {products != undefined && (
+          <ListComponent itemList={products}></ListComponent>
+        )}
       </View>
     </View>
   );

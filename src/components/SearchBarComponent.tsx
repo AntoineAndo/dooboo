@@ -6,6 +6,7 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Style import
 import colors from "../config/colors";
+import { useTranslation } from "../hooks/translation";
 
 type Props = {
   onTouch: Function;
@@ -13,6 +14,7 @@ type Props = {
 
 function SearchBarComponent({ onTouch }: Props) {
   const navigation = useNavigation<any>();
+  const translation = useTranslation();
   return (
     <TouchableOpacity
       style={styles.searchBar}
@@ -20,8 +22,8 @@ function SearchBarComponent({ onTouch }: Props) {
     >
       <IonIcons name={"search-outline"} style={styles.image} size={40} />
       <View style={styles.textContainer}>
-        <Text style={styles.text1}>Search</Text>
-        <Text style={styles.text2}>Product name, brand, etc</Text>
+        <Text style={styles.text1}>{translation.t("search")}</Text>
+        <Text style={styles.text2}>{translation.t("search_subtitle")}</Text>
       </View>
     </TouchableOpacity>
   );

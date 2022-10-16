@@ -1,11 +1,10 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
-import colors from "../../../config/colors";
-import BigButton from "../../../components/BigButton";
-import SearchInput from "../../../components/SearchInput";
+import BigButton from "../../../../components/BigButton";
+import SearchInput from "../../../../components/SearchInput";
 
 //Styles import
-import commonStyles from "../../../config/stylesheet";
+import commonStyles from "../../../../config/stylesheet";
 
 type Props = {
   navigation: any;
@@ -27,13 +26,13 @@ function SearchScreen({ navigation }: Props) {
         <Text style={commonStyles.label}>Quick search</Text>
         <View style={styles.quickSearchContainer}>
           <BigButton
-            imageSource={require("../../../assets/store.svg")}
+            imageSource={require("../../../../assets/store.svg")}
             onPress={() => {}}
           >
             Store chain
           </BigButton>
           <BigButton
-            imageSource={require("../../../assets/store.svg")}
+            imageSource={require("../../../../assets/store.svg")}
             onPress={navToSearch}
           >
             Categories
