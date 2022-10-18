@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { DocumentResult, getDocumentAsync } from "expo-document-picker";
 import { Image } from "react-native";
-import { supabase } from "../../../lib/supabase";
-import HeaderComponent from "../../../components/HeaderComponent";
+import { supabase } from "../../../../lib/supabase";
+import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { useTranslation } from "../../../hooks/translation";
+import { useTranslation } from "../../../../hooks/translation";
+import { Button } from "react-native-paper";
+import { IconButton, Checkbox } from "react-native-paper";
+import colors from "../../../../config/colors";
 
 type Props = {};
 
-function AddScreen({}: Props) {
+function AddScreen3({}: Props) {
   const [image, setImage] = useState("");
-  const translation = useTranslation();
 
   const pickDocument = async () => {
     let result: DocumentResult = await getDocumentAsync({});
@@ -28,44 +30,28 @@ function AddScreen({}: Props) {
         <HeaderComponent
           title="Add a product"
           showBackButton={false}
-          subtitle="Product description"
+          subtitle="Product pictures"
         />
       </View>
 
       <View style={styles.contentView}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Product name</Text>
-          <Text style={styles.inputSubLabel}>
-            Please include the brand name
-          </Text>
-
-          <View style={styles.searchBar}>
-            <IonIcons name={"search-outline"} style={styles.image} size={40} />
-            <TextInput
-              style={styles.input}
-              placeholder={translation.t("search_placeholder")}
-              placeholderTextColor={"#888"}
-              returnKeyType="search"
-            ></TextInput>
-          </View>
-        </View>
-
-        <Text style={styles.inputLabel}>Product category</Text>
-        <Text style={styles.inputSubLabel}>
-          You can select up to 3 categories
-        </Text>
-        {/* <TouchableOpacity
-        onPress={() => pickDocument()}
-        style={{ height: 50, width: 50, borderWidth: 1 }}
-      >
-        <Text>Test</Text>
-      </TouchableOpacity>
-      {image != "" && (
-        <Image
-          source={{ uri: image }}
-          style={{ width: 100, height: 100 }}
-        ></Image> */}
-        {/* )} */}
+        <IconButton
+          icon="image-multiple-outline"
+          iconColor="white"
+          containerColor="grey"
+          size={100}
+          style={{
+            height: 200,
+            width: 200,
+          }}
+          onPress={() => pickDocument()}
+        />
+        {image != "" && (
+          <Image
+            source={{ uri: image }}
+            style={{ width: 100, height: 100 }}
+          ></Image>
+        )}
       </View>
     </View>
   );
@@ -112,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddScreen;
+export default AddScreen3;

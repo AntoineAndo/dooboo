@@ -13,6 +13,7 @@ import commonStyles from "../../../../config/stylesheet";
 import Product from "../../../../types/product";
 import { useTranslation } from "../../../../hooks/translation";
 // import { useConfig } from "../../../../providers/ConfigProvider";
+import { Searchbar } from "react-native-paper";
 
 type Props = {
   navigation: any;
