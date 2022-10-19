@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { DocumentResult, getDocumentAsync } from "expo-document-picker";
-import { Image } from "react-native";
-import { supabase } from "../../../../lib/supabase";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import HeaderComponent from "../../../../components/HeaderComponent";
-import IonIcons from "react-native-vector-icons/Ionicons";
-import { useTranslation } from "../../../../hooks/translation";
-import { Button, Checkbox } from "react-native-paper";
-import { IconButton } from "react-native-paper";
-import colors from "../../../../config/colors";
+import StorePicker from "../../../../components/StorePicker";
+import { Button } from "react-native-paper";
 
 type Props = {
   route: any;
@@ -16,17 +10,50 @@ type Props = {
 };
 
 function AddScreen2({ route, navigation }: Props) {
-  const [image, setImage] = useState("");
-  const [formState, setFormState] = React.useState(route.params.form);
-  console.log(formState);
+  let initialState = route.params != undefined ? route.params.form : {};
+  let storeList = route.params != undefined ? route.params.storeList : [];
 
-  const pickDocument = async () => {
-    let result: DocumentResult = await getDocumentAsync({});
-    console.log(result);
-    if (result != undefined) {
-      //@ts-ignore
-      setImage(result.uri);
+  const [form, setForm] = React.useState(initialState);
+  const [errors, setErrors] = React.useState<{
+    [key: string]: any;
+  }>({});
+
+  function handleChange(key: string, value: string | string[]) {
+    //Enforce validation
+    setForm({
+      ...form,
+      [key]: value,
+    });
+  }
+
+  const checkErrors = (fields?: string[] | undefined) => {
+    //Fields param allows us to specify for on which field to check for errors
+    //if unspecified, all fields are checked
+
+    //Reset error object
+    let newErrors: {
+      [key: string]: any;
+    } = {};
+
+    if (fields == undefined || fields.indexOf("storesId") != -1) {
+      //Mandatory stores
+      if (form.storesId.length == 0) {
+        newErrors["storesId"] = true;
+      }
     }
+
+    setErrors(newErrors);
+    return newErrors;
+  };
+
+  const onSubmit = () => {
+    //Error check
+    let _errors = checkErrors();
+    //si pas d'erreur
+    if (Object.values(_errors).length == 0) {
+      navigation.navigate("AddStep2", { form: form, storeList });
+    }
+    console.log(form);
   };
 
   return (
@@ -35,14 +62,26 @@ function AddScreen2({ route, navigation }: Props) {
         <HeaderComponent
           title="Add a product"
           showBackButton={false}
-          subtitle="Product pictures"
+          subtitle="Product location"
         />
       </View>
 
       <View style={styles.contentView}>
-        {/* <Checkbox
-        ></Checkbox> */}
+        <StorePicker
+          storeList={storeList}
+          onSelectedUpdate={(selectedStoresId: string[]) => {
+            handleChange("storesId", selectedStoresId);
+          }}
+        />
       </View>
+      <Button
+        mode="contained"
+        onPress={() => {
+          onSubmit();
+        }}
+      >
+        Next step
+      </Button>
     </View>
   );
 }
@@ -53,13 +92,6 @@ const styles = StyleSheet.create({
   },
   contentView: {
     paddingHorizontal: 26,
-  },
-  image: {
-    resizeMode: "contain",
-    fontSize: 30,
-    margin: 5,
-    height: 30,
-    width: 30,
   },
 });
 

@@ -48,3 +48,30 @@ export function getProducts(countryId: number): Promise<any> {
       });
   });
 }
+
+export function getStores(countryId: number) {
+  return new Promise((res, rej) => {
+    supabase
+      .from("store")
+
+      .select(
+        `
+        id,
+        name,
+        store_country!inner(
+          count
+        )
+      `
+      )
+      .eq("store_country.fk_country_id", countryId)
+      .then(({ data: stores, error }) => {
+        if (error != undefined) {
+          console.error(error.message);
+          console.error(error.hint);
+          rej(error);
+        }
+
+        res(stores as Array<Store>);
+      });
+  });
+}

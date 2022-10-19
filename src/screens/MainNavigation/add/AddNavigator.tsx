@@ -16,7 +16,7 @@ type Props = {
 function AddNavigator({ navigation }: Props) {
   return (
     <Stack.Navigator
-      initialRouteName="Step1"
+      initialRouteName="AddStep1"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="AddStep1" component={AddScreen} options={{}} />

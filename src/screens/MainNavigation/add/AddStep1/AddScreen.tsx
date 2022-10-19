@@ -4,6 +4,8 @@ import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "../../../../hooks/translation";
 import { Button, Checkbox } from "react-native-paper";
+import { useQuery } from "@tanstack/react-query";
+import { getStores } from "../../../../lib/supabase";
 
 type Props = {
   navigation: any;
@@ -12,6 +14,7 @@ type Props = {
 export type Form = {
   title: string;
   categories: string[];
+  storesId: string[];
 };
 
 function AddScreen({ navigation }: Props) {
@@ -22,11 +25,19 @@ function AddScreen({ navigation }: Props) {
   const [form, setForm] = React.useState<Form>({
     title: "",
     categories: [],
+    storesId: [],
   });
 
   const [errors, setErrors] = React.useState<{
     [key: string]: any;
   }>({});
+
+  const {
+    isLoading,
+    isError,
+    data: storeList,
+    error,
+  } = useQuery(["stores"], () => getStores(1));
 
   function handleChange(key: string, value: string | string[]) {
     //Enforce validation
@@ -92,9 +103,24 @@ function AddScreen({ navigation }: Props) {
     let _errors = checkErrors();
     //si pas d'erreur
     if (Object.values(_errors).length == 0) {
-      navigation.navigate("AddStep2", { form: form });
+      navigation.navigate("AddStep2", { form: form, storeList });
     }
   };
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
+  if (isError) {
+    return (
+      <View>
+        <Text>Error</Text>
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -195,7 +221,6 @@ const styles = StyleSheet.create({
     color: "red",
   },
   input: {
-    //@ts-ignore
     outlineStyle: "none",
     marginLeft: 10,
     fontSize: 20,
