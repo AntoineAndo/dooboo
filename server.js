@@ -16,18 +16,24 @@ app.all('*', function (req, res, next) {
         // CORS Preflight
         res.send();
     } else {
-        // var targetURL = req.header('Target-URL'); // Target-URL ie. https://example.com or http://example.com
-        // if (!targetURL) {
-        //     res.send(500, { error: 'There is no Target-Endpoint header in the request' });
-        //     return;
-        // }
+
+
+
         let url = req.url
         while(url[0] == "/"){
             url = url.substring(2);
         }
         console.log(url)
-        request({ url , method: "GET"},
+        let headers = {}
+        if(req.headers['x-naver-client-id'] != undefined){
+            headers['x-naver-client-id'] = req.headers['x-naver-client-id']
+        }
+        if(req.headers['x-naver-client-secret'] != undefined){
+            headers['x-naver-client-secret'] = req.headers['x-naver-client-secret']
+        }
+        request({ url , method: "GET", headers},
             function (error, response, body) {
+                console.log(body)
                 if (error) {
                     console.error('error: ' + response.statusCode)
                 }

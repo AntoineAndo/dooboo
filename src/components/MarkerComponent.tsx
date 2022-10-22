@@ -5,12 +5,17 @@ type Props = {
   text: string;
   lat: string;
   lng: string;
-  key: number;
+  onTouch: Function;
 };
 
-function MarkerComponent({ text, lat, lng, key }: Props) {
+function MarkerComponent({ text, lat, lng, onTouch }: Props) {
   return (
-    <View style={styles.markerContainer}>
+    <View
+      style={styles.markerContainer}
+      onTouchEnd={() => {
+        onTouch();
+      }}
+    >
       <View style={styles.marker}></View>
       <View style={styles.markerAfter}></View>
     </View>

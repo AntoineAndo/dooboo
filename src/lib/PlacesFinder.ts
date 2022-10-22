@@ -7,9 +7,12 @@ type queryOptions = {
   language: string;
 };
 
-export function searchPlaces({ searchQuery, country, language }: queryOptions) {
+export function searchPlaces({
+  searchQuery,
+  country,
+  language,
+}: queryOptions): Promise<any> {
   let api: IPlaceFinder;
-  console.log(country);
   switch (country) {
     case "kr":
       api = useNaver();
@@ -18,7 +21,5 @@ export function searchPlaces({ searchQuery, country, language }: queryOptions) {
       api = useGoogle();
   }
 
-  api.search(searchQuery, country, language).then((data: any) => {
-    console.log(data);
-  });
+  return api.search(searchQuery, country, language);
 }

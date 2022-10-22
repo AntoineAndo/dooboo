@@ -14,7 +14,7 @@ type Props = {
 export type Form = {
   title: string;
   categories: string[];
-  storesId: string[];
+  storeId: string;
 };
 
 function AddScreen({ navigation }: Props) {
@@ -25,7 +25,7 @@ function AddScreen({ navigation }: Props) {
   const [form, setForm] = React.useState<Form>({
     title: "",
     categories: [],
-    storesId: [],
+    storeId: "",
   });
 
   const [errors, setErrors] = React.useState<{

@@ -7,6 +7,19 @@ import { buildUrl } from "./utils/utils";
 class GoogleAdapter implements IPlaceFinder {
   constructor() {}
 
+  transform(results: any[]): any[] {
+    return results.map((result: any) => {
+      return {
+        id: result.place_id,
+        name: result.name,
+        location: {
+          lat: result.geometry.location.lat,
+          lng: result.geometry.location.lng,
+        },
+      };
+    });
+  }
+
   search(searchQuery: string, language: string, country: string): Promise<any> {
     const endpoint =
       "https://maps.googleapis.com/maps/api/place/textsearch/json";
@@ -21,20 +34,20 @@ class GoogleAdapter implements IPlaceFinder {
     };
 
     const url = buildUrl(endpoint, params);
-    console.log(url);
 
     return new Promise((res, rej) => {
       axios
         .get(url)
-        .then(function (response) {
+        .then((response) => {
           // handle success
-          res(response.data.results.slice(0, 5));
+          console.log(response.data.results);
+          res(this.transform(response.data.results.slice(0, 5)));
         })
-        .catch(function (error) {
+        .catch((error) => {
           // handle error
           rej(error);
         })
-        .finally(function () {
+        .finally(() => {
           // always executed
         });
     });

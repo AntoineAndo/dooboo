@@ -1,50 +1,60 @@
 import axios from "axios";
 import IPlaceFinder from "./interface/IPlaceFinder";
 //@ts-ignore
-import { REACT_APP_GOOGLE_API_KEY } from "@env";
+import { REACT_APP_NAVER_CLIENT_ID, REACT_APP_NAVER_CLIENT_SECRET } from "@env";
 import { buildUrl } from "./utils/utils";
 
 class NaverAdapter implements IPlaceFinder {
   constructor() {}
 
+  transform(results: any[]): any[] {
+    return results.map((result: any) => {
+      return {
+        name: result.title,
+        location: {
+          lat: result.mapx,
+          lng: result.mapy,
+        },
+      };
+    });
+  }
+
+  translate() {}
+
   search(searchQuery: string, language: string, country: string): Promise<any> {
     console.log("search");
-
     return new Promise((res, rej) => {
-      //https://openapi.naver.com/v1/papago/n2mt?source=en&target=ko&text=seven%20eleven%20sinchon
-
-      const endpoint = "https://openapi.naver.com/v1/papago/n2mt";
+      const endpoint = "https://openapi.naver.com/v1/search/local.json";
       const params = {
         query: searchQuery,
-        language,
-        components: "country:" + country,
-        type: "store",
-        inputtype: "textquery",
-        key: REACT_APP_GOOGLE_API_KEY,
+        display: "20",
       };
 
       const url = buildUrl(endpoint, params);
       console.log(url);
 
+      const headers = {
+        "X-Naver-Client-Id": REACT_APP_NAVER_CLIENT_ID,
+        "X-Naver-Client-Secret": REACT_APP_NAVER_CLIENT_SECRET,
+      };
+
       return new Promise((res, rej) => {
         axios
-          .get(url)
-          .then(function (response) {
+          .get(url, { headers })
+          .then((response) => {
             // handle success
-            res(response.data.results.slice(0, 5));
+            res(this.transform(response.data.items));
           })
-          .catch(function (error) {
+          .catch((error) => {
             // handle error
             rej(error);
           })
-          .finally(function () {
+          .finally(() => {
             // always executed
           });
       });
     });
   }
-
-  translate() {}
 }
 
 export default NaverAdapter;
