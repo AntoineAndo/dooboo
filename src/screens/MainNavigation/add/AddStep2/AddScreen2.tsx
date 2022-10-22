@@ -1,59 +1,64 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Text, TextInput } from "react-native";
 import HeaderComponent from "../../../../components/HeaderComponent";
-import StorePicker from "../../../../components/StorePicker";
-import { Button } from "react-native-paper";
+//@ts-ignore
+import GoogleMapReact, { Coords } from "google-map-react";
+
+//@ts-ignore
+import { REACT_APP_GOOGLE_API_KEY } from "@env";
+import { searchPlaces } from "../../../../lib/google";
+import SearchInput from "../../../../components/SearchInput";
+import MarkerComponent from "../../../../components/MarkerComponent";
 
 type Props = {
   route: any;
   navigation: any;
 };
 
-function AddScreen2({ route, navigation }: Props) {
+function AddScreen2({ route }: Props) {
   let initialState = route.params != undefined ? route.params.form : {};
-  let storeList = route.params != undefined ? route.params.storeList : [];
 
   const [form, setForm] = React.useState(initialState);
-  const [errors, setErrors] = React.useState<{
-    [key: string]: any;
-  }>({});
+  const [places, setPlaces] = React.useState<any[]>([]);
+  const [google, setGoogle] = React.useState<{ map?: any; maps?: any }>({});
 
-  function handleChange(key: string, value: string | string[]) {
-    //Enforce validation
-    setForm({
-      ...form,
-      [key]: value,
+  const handleApiLoaded = (map: any, maps: any) => {
+    console.log("map loaded");
+    setGoogle({
+      map,
+      maps,
     });
-  }
-
-  const checkErrors = (fields?: string[] | undefined) => {
-    //Fields param allows us to specify for on which field to check for errors
-    //if unspecified, all fields are checked
-
-    //Reset error object
-    let newErrors: {
-      [key: string]: any;
-    } = {};
-
-    if (fields == undefined || fields.indexOf("storesId") != -1) {
-      //Mandatory stores
-      if (form.storesId.length == 0) {
-        newErrors["storesId"] = true;
-      }
-    }
-
-    setErrors(newErrors);
-    return newErrors;
   };
 
-  const onSubmit = () => {
-    //Error check
-    let _errors = checkErrors();
-    //si pas d'erreur
-    if (Object.values(_errors).length == 0) {
-      navigation.navigate("AddStep2", { form: form, storeList });
+  const onSubmit = () => {};
+
+  const onPlaceSeach = (searchQuery: string) => {
+    if (searchQuery == undefined || searchQuery.length < 3) {
+      return;
     }
-    console.log(form);
+
+    const options = {
+      country: "kr",
+      language: "en",
+      searchQuery: searchQuery,
+    };
+
+    searchPlaces(options).then((result: any) => {
+      console.log(result);
+
+      setPlaces(result);
+
+      //Center map on the first marker
+      google.map.setCenter(result[0].geometry.location);
+    });
+  };
+
+  const defaultProps = {
+    center: {
+      lat: 37.555015,
+      lng: 126.937007,
+    },
+    zoom: 15,
   };
 
   return (
@@ -66,22 +71,47 @@ function AddScreen2({ route, navigation }: Props) {
         />
       </View>
 
-      <View style={styles.contentView}>
-        <StorePicker
-          storeList={storeList}
-          onSelectedUpdate={(selectedStoresId: string[]) => {
-            handleChange("storesId", selectedStoresId);
-          }}
-        />
-      </View>
-      <Button
-        mode="contained"
-        onPress={() => {
-          onSubmit();
+      <SearchInput
+        onSubmit={(value: string) => {
+          onPlaceSeach(value);
         }}
-      >
-        Next step
-      </Button>
+      />
+
+      <View style={styles.mapContainer}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: REACT_APP_GOOGLE_API_KEY }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+          yesIWantToUseGoogleMapApiInternals={true}
+          onGoogleApiLoaded={({ map, maps }: any) => handleApiLoaded(map, maps)}
+        >
+          {places.map((place: any, i: number) => {
+            return (
+              <MarkerComponent
+                lat={place.geometry.location.lat}
+                lng={place.geometry.location.lng}
+                text={place.name}
+                key={i}
+              />
+            );
+          })}
+        </GoogleMapReact>
+      </View>
+
+      {/* <Button onPress={placeSearch}>SEND IT</Button> */}
+      {places.length == 0 && <Text>Search pls</Text>}
+      {places.length != 0 && (
+        <>
+          <ScrollView
+            style={styles.contentView}
+            keyboardShouldPersistTaps={"handled"}
+          >
+            {places.map((place: any) => {
+              return <Text key={place.place_id}>{place.name}</Text>;
+            })}
+          </ScrollView>
+        </>
+      )}
     </View>
   );
 }
@@ -92,6 +122,9 @@ const styles = StyleSheet.create({
   },
   contentView: {
     paddingHorizontal: 26,
+  },
+  mapContainer: {
+    height: 300,
   },
 });
 
