@@ -10,17 +10,15 @@ import { useQuery } from "@tanstack/react-query";
 import commonStyles from "../../../../config/stylesheet";
 
 //Types import
-import Product from "../../../../types/product";
 import { useTranslation } from "../../../../hooks/translation";
-// import { useConfig } from "../../../../providers/ConfigProvider";
-import { Searchbar } from "react-native-paper";
+import { useConfig } from "../../../../providers/ConfigProvider";
 
 type Props = {
   navigation: any;
 };
 
 function HomeScreen({ navigation }: Props) {
-  // const { config, setConfig } = useConfig();
+  const { config, setConfig } = useConfig();
 
   const translation = useTranslation();
 
@@ -29,7 +27,7 @@ function HomeScreen({ navigation }: Props) {
     isError,
     data: productList,
     error,
-  } = useQuery(["products"], () => getProducts(1));
+  } = useQuery(["products"], () => getProducts(config.country.id));
 
   if (isLoading) {
     return (

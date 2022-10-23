@@ -9,6 +9,7 @@ import Storage from "./../../src/lib/storage";
 import { initializeTranslations } from "./../../src/hooks/translation";
 import { KeyValuePair } from "@react-native-async-storage/async-storage/lib/typescript/types";
 import storage from "./../../src/lib/storage";
+import { getDefaultCountry } from "../lib/supabase";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,35 +28,47 @@ function IntroNavigator({}: Props): any {
         //Get the configuration
         //@@ https://docs.expo.dev/archive/classic-updates/preloading-and-caching-assets/#pre-loading-and-caching-assets
         const configuration = Storage.getData("config");
-        await Promise.all([configuration]).then(([configuration]) => {
-          let configurationObject: Config;
+        const defaultCountry = getDefaultCountry();
+        await Promise.all([configuration, defaultCountry]).then(
+          ([configuration, defaultCountryResult]) => {
+            let configurationObject: Config;
 
-          //If the stored configuration is empty
-          //Then we assume that this is the first time the app is launched
-          //So we initialize the configuration values
-          //Which will then lead to the opening of the Intro screen
-          if (
-            configuration == undefined ||
-            Object.keys(configuration).length == 0
-          ) {
-            //Initial values
-            configurationObject = {
-              language_code: "en",
-              isAppFirstLauched: false,
-            };
+            if (defaultCountryResult.data == null) {
+              console.error("An error occured");
+              return;
+            }
 
-            storage.storeData("config", JSON.stringify(configurationObject));
-          } else {
-            configurationObject = configuration;
+            const defaultCountry = defaultCountryResult.data[0];
+            // configuration = undefined;
+
+            //If the stored configuration is empty
+            //Then we assume that this is the first time the app is launched
+            //So we initialize the configuration values
+            //Which will then lead to the opening of the Intro screen
+            if (
+              configuration == undefined ||
+              Object.keys(configuration).length == 0
+            ) {
+              //Initial values
+              configurationObject = {
+                country: defaultCountry,
+                language_code: "en",
+                isAppFirstLauched: false,
+              };
+
+              storage.storeData("config", JSON.stringify(configurationObject));
+            } else {
+              configurationObject = configuration;
+            }
+
+            //Set the configuration object as the context value
+            // so that it can be accessed everywhere in the app
+            setConfig(configurationObject);
+
+            // Translation init
+            initializeTranslations(configurationObject.language_code as string);
           }
-
-          //Set the configuration object as the context value
-          // so that it can be accessed everywhere in the app
-          setConfig(configurationObject);
-
-          // Translation init
-          initializeTranslations(configurationObject.language_code as string);
-        });
+        );
       } catch (e) {
         //@@ You might want to provide this error information to an error reporting service
         console.warn(e);

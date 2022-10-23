@@ -16,6 +16,7 @@ class GoogleAdapter implements IPlaceFinder {
           lat: result.geometry.location.lat,
           lng: result.geometry.location.lng,
         },
+        source: "google",
       };
     });
   }

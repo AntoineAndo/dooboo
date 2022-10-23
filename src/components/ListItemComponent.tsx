@@ -1,43 +1,39 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { downloadImage } from "../lib/supabase";
 
 //Types import
 import Product from "../types/product";
 
 type Props = {
-  children: Product;
+  children: any;
 };
 
 function ListItemComponent({ children }: Props) {
+  console.log(children);
+  const { isLoading, isError, data, error } = useQuery(
+    [children.product_image[0].image_url],
+    () => downloadImage(children.product_image[0].image_url)
+  );
+
+  if (isLoading) {
+    return <></>;
+  }
+
+  const imageUrl = data?.data.publicUrl;
+
   return (
     <View style={styles.item}>
-      <Image
-        source={{ uri: "https://via.placeholder.com/200x100.jpg" }}
-        style={styles.image}
-      />
+      {!isLoading && <Image source={{ uri: imageUrl }} style={styles.image} />}
+
       <View style={styles.textContainer}>
         <View style={styles.row}>
           <Text style={styles.title}>{children.name}</Text>
         </View>
-        <View style={styles.row}>
-          <Text style={styles.stores}>{getStoreList(children)}</Text>
-        </View>
       </View>
     </View>
   );
-}
-
-function getStoreList(product: Product): string {
-  if (product.product_store == undefined || product.product_store.length == 0) {
-    return "";
-  }
-
-  return product.product_store
-    .reduce((acc, product_store) => {
-      acc.push(product_store.store.name);
-      return acc;
-    }, [])
-    .join(", ");
 }
 
 const styles = StyleSheet.create({
@@ -67,9 +63,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
     color: "#000",
-  },
-  stores: {
-    fontSize: 18,
   },
 });
 

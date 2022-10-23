@@ -21,7 +21,7 @@ function SearchResultScreen({ route, navigation }: Props) {
   let [products, setProducts] = useState();
 
   useEffect(() => {
-    getProducts(1, (products: any) => {
+    getProducts(1).then((products: any) => {
       setProducts(products);
     });
   }, []);

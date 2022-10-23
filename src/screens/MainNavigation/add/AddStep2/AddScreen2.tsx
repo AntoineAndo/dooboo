@@ -27,7 +27,6 @@ function AddScreen2({ route, navigation }: Props) {
   }>({});
 
   const handleApiLoaded = (map: any, maps: any) => {
-    console.log("map loaded");
     setGoogle({
       map,
       maps,
@@ -43,10 +42,10 @@ function AddScreen2({ route, navigation }: Props) {
       [key: string]: any;
     } = {};
 
-    if (fields == undefined || fields.indexOf("storeId") != -1) {
-      //Mandatory storeId
-      if (form.storeId == "") {
-        newErrors["storeId"] = true;
+    if (fields == undefined || fields.indexOf("store") != -1) {
+      //Mandatory store
+      if (form.store == undefined) {
+        newErrors["store"] = true;
       }
     }
 
@@ -55,7 +54,7 @@ function AddScreen2({ route, navigation }: Props) {
   };
 
   const onSubmit = () => {
-    if (form.storeId == "") {
+    if (form.store == undefined) {
       return;
     }
     console.log("SUBMIT OK");
@@ -65,7 +64,7 @@ function AddScreen2({ route, navigation }: Props) {
   const placeSelected = (place: any) => {
     console.log(place);
     google.map.setCenter(place.location);
-    setFormField("storeId", place.id);
+    setFormField("store", place);
   };
 
   //Method used to update the form/state value
@@ -147,7 +146,7 @@ function AddScreen2({ route, navigation }: Props) {
         </GoogleMapReact>
       </View>
 
-      {errors["storeId"] && (
+      {errors["store"] && (
         <Text style={styles.error}>Please pick a store or skip the step</Text>
       )}
 
@@ -166,7 +165,7 @@ function AddScreen2({ route, navigation }: Props) {
                   onPress={() => placeSelected(place)}
                   style={[
                     styles.storeListItem,
-                    form.storeId == place.id //Add the selected style if the place is the one selected
+                    form.store?.id == place.id //Add the selected style if the place is the one selected
                       ? styles.storeListItemSelected
                       : undefined,
                   ]}
@@ -192,7 +191,7 @@ function AddScreen2({ route, navigation }: Props) {
         <Button
           style={styles.button}
           mode="contained"
-          disabled={form.storeId == ""}
+          disabled={form.store == undefined}
           onPress={() => {
             onSubmit();
           }}

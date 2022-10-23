@@ -4,40 +4,29 @@ import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "../../../../hooks/translation";
 import { Button, Checkbox } from "react-native-paper";
-import { useQuery } from "@tanstack/react-query";
-import { getStores } from "../../../../lib/supabase";
+import { useConfig } from "../../../../providers/ConfigProvider";
+import Form from "../../../../types/Form";
 
 type Props = {
   navigation: any;
 };
 
-export type Form = {
-  title: string;
-  categories: string[];
-  storeId: string;
-};
-
 function AddScreen({ navigation }: Props) {
   const translation = useTranslation();
+  const { config } = useConfig();
   const options = ["1", "2", "3"];
   const maxCategoryChoices = 2;
 
   const [form, setForm] = React.useState<Form>({
-    title: "",
+    name: "",
     categories: [],
-    storeId: "",
+    store: undefined,
+    countryId: config.country.id,
   });
 
   const [errors, setErrors] = React.useState<{
     [key: string]: any;
   }>({});
-
-  const {
-    isLoading,
-    isError,
-    data: storeList,
-    error,
-  } = useQuery(["stores"], () => getStores(1));
 
   function handleChange(key: string, value: string | string[]) {
     //Enforce validation
@@ -77,10 +66,10 @@ function AddScreen({ navigation }: Props) {
       [key: string]: any;
     } = {};
 
-    if (fields == undefined || fields.indexOf("title") != -1) {
-      //Mandatory title
-      if (form.title == "") {
-        newErrors["title"] = true;
+    if (fields == undefined || fields.indexOf("name") != -1) {
+      //Mandatory name
+      if (form.name == "") {
+        newErrors["name"] = true;
       }
     }
 
@@ -103,24 +92,9 @@ function AddScreen({ navigation }: Props) {
     let _errors = checkErrors();
     //si pas d'erreur
     if (Object.values(_errors).length == 0) {
-      navigation.navigate("AddStep2", { form: form, storeList });
+      navigation.navigate("AddStep2", { form: form });
     }
   };
-
-  if (isLoading) {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
-  if (isError) {
-    return (
-      <View>
-        <Text>Error</Text>
-      </View>
-    );
-  }
 
   return (
     <View>
@@ -144,19 +118,19 @@ function AddScreen({ navigation }: Props) {
 
             <TextInput
               style={styles.input}
-              value={form.title}
+              value={form.name}
               onChangeText={(evt) => {
-                handleChange("title", evt);
+                handleChange("name", evt);
               }}
               onBlur={() => {
-                checkErrors(["title"]);
+                checkErrors(["name"]);
               }}
               placeholder={translation.t("search_placeholder")}
               placeholderTextColor={"#888"}
               returnKeyType="next"
             ></TextInput>
           </View>
-          {errors["title"] && (
+          {errors["name"] && (
             <Text style={styles.error}>Product name is mandatory</Text>
           )}
         </View>

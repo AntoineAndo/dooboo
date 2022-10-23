@@ -2,26 +2,80 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { DocumentResult, getDocumentAsync } from "expo-document-picker";
 import { Image } from "react-native";
-import { supabase } from "../../../../lib/supabase";
+import {
+  addProduct,
+  deleteImage,
+  linkProductImage,
+  linkProductStore,
+  supabase,
+  uploadImage,
+  upsertStore,
+} from "../../../../lib/supabase";
 import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "../../../../hooks/translation";
 import { Button } from "react-native-paper";
 import { IconButton, Checkbox } from "react-native-paper";
 import colors from "../../../../config/colors";
+import Product from "../../../../types/product";
 
-type Props = {};
+type Props = {
+  route: any;
+  navigation: any;
+};
 
-function AddScreen3({}: Props) {
-  const [image, setImage] = useState("");
+function AddScreen3({ route, navigation }: Props) {
+  let initialState = route.params != undefined ? route.params.form : {};
+
+  const [form, setForm] = React.useState(initialState);
+  const [image, setImage] = useState<any>({});
 
   const pickDocument = async () => {
     let result: DocumentResult = await getDocumentAsync({});
     console.log(result);
     if (result != undefined) {
       //@ts-ignore
-      setImage(result.uri);
+      setImage(result);
     }
+  };
+
+  const onSubmit = async () => {
+    //Upload image
+    let imageInsertResult = await uploadImage(image.file);
+    if (imageInsertResult.error || imageInsertResult.data == null) {
+      return;
+    }
+
+    //Insert product record
+    let productInsertResult = await addProduct(form);
+
+    //If there is an error
+    if (productInsertResult.error != null || productInsertResult.data == null) {
+      //Delete image previously inserted
+      await deleteImage(imageInsertResult.data.path);
+      return;
+    }
+    const insertedProduct: Product = productInsertResult.data[0];
+
+    //Upsert store record
+    let storeSelectResult = await upsertStore(form.store);
+    if (
+      storeSelectResult.status == 201 ||
+      storeSelectResult?.error?.code == "42501"
+    ) {
+    }
+
+    //Link the product and the store
+    const resultInsertProductStore = await linkProductStore(
+      insertedProduct.id,
+      form.store.id
+    );
+
+    //Link the product and the image
+    const resultInsertProductImage = await linkProductImage(
+      insertedProduct.id,
+      imageInsertResult.data.path
+    );
   };
 
   return (
@@ -46,12 +100,21 @@ function AddScreen3({}: Props) {
           }}
           onPress={() => pickDocument()}
         />
-        {image != "" && (
+        {image.uri == undefined && (
           <Image
-            source={{ uri: image }}
+            source={{ uri: image.uri }}
             style={{ width: 100, height: 100 }}
           ></Image>
         )}
+        <Button
+          mode="contained"
+          disabled={image.uri == undefined}
+          onPress={() => {
+            onSubmit();
+          }}
+        >
+          Next step
+        </Button>
       </View>
     </View>
   );

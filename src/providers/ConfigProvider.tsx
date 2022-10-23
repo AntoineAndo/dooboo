@@ -4,6 +4,7 @@ import storage from "../lib/storage";
 export class Config {
   language_code?: String = "en";
   isAppFirstLauched?: Boolean = false;
+  country: any;
 }
 
 //Creation of the Context
