@@ -11,7 +11,6 @@ type Props = {
 };
 
 function ListItemComponent({ children }: Props) {
-  console.log(children);
   const { isLoading, isError, data, error } = useQuery(
     [children.product_image[0].image_url],
     () => downloadImage(children.product_image[0].image_url)

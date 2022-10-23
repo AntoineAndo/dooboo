@@ -76,6 +76,8 @@ function AddScreen3({ route, navigation }: Props) {
       insertedProduct.id,
       imageInsertResult.data.path
     );
+
+    navigation.navigate("AddStep4");
   };
 
   return (
