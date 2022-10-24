@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { StyleSheet, Platform, StatusBar } from "react-native";
-import IntroNavigator from "./src/screens/IntroNavigator";
+import GlobalNavigator from "./src/screens/GlobalNavigator";
 import { ConfigProvider } from "./src/providers/ConfigProvider";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
@@ -9,6 +9,7 @@ import {
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
+import { AppStateProvider } from "./src/providers/AppStateProvider";
 
 //Theme configuration
 const themeConfig = {
@@ -29,11 +30,13 @@ export const queryClient = new QueryClient();
 export default function App() {
   return (
     <ConfigProvider>
-      <QueryClientProvider client={queryClient}>
-        <PaperProvider theme={themeConfig}>
-          <IntroNavigator />
-        </PaperProvider>
-      </QueryClientProvider>
+      <AppStateProvider>
+        <QueryClientProvider client={queryClient}>
+          <PaperProvider theme={themeConfig}>
+            <GlobalNavigator />
+          </PaperProvider>
+        </QueryClientProvider>
+      </AppStateProvider>
     </ConfigProvider>
   );
 }

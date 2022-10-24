@@ -23,7 +23,6 @@ function AddNavigator({ navigation }: Props) {
       <Stack.Screen name="AddStep1" component={AddScreen} options={{}} />
       <Stack.Screen name="AddStep2" component={AddScreen2} options={{}} />
       <Stack.Screen name="AddStep3" component={AddScreen3} options={{}} />
-      <Stack.Screen name="AddStep4" component={AddScreen4} options={{}} />
     </Stack.Navigator>
   );
 }

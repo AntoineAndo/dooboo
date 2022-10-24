@@ -1,21 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
+import { useAppState } from "../../../../providers/AppStateProvider";
 
 type Props = {
-  route: any;
   navigation: any;
 };
 
-function AddScreen4({ route, navigation }: Props) {
+function AddScreen4({ navigation }: Props) {
   const onSubmit = () => {
-    navigation.navigate("Home");
+    navigation.replace("Navbar");
   };
 
   return (
     <View>
-      <Text>OK</Text>
-
       <View style={styles.contentView}>
         <Button
           mode="contained"

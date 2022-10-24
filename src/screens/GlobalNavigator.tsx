@@ -5,18 +5,21 @@ import NavbarNavigator from "./MainNavigation/NavbarNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { Config, useConfig } from "../providers/ConfigProvider";
 import * as SplashScreen from "expo-splash-screen";
-import Storage from "./../../src/lib/storage";
-import { initializeTranslations } from "./../../src/hooks/translation";
-import { KeyValuePair } from "@react-native-async-storage/async-storage/lib/typescript/types";
-import storage from "./../../src/lib/storage";
+import Storage from "../lib/storage";
+import { initializeTranslations } from "../hooks/translation";
+import storage from "../lib/storage";
 import { getDefaultCountry } from "../lib/supabase";
+import AddScreen4 from "./MainNavigation/add/AddStep4/AddScreen4";
+import { StyleSheet, View } from "react-native";
+import { useAppState } from "../providers/AppStateProvider";
 
 const Stack = createNativeStackNavigator();
 
 type Props = {};
 
-function IntroNavigator({}: Props): any {
+function GlobalNavigator({}: Props): any {
   const [appIsReady, setAppIsReady] = useState(false);
+  const app = useAppState();
   const { config, setConfig } = useConfig();
 
   useEffect(() => {
@@ -88,37 +91,36 @@ function IntroNavigator({}: Props): any {
     return null;
   }
 
-  //Once the configuration is loaded
-  //The navigation is rendered
-  if (
-    config.isAppFirstLauched == undefined ||
-    config.isAppFirstLauched == false
-  ) {
-    //If the app has never been launched
-    //then the IntroScreen is loaded and displayed by default
-    return (
+  return (
+    <>
+      {app.state.isLoading && <View style={styles.overlay}></View>}
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Intro"
           screenOptions={{ headerShown: false }}
         >
-          <Stack.Screen name="Intro" component={IntroScreen} />
+          {(config.isAppFirstLauched == undefined || //If the app was never launched
+            config.isAppFirstLauched == false) && ( // the Intro Screen is added to the navigator
+            <Stack.Screen name="Intro" component={IntroScreen} />
+          )}
+
           <Stack.Screen name="Navbar" component={NavbarNavigator} />
+          <Stack.Screen name="AddStep4" component={AddScreen4} />
         </Stack.Navigator>
       </NavigationContainer>
-    );
-  } else {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Navbar"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Navbar" component={NavbarNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+    </>
+  );
 }
 
-export default IntroNavigator;
+const styles = StyleSheet.create({
+  overlay: {
+    position: "absolute",
+    zIndex: 999,
+    height: "100%",
+    width: "100%",
+    backgroundColor: "white",
+    opacity: 0.7,
+  },
+});
+
+export default GlobalNavigator;

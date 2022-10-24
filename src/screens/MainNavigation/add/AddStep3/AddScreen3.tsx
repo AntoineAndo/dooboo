@@ -18,6 +18,7 @@ import { Button } from "react-native-paper";
 import { IconButton, Checkbox } from "react-native-paper";
 import colors from "../../../../config/colors";
 import Product from "../../../../types/product";
+import { useAppState } from "../../../../providers/AppStateProvider";
 
 type Props = {
   route: any;
@@ -27,8 +28,10 @@ type Props = {
 function AddScreen3({ route, navigation }: Props) {
   let initialState = route.params != undefined ? route.params.form : {};
 
+  //Hooks initialization
   const [form, setForm] = React.useState(initialState);
   const [image, setImage] = useState<any>({});
+  const app = useAppState();
 
   const pickDocument = async () => {
     let result: DocumentResult = await getDocumentAsync({});
@@ -40,9 +43,12 @@ function AddScreen3({ route, navigation }: Props) {
   };
 
   const onSubmit = async () => {
+    app.patchState("isLoading", true);
+
     //Upload image
     let imageInsertResult = await uploadImage(image.file);
     if (imageInsertResult.error || imageInsertResult.data == null) {
+      app.patchState("isLoading", false);
       return;
     }
 
@@ -53,6 +59,7 @@ function AddScreen3({ route, navigation }: Props) {
     if (productInsertResult.error != null || productInsertResult.data == null) {
       //Delete image previously inserted
       await deleteImage(imageInsertResult.data.path);
+      app.patchState("isLoading", false);
       return;
     }
     const insertedProduct: Product = productInsertResult.data[0];
@@ -76,8 +83,9 @@ function AddScreen3({ route, navigation }: Props) {
       insertedProduct.id,
       imageInsertResult.data.path
     );
+    app.patchState("isLoading", false);
 
-    navigation.navigate("AddStep4");
+    navigation.replace("AddStep4");
   };
 
   return (
