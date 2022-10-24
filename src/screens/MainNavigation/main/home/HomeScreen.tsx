@@ -44,6 +44,8 @@ function HomeScreen({ navigation }: Props) {
     );
   }
 
+  console.log(productList);
+
   return (
     <View style={styles.page}>
       <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>

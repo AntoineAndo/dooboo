@@ -6,6 +6,8 @@ import { useTranslation } from "../../../../hooks/translation";
 import { Button, Checkbox } from "react-native-paper";
 import { useConfig } from "../../../../providers/ConfigProvider";
 import Form from "../../../../types/Form";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../../../../lib/supabase";
 
 type Props = {
   navigation: any;
@@ -14,8 +16,11 @@ type Props = {
 function AddScreen({ navigation }: Props) {
   const translation = useTranslation();
   const { config } = useConfig();
-  const options = ["1", "2", "3"];
-  const maxCategoryChoices = 2;
+  const { isLoading, isError, data, error } = useQuery(
+    ["categories_" + config.country.code],
+    () => getCategories(config.country.id)
+  );
+  const maxCategoryChoices = 3;
 
   const [form, setForm] = React.useState<Form>({
     name: "",
@@ -37,7 +42,7 @@ function AddScreen({ navigation }: Props) {
     });
   }
 
-  const handleCheck = function (option: string) {
+  const handleCheck = function (option: any) {
     let newArray = [...form.categories];
     let index = newArray.indexOf(option);
 
@@ -96,6 +101,12 @@ function AddScreen({ navigation }: Props) {
     }
   };
 
+  if (isLoading || data == undefined) {
+    return <></>;
+  }
+
+  const categoriesList = data.data as any[];
+
   return (
     <View>
       <View style={styles.header}>
@@ -140,9 +151,9 @@ function AddScreen({ navigation }: Props) {
           Please select from 1 to 3 categories
         </Text>
 
-        {options.map((option) => {
+        {categoriesList.map((option) => {
           return (
-            <View key={option}>
+            <View key={option.id}>
               <Checkbox
                 status={
                   form.categories.indexOf(option) != -1
@@ -153,7 +164,7 @@ function AddScreen({ navigation }: Props) {
                   handleCheck(option);
                 }}
               />
-              <Text>{option}</Text>
+              <Text>{translation.t("categories." + option.code)}</Text>
             </View>
           );
         })}

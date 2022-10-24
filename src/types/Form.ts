@@ -1,6 +1,6 @@
 type Form = {
   name: string;
-  categories: string[];
+  categories: any[];
   store: any;
   countryId: string;
 };

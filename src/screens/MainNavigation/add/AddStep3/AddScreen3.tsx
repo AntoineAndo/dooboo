@@ -11,6 +11,7 @@ import { Image } from "react-native";
 import {
   addProduct,
   deleteImage,
+  linkProductCategories,
   linkProductImage,
   linkProductStore,
   supabase,
@@ -71,6 +72,7 @@ function AddScreen3({ route, navigation }: Props) {
 
     //Upsert store record
     let storeSelectResult = await upsertStore(form.store);
+    console.log(storeSelectResult);
     if (
       storeSelectResult.status == 201 ||
       storeSelectResult?.error?.code == "42501"
@@ -82,6 +84,19 @@ function AddScreen3({ route, navigation }: Props) {
       insertedProduct.id,
       form.store.id
     );
+
+    const categoriesToInsert = form.categories.map((category: any) => {
+      return {
+        fk_product_id: insertedProduct.id,
+        fk_category_id: category.id,
+      };
+    });
+    const resultInsertProductCategories = await linkProductCategories(
+      categoriesToInsert
+    );
+    if (resultInsertProductCategories.status != 201) {
+      return;
+    }
 
     //Link the product and the image
     const resultInsertProductImage = await linkProductImage(

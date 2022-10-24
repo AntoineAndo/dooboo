@@ -32,6 +32,11 @@ export function getProducts(countryId: number): Promise<any> {
         name,
         product_image!inner(
           image_url
+        ),
+        product_category!inner(
+          category(
+            *
+          )
         )
       `
       )
@@ -46,6 +51,21 @@ export function getProducts(countryId: number): Promise<any> {
         res(products as Array<any>);
       });
   });
+}
+
+export async function getCategories(countryId: string): Promise<any> {
+  return new Promise((res, rej) => {
+    supabase
+      .from("category")
+      .select(`*`)
+      .then((data) => {
+        res(data);
+      });
+  });
+}
+
+export async function linkProductCategories(categoriesToInsert: []) {
+  return await supabase.from("product_category").insert(categoriesToInsert);
 }
 
 export async function addProduct(formData: Form) {
