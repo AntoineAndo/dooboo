@@ -25,12 +25,12 @@ function SearchScreen({ navigation }: Props) {
       <View style={styles.content}>
         <Text style={commonStyles.label}>Quick search</Text>
         <View style={styles.quickSearchContainer}>
-          <BigButton
+          {/* <BigButton
             imageSource={require("../../../../assets/store.svg")}
             onPress={() => {}}
           >
             Store chain
-          </BigButton>
+          </BigButton> */}
           <BigButton
             imageSource={require("../../../../assets/store.svg")}
             onPress={navToSearch}

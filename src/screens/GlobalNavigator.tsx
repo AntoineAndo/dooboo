@@ -8,7 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 import Storage from "../lib/storage";
 import { initializeTranslations } from "../hooks/translation";
 import storage from "../lib/storage";
-import { getDefaultCountry } from "../lib/supabase";
+import { getCategories, getDefaultCountry } from "../lib/supabase";
 import AddScreen4 from "./MainNavigation/add/AddStep4/AddScreen4";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
@@ -32,8 +32,9 @@ function GlobalNavigator({}: Props): any {
         //@@ https://docs.expo.dev/archive/classic-updates/preloading-and-caching-assets/#pre-loading-and-caching-assets
         const configuration = Storage.getData("config");
         const defaultCountry = getDefaultCountry();
-        await Promise.all([configuration, defaultCountry]).then(
-          ([configuration, defaultCountryResult]) => {
+        const categories = getCategories("");
+        await Promise.all([configuration, defaultCountry, categories]).then(
+          ([configuration, defaultCountryResult, categories]) => {
             let configurationObject: Config;
 
             if (defaultCountryResult.data == null) {
@@ -57,11 +58,13 @@ function GlobalNavigator({}: Props): any {
                 country: defaultCountry,
                 language_code: "en",
                 isAppFirstLauched: false,
+                categories: categories.data,
               };
 
               storage.storeData("config", JSON.stringify(configurationObject));
             } else {
               configurationObject = configuration;
+              configurationObject.categories = categories.data;
             }
 
             //Set the configuration object as the context value

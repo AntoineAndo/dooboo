@@ -3,7 +3,6 @@ import "react-native-url-polyfill/auto";
 import { createClient } from "@supabase/supabase-js";
 //@ts-ignore
 import { REACT_APP_API_URL, REACT_APP_API_ANON_KEY } from "@env";
-import Product from "../types/product";
 
 import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
@@ -22,12 +21,10 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 //Get all the products from a given country, joined with the store presence info
 //Main request to list products
-export function getProducts(countryId: number): Promise<any> {
+export function getProducts(searchQuery: any): Promise<any> {
   return new Promise((res, rej) => {
-    supabase
-      .from("product")
-      .select(
-        `
+    let query = supabase.from("product").select(
+      `
         id,
         name,
         product_image!inner(
@@ -39,17 +36,27 @@ export function getProducts(countryId: number): Promise<any> {
           )
         )
       `
-      )
-      .eq("fk_country_id", countryId)
-      .then(({ data: products, error }) => {
-        if (error != undefined) {
-          console.error(error.message);
-          console.error(error.hint);
-          rej(error);
-        }
+    );
 
-        res(products as Array<any>);
-      });
+    //Country filter
+    if (searchQuery.country != undefined) {
+      query.eq("fk_country_id", searchQuery.country);
+    }
+
+    //Categories filter
+    if (searchQuery.categoriesId != undefined) {
+      query.in("product_category.fk_category_id", searchQuery.categoriesId);
+    }
+
+    query.then(({ data: products, error }) => {
+      if (error != undefined) {
+        console.error(error.message);
+        console.error(error.hint);
+        rej(error);
+      }
+
+      res(products as Array<any>);
+    });
   });
 }
 

@@ -5,6 +5,7 @@ export class Config {
   language_code?: String = "en";
   isAppFirstLauched?: Boolean = false;
   country: any;
+  categories: any[] = [];
 }
 
 //Creation of the Context

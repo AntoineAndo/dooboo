@@ -27,7 +27,12 @@ function HomeScreen({ navigation }: Props) {
     isError,
     data: productList,
     error,
-  } = useQuery(["products"], () => getProducts(config.country.id));
+  } = useQuery(["products"], () => {
+    const searchQuery = {
+      fk_country_id: config.country.id,
+    };
+    return getProducts(searchQuery);
+  });
 
   if (isLoading) {
     return (

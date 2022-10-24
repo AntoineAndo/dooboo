@@ -1,5 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import ListComponent from "../../../../components/ListComponent";
 import Loader from "../../../../components/Loader";
@@ -7,6 +8,7 @@ import Loader from "../../../../components/Loader";
 //Style import
 import commonStyles from "../../../../config/stylesheet";
 import { getProducts } from "../../../../lib/supabase";
+import { useConfig } from "../../../../providers/ConfigProvider";
 import Product from "../../../../types/product";
 
 type Props = {
@@ -15,16 +17,33 @@ type Props = {
 };
 
 function SearchResultScreen({ route, navigation }: Props) {
-  const { search } = route.params;
+  const { config } = useConfig();
 
-  let [isLoaded, setLoaded] = useState(false);
-  let [products, setProducts] = useState();
+  const { searchParams } = route.params;
 
-  useEffect(() => {
-    getProducts(1).then((products: any) => {
-      setProducts(products);
+  const {
+    isLoading,
+    isError,
+    data: products,
+    error,
+  } = useQuery(["products_categories"], () => {
+    let categoriesId: any[] = [];
+    searchParams.categories.forEach((category: any) => {
+      categoriesId.push(category.id);
     });
-  }, []);
+
+    const searchQuery = {
+      country: config.country.id,
+      categoriesId,
+    };
+    return getProducts(searchQuery);
+  });
+
+  if (isError || products == null || products == undefined) {
+    return <></>;
+  }
+
+  console.log(products.length + " result(s)");
 
   return (
     <View style={styles.page}>
@@ -45,12 +64,13 @@ function SearchResultScreen({ route, navigation }: Props) {
           </View>
         </View>
       </View>
-      <View>
+      <ScrollView>
+        <Text style={commonStyles.label}>{"Search results"}</Text>
         {products == undefined && <Loader />}
         {products != undefined && (
           <ListComponent itemList={products}></ListComponent>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 }
