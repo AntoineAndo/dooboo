@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 import ListComponent from "../../../../components/ListComponent";
 import SearchBarComponent from "../../../../components/SearchBarComponent";
 import { getProducts } from "../../../../lib/supabase";
@@ -49,12 +49,12 @@ function HomeScreen({ navigation }: Props) {
       <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
         <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
-      <View style={styles.content}>
+      <ScrollView style={styles.content}>
         <Text style={commonStyles.label}>
           {translation.t("latest_product")}
         </Text>
         <ListComponent itemList={productList}></ListComponent>
-      </View>
+      </ScrollView>
     </View>
   );
 }
