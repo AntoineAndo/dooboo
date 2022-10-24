@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { DocumentResult, getDocumentAsync } from "expo-document-picker";
 import { Image } from "react-native";
 import {
@@ -35,7 +41,6 @@ function AddScreen3({ route, navigation }: Props) {
 
   const pickDocument = async () => {
     let result: DocumentResult = await getDocumentAsync({});
-    console.log(result);
     if (result != undefined) {
       //@ts-ignore
       setImage(result);
@@ -99,22 +104,23 @@ function AddScreen3({ route, navigation }: Props) {
       </View>
 
       <View style={styles.contentView}>
-        <IconButton
-          icon="image-multiple-outline"
-          iconColor="white"
-          containerColor="grey"
-          size={100}
-          style={{
-            height: 200,
-            width: 200,
-          }}
-          onPress={() => pickDocument()}
-        />
         {image.uri == undefined && (
-          <Image
-            source={{ uri: image.uri }}
-            style={{ width: 100, height: 100 }}
-          ></Image>
+          <IconButton
+            icon="image-multiple-outline"
+            iconColor="white"
+            containerColor="grey"
+            size={100}
+            style={styles.imageContainer}
+            onPress={() => pickDocument()}
+          />
+        )}
+        {image.uri != undefined && (
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={() => pickDocument()}
+          >
+            <Image source={{ uri: image.uri }} style={styles.image}></Image>
+          </TouchableOpacity>
         )}
         <Button
           mode="contained"
@@ -162,12 +168,16 @@ const styles = StyleSheet.create({
     padding: 3,
     flexDirection: "row",
   },
+  imageContainer: {
+    borderRadius: 10,
+    height: 200,
+    width: 200,
+    overflow: "hidden",
+  },
   image: {
-    resizeMode: "contain",
-    fontSize: 30,
-    margin: 5,
-    height: 30,
-    width: 30,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 });
 

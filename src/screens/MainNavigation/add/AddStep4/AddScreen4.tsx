@@ -21,7 +21,7 @@ function AddScreen4({ navigation }: Props) {
             onSubmit();
           }}
         >
-          Next step
+          Go to Homepage
         </Button>
       </View>
     </View>

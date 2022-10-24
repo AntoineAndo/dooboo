@@ -10,8 +10,8 @@ import { initializeTranslations } from "../hooks/translation";
 import storage from "../lib/storage";
 import { getDefaultCountry } from "../lib/supabase";
 import AddScreen4 from "./MainNavigation/add/AddStep4/AddScreen4";
-import { StyleSheet, View } from "react-native";
 import { useAppState } from "../providers/AppStateProvider";
+import OverlayComponent from "../components/OverlayComponent";
 
 const Stack = createNativeStackNavigator();
 
@@ -93,7 +93,7 @@ function GlobalNavigator({}: Props): any {
 
   return (
     <>
-      {app.state.isLoading && <View style={styles.overlay}></View>}
+      {app.state.isLoading && <OverlayComponent />}
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Intro"
@@ -111,16 +111,5 @@ function GlobalNavigator({}: Props): any {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    position: "absolute",
-    zIndex: 999,
-    height: "100%",
-    width: "100%",
-    backgroundColor: "white",
-    opacity: 0.7,
-  },
-});
 
 export default GlobalNavigator;
