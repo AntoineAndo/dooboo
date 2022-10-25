@@ -34,6 +34,10 @@ function HomeScreen({ navigation }: Props) {
     return getProducts(searchQuery);
   });
 
+  const onProductClick = (product: any) => {
+    navigation.navigate("Product", { product });
+  };
+
   if (isLoading) {
     return (
       <View style={styles.page}>
@@ -60,7 +64,10 @@ function HomeScreen({ navigation }: Props) {
         <Text style={commonStyles.label}>
           {translation.t("latest_product")}
         </Text>
-        <ListComponent itemList={productList}></ListComponent>
+        <ListComponent
+          itemList={productList}
+          onItemClick={onProductClick}
+        ></ListComponent>
       </ScrollView>
     </View>
   );

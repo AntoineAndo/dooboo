@@ -20,7 +20,11 @@ function ListItemComponent({ children }: Props) {
     return <></>;
   }
 
+  //Once the url of the image is loaded
+  //It is set in the image object
+  // so that it can be reused by other components
   const imageUrl = data?.data.publicUrl;
+  children.imageUrl = imageUrl;
 
   return (
     <View style={styles.item}>

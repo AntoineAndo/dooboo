@@ -34,6 +34,11 @@ export function getProducts(searchQuery: any): Promise<any> {
           category(
             *
           )
+        ),
+        product_store!inner(
+          store(
+            *
+          )
         )
       `
     );

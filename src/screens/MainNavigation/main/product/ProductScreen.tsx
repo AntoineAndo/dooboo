@@ -1,10 +1,99 @@
 import React from "react";
-import { View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import GoogleMapReact from "google-map-react";
+import MarkerComponent from "../../../../components/MarkerComponent";
+//@ts-ignore
+import { REACT_APP_GOOGLE_API_KEY } from "@env";
 
-type Props = {};
+type Props = {
+  route: any;
+  navigation: any;
+};
 
-function ProductScreen({}: Props) {
-  return <View>ProductScreen</View>;
+function ProductScreen({ route, navigation }: Props) {
+  const [google, setGoogle] = React.useState<{ map?: any; maps?: any }>({});
+  const [places, setPlaces] = React.useState<any[]>([]);
+
+  let productInitialData = route.params.product;
+  let initialStores: any[] = [];
+
+  React.useEffect(() => {
+    productInitialData.product_store.forEach(({ store }: any) => {
+      initialStores.push(store);
+    });
+    setPlaces(initialStores);
+    console.log(productInitialData);
+    console.log(initialStores);
+  }, []);
+
+  const handleApiLoaded = (map: any, maps: any) => {
+    setGoogle({
+      map,
+      maps,
+    });
+    if (places.length != 0) {
+      map.setCenter({
+        lat: parseFloat(places[0].lat),
+        lng: parseFloat(places[0].lng),
+      });
+    }
+  };
+
+  const defaultProps = {
+    center: {
+      lat: 37.555015,
+      lng: 126.937007,
+    },
+    zoom: 15,
+  };
+
+  console.log(productInitialData);
+
+  return (
+    <View>
+      <Image
+        source={{ uri: productInitialData.imageUrl }}
+        style={styles.mainImage}
+      />
+      <Text style={styles.title}>{productInitialData.name}</Text>
+
+      <View style={styles.mapContainer}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: REACT_APP_GOOGLE_API_KEY }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+          yesIWantToUseGoogleMapApiInternals={true}
+          onGoogleApiLoaded={({ map, maps }: any) => handleApiLoaded(map, maps)}
+        >
+          {places.map((place: any, i: number) => {
+            return (
+              <MarkerComponent
+                lat={place.lat}
+                lng={place.lng}
+                text={place.name}
+                key={place.id}
+                onTouch={() => console.log(place)}
+              />
+            );
+          })}
+        </GoogleMapReact>
+      </View>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  mainImage: {
+    height: 300,
+    resizeMode: "cover",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  mapContainer: {
+    height: 300,
+  },
+});
 
 export default ProductScreen;

@@ -57,12 +57,10 @@ function AddScreen2({ route, navigation }: Props) {
     if (form.store == undefined) {
       return;
     }
-    console.log("SUBMIT OK");
     navigation.navigate("AddStep3", { form: form });
   };
 
   const placeSelected = (place: any) => {
-    console.log(place);
     google.map.setCenter(place.location);
     setFormField("store", place);
   };
@@ -73,8 +71,6 @@ function AddScreen2({ route, navigation }: Props) {
       ...form,
       [key]: value,
     });
-
-    console.log(form);
   };
 
   const onPlaceSeach = (searchQuery: string) => {
@@ -89,8 +85,6 @@ function AddScreen2({ route, navigation }: Props) {
     };
 
     searchPlaces(options).then((result: any) => {
-      console.log(result);
-
       setPlaces(result);
 
       //Center map on the first marker

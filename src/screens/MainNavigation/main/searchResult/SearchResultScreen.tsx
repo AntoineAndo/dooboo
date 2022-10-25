@@ -18,8 +18,12 @@ type Props = {
 
 function SearchResultScreen({ route, navigation }: Props) {
   const { config } = useConfig();
-
   const { searchParams } = route.params;
+
+  const onProductClick = (product: any) => {
+    // navigation.navigate("Product", { product });
+    console.log(product);
+  };
 
   const {
     isLoading,
@@ -68,7 +72,10 @@ function SearchResultScreen({ route, navigation }: Props) {
         <Text style={commonStyles.label}>{"Search results"}</Text>
         {products == undefined && <Loader />}
         {products != undefined && (
-          <ListComponent itemList={products}></ListComponent>
+          <ListComponent
+            itemList={products}
+            onItemClick={onProductClick}
+          ></ListComponent>
         )}
       </ScrollView>
     </View>

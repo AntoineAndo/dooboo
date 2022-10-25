@@ -7,6 +7,7 @@ import HomeScreen from "./home/HomeScreen";
 import SearchScreen from "./search/SearchScreen";
 import SearchResultScreen from "./searchResult/SearchResultScreen";
 import SearchCategoriesScreen from "./SearchCategoriesScreen/SearchCategoriesScreen";
+import ProductScreen from "./product/ProductScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ function HomeNavigation({ navigation }: Props) {
         name="Search categories"
         component={SearchCategoriesScreen}
       />
+      <Stack.Screen name="Product" component={ProductScreen} />
     </Stack.Navigator>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
 import Product from "../types/product";
 
 //Types import
@@ -7,18 +7,23 @@ import ListItemComponent from "./ListItemComponent";
 
 type Props = {
   itemList: Array<Product>;
+  onItemClick: Function;
 };
 
-function ListComponent({ itemList }: Props) {
-  return <View>{renderChildItems(itemList)}</View>;
+function ListComponent({ itemList, onItemClick }: Props) {
+  return <View>{renderChildItems(itemList, onItemClick)}</View>;
 }
 
-function renderChildItems(list: Array<Product>) {
+function renderChildItems(list: Array<Product>, onItemClick: Function) {
   return list.map((element, index) => {
     return (
-      <View style={styles.listElement} key={index}>
+      <TouchableOpacity
+        style={styles.listElement}
+        key={index}
+        onPress={() => onItemClick(element)}
+      >
         <ListItemComponent>{element}</ListItemComponent>
-      </View>
+      </TouchableOpacity>
     );
   });
 }
