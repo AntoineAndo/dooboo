@@ -1,9 +1,10 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import GoogleMapReact from "google-map-react";
 import MarkerComponent from "../../../../components/MarkerComponent";
 //@ts-ignore
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
+import IonIcons from "react-native-vector-icons/Ionicons";
 
 type Props = {
   route: any;
@@ -51,6 +52,12 @@ function ProductScreen({ route, navigation }: Props) {
 
   return (
     <View>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <IonIcons name={"arrow-back-outline"} size={40} />
+      </TouchableOpacity>
       <Image
         source={{ uri: productInitialData.imageUrl }}
         style={styles.mainImage}
@@ -93,6 +100,14 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     height: 300,
+  },
+  backButton: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    position: "absolute",
+    top: 25,
+    left: 25,
+    zIndex: 888,
   },
 });
 

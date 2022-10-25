@@ -21,8 +21,7 @@ function SearchResultScreen({ route, navigation }: Props) {
   const { searchParams } = route.params;
 
   const onProductClick = (product: any) => {
-    // navigation.navigate("Product", { product });
-    console.log(product);
+    navigation.navigate("Product", { product });
   };
 
   const {
