@@ -12,7 +12,7 @@ import { getCategories, getDefaultCountry } from "../lib/supabase";
 import AddScreen4 from "./MainNavigation/add/AddStep4/AddScreen4";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
-import { Text, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +24,7 @@ function GlobalNavigator({}: Props): any {
   const { config, setConfig } = useConfig();
 
   useEffect(() => {
-    async function loadResourcesAndDataAsync() {
+    function loadResourcesAndDataAsync(cb: Function) {
       try {
         //Override splashscreen behaviour
         SplashScreen.preventAutoHideAsync();
@@ -34,7 +34,7 @@ function GlobalNavigator({}: Props): any {
         const configuration = Storage.getData("config");
         const defaultCountry = getDefaultCountry();
         const categories = getCategories("");
-        await Promise.all([configuration, defaultCountry, categories]).then(
+        Promise.all([configuration, defaultCountry, categories]).then(
           ([configuration, defaultCountryResult, categories]) => {
             let configurationObject: Config;
 
@@ -71,6 +71,7 @@ function GlobalNavigator({}: Props): any {
             //Set the configuration object as the context value
             // so that it can be accessed everywhere in the app
             setConfig(configurationObject);
+            cb();
           }
         );
       } catch (e) {
@@ -82,7 +83,7 @@ function GlobalNavigator({}: Props): any {
       }
     }
 
-    loadResourcesAndDataAsync().then((r: any) => {
+    loadResourcesAndDataAsync(() => {
       console.log("config", config);
 
       // Translation init
@@ -108,22 +109,31 @@ function GlobalNavigator({}: Props): any {
   return (
     <>
       {app.state.isLoading && <OverlayComponent />}
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Intro"
-          screenOptions={{ headerShown: false }}
-        >
-          {(config.isAppFirstLauched == undefined || //If the app was never launched
-            config.isAppFirstLauched == false) && ( // the Intro Screen is added to the navigator
-            <Stack.Screen name="Intro" component={IntroScreen} />
-          )}
+      <View style={styles.app}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Intro"
+            screenOptions={{ headerShown: false }}
+          >
+            {(config.isAppFirstLauched == undefined || //If the app was never launched
+              config.isAppFirstLauched == false) && ( // the Intro Screen is added to the navigator
+              <Stack.Screen name="Intro" component={IntroScreen} />
+            )}
 
-          <Stack.Screen name="Navbar" component={NavbarNavigator} />
-          <Stack.Screen name="AddStep4" component={AddScreen4} />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <Stack.Screen name="Navbar" component={NavbarNavigator} />
+            <Stack.Screen name="AddStep4" component={AddScreen4} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </View>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  app: {
+    flex: 1,
+    paddingTop: Platform.OS == "android" ? StatusBar.currentHeight : 0,
+  },
+});
 
 export default GlobalNavigator;
