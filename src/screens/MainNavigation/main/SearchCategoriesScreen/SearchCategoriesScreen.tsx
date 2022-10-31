@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
-import { Button, Checkbox } from "react-native-paper";
+import { Text, View, Button } from "react-native";
+import { Checkbox } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
 import { useTranslation } from "../../../../hooks/translation";
 import { useConfig } from "../../../../providers/ConfigProvider";
@@ -64,13 +64,11 @@ function SearchCategoriesScreen({ navigation }: any) {
         })}
 
         <Button
-          mode="contained"
+          title="Next step"
           onPress={() => {
             onSubmit();
           }}
-        >
-          Next step
-        </Button>
+        ></Button>
       </View>
     </View>
   );

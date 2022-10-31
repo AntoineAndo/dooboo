@@ -1,6 +1,6 @@
 import React from "react";
-import { ScrollView, View, StyleSheet, Text, TextInput } from "react-native";
-import { Button } from "react-native-paper";
+import { ScrollView, View, StyleSheet, Text, Button } from "react-native";
+// import { Button } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
 //@ts-ignore
 import GoogleMapReact, { Coords } from "google-map-react";
@@ -119,7 +119,7 @@ function AddScreen2({ route, navigation }: Props) {
       />
 
       <View style={styles.mapContainer}>
-        <GoogleMapReact
+        {/* <GoogleMapReact
           bootstrapURLKeys={{ key: REACT_APP_GOOGLE_API_KEY }}
           defaultCenter={defaultProps.center}
           defaultZoom={defaultProps.zoom}
@@ -137,7 +137,7 @@ function AddScreen2({ route, navigation }: Props) {
               />
             );
           })}
-        </GoogleMapReact>
+        </GoogleMapReact> */}
       </View>
 
       {errors["store"] && (
@@ -174,24 +174,21 @@ function AddScreen2({ route, navigation }: Props) {
 
       <View style={styles.buttonContainer}>
         <Button
-          style={styles.button}
-          mode="outlined"
+          title="Back"
+          // style={styles.button}
+
           onPress={() => {
             navigation.goBack();
           }}
-        >
-          Back
-        </Button>
+        ></Button>
         <Button
-          style={styles.button}
-          mode="contained"
+          title="Next step"
+          // style={styles.button}
           disabled={form.store == undefined}
           onPress={() => {
             onSubmit();
           }}
-        >
-          Next step
-        </Button>
+        ></Button>
       </View>
     </View>
   );

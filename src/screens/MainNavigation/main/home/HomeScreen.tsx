@@ -26,7 +26,7 @@ function HomeScreen({ navigation }: Props) {
     isLoading,
     isError,
     data: productList,
-    error,
+    refetch,
   } = useQuery(["products"], () => {
     const searchQuery = {
       fk_country_id: config.country.id,
@@ -37,6 +37,9 @@ function HomeScreen({ navigation }: Props) {
   const onProductClick = (product: any) => {
     navigation.navigate("Product", { product });
   };
+
+  //Refetch on refresh
+  const onRefresh = refetch;
 
   if (isLoading) {
     return (
@@ -53,22 +56,21 @@ function HomeScreen({ navigation }: Props) {
     );
   }
 
-  console.log(productList);
-
   return (
     <View style={styles.page}>
       <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
         <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
-      <ScrollView style={styles.content}>
+      <View style={styles.content}>
         <Text style={commonStyles.label}>
           {translation.t("latest_product")}
         </Text>
         <ListComponent
           itemList={productList}
           onItemClick={onProductClick}
+          refresh={onRefresh}
         ></ListComponent>
-      </ScrollView>
+      </View>
     </View>
   );
 }

@@ -1,13 +1,14 @@
 import React from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 // import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
+// import Ionicons from "@expo/vector-icons/Ionicons";
 import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Screen imports
-import HomeScreen from "./main/home/HomeScreen";
+// import HomeScreen from "./main/home/HomeScreen";
 import ProfileScreen from "./profile/ProfileScreen";
 import AddScreen from "./add/AddStep1/AddScreen";
 
@@ -15,70 +16,51 @@ import AddScreen from "./add/AddStep1/AddScreen";
 import colors from "../../config/colors";
 import HomeNavigation from "./main/MainNavigator";
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddNavigator from "./add/AddNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 
-//Screen names
-const homeName = "Home";
-const profileName = "Profile";
-const addName = "Add";
-
-export type RootStackParams = {
-  Home: any;
-  Profile: any;
-  Add: any;
-};
-
-const Tab = createMaterialBottomTabNavigator<RootStackParams>();
+const Tab = createMaterialBottomTabNavigator();
 
 type Props = {};
 
 function NavbarNavigator({}: Props) {
   return (
-    <Tab.Navigator
-      initialRouteName={homeName}
-      labeled={true}
-      activeColor={colors.primary}
-      inactiveColor={colors.primary}
-    >
-      <Tab.Screen
-        name={homeName}
-        component={HomeNavigation}
-        options={{
-          tabBarIcon: ({ color }: any) => {
-            return (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
-            );
-          },
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name={addName}
-        component={AddNavigator}
-        options={{
-          tabBarIcon: ({ color }) => {
-            return (
-              <MaterialCommunityIcons
-                name="plus-circle-outline"
-                color={color}
-                size={26}
-              />
-            );
-          },
-        }}
-      ></Tab.Screen>
-      <Tab.Screen
-        name={profileName}
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ color }) => {
-            return (
-              <MaterialCommunityIcons name="account" color={color} size={26} />
-            );
-          },
-        }}
-      ></Tab.Screen>
-    </Tab.Navigator>
+    <NavigationContainer independent={true}>
+      <Tab.Navigator
+        initialRouteName={"HomeNavigation"}
+        labeled={true}
+        activeColor={colors.primary}
+        inactiveColor={colors.primary}
+      >
+        <Tab.Screen
+          name="HomeNavigation"
+          component={HomeNavigation}
+          options={{
+            tabBarIcon: ({ color }) => {
+              return <IonIcons name="home" color={color} size={26} />;
+            },
+          }}
+        />
+        <Tab.Screen
+          name={"Add"}
+          component={AddNavigator}
+          options={{
+            tabBarIcon: ({ color }) => {
+              return <IonIcons name="add" color={color} size={26} />;
+            },
+          }}
+        ></Tab.Screen>
+        <Tab.Screen
+          name={"ProfileScreen"}
+          component={ProfileScreen}
+          options={{
+            tabBarIcon: ({ color }) => {
+              return <IonIcons name="person" color={color} size={26} />;
+            },
+          }}
+        ></Tab.Screen>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 

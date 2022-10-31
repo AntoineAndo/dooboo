@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { DocumentResult, getDocumentAsync } from "expo-document-picker";
-import { Image } from "react-native";
+import { Image, Button } from "react-native";
 import {
   addProduct,
   deleteImage,
@@ -21,7 +21,7 @@ import {
 import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "../../../../hooks/translation";
-import { Button } from "react-native-paper";
+// import { Button } from "react-native-paper";
 import { IconButton, Checkbox } from "react-native-paper";
 import colors from "../../../../config/colors";
 import Product from "../../../../types/product";
@@ -138,14 +138,12 @@ function AddScreen3({ route, navigation }: Props) {
           </TouchableOpacity>
         )}
         <Button
-          mode="contained"
+          title="Next step"
           disabled={image.uri == undefined}
           onPress={() => {
             onSubmit();
           }}
-        >
-          Next step
-        </Button>
+        ></Button>
       </View>
     </View>
   );

@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "../../../../hooks/translation";
-import { Button, Checkbox } from "react-native-paper";
+import { Checkbox } from "react-native-paper";
 import { useConfig } from "../../../../providers/ConfigProvider";
 import Form from "../../../../types/Form";
 import { useQuery } from "@tanstack/react-query";
@@ -173,13 +173,11 @@ function AddScreen({ navigation }: Props) {
         )}
 
         <Button
-          mode="contained"
+          title="Next step"
           onPress={() => {
             onSubmit();
           }}
-        >
-          Next step
-        </Button>
+        ></Button>
       </View>
     </View>
   );

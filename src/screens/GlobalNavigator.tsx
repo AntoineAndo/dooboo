@@ -12,6 +12,7 @@ import { getCategories, getDefaultCountry } from "../lib/supabase";
 import AddScreen4 from "./MainNavigation/add/AddStep4/AddScreen4";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
+import { Text, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,7 +44,7 @@ function GlobalNavigator({}: Props): any {
             }
 
             const defaultCountry = defaultCountryResult.data[0];
-            // configuration = undefined;
+            configuration = undefined;
 
             //If the stored configuration is empty
             //Then we assume that this is the first time the app is launched
@@ -70,9 +71,6 @@ function GlobalNavigator({}: Props): any {
             //Set the configuration object as the context value
             // so that it can be accessed everywhere in the app
             setConfig(configurationObject);
-
-            // Translation init
-            initializeTranslations(configurationObject.language_code as string);
           }
         );
       } catch (e) {
@@ -84,14 +82,27 @@ function GlobalNavigator({}: Props): any {
       }
     }
 
-    loadResourcesAndDataAsync();
+    loadResourcesAndDataAsync().then((r: any) => {
+      console.log("config", config);
+
+      // Translation init
+      initializeTranslations(config.language_code as string);
+
+      setAppIsReady(true);
+
+      SplashScreen.hideAsync();
+    });
   }, []);
 
   //While the app isnt ready the splash screen is displayed
   //TODO
   if (!appIsReady) {
     //Return the splash screen here
-    return null;
+    return (
+      <View>
+        <Text>LOADING</Text>
+      </View>
+    );
   }
 
   return (

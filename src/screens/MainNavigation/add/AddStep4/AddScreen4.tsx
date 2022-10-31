@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { useAppState } from "../../../../providers/AppStateProvider";
 
 type Props = {
@@ -16,13 +15,20 @@ function AddScreen4({ navigation }: Props) {
     <View>
       <View style={styles.contentView}>
         <Button
+          onPress={() => {
+            onSubmit();
+          }}
+          title="Go to Homepage"
+        ></Button>
+        {/* <Button
+        
           mode="contained"
           onPress={() => {
             onSubmit();
           }}
         >
           Go to Homepage
-        </Button>
+        </Button> */}
       </View>
     </View>
   );
