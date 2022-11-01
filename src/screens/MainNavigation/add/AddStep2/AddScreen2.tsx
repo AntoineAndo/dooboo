@@ -2,8 +2,8 @@ import React from "react";
 import { ScrollView, View, StyleSheet, Text, Button } from "react-native";
 // import { Button } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
-//@ts-ignore
-import GoogleMapReact, { Coords } from "google-map-react";
+
+import MapView, { Marker } from "react-native-maps";
 
 //@ts-ignore
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
@@ -119,6 +119,21 @@ function AddScreen2({ route, navigation }: Props) {
       />
 
       <View style={styles.mapContainer}>
+        <MapView style={styles.mapContainer}>
+          {places.map((place: any, i: number) => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: place.location.lat,
+                  longitude: place.location.lng,
+                }}
+                title={place.name}
+                key={place.id}
+                onPress={() => placeSelected(place)}
+              />
+            );
+          })}
+        </MapView>
         {/* <GoogleMapReact
           bootstrapURLKeys={{ key: REACT_APP_GOOGLE_API_KEY }}
           defaultCenter={defaultProps.center}

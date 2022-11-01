@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  ScrollView,
+} from "react-native";
 import HeaderComponent from "../../../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useTranslation } from "../../../../hooks/translation";
@@ -35,7 +42,6 @@ function AddScreen({ navigation }: Props) {
 
   function handleChange(key: string, value: string | string[]) {
     //Enforce validation
-
     setForm({
       ...form,
       [key]: value,
@@ -108,7 +114,7 @@ function AddScreen({ navigation }: Props) {
   const categoriesList = data.data as any[];
 
   return (
-    <View>
+    <ScrollView style={styles.page}>
       <View style={styles.header}>
         <HeaderComponent
           title="Add a product"
@@ -179,11 +185,16 @@ function AddScreen({ navigation }: Props) {
           }}
         ></Button>
       </View>
-    </View>
+      <View style={styles.footer}></View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+    paddingBottom: 50,
+  },
   header: {
     marginTop: 10,
   },
@@ -223,6 +234,9 @@ const styles = StyleSheet.create({
     margin: 5,
     height: 30,
     width: 30,
+  },
+  footer: {
+    height: 40,
   },
 });
 

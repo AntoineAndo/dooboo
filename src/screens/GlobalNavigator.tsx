@@ -113,7 +113,9 @@ function GlobalNavigator({}: Props): any {
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Intro"
-            screenOptions={{ headerShown: false }}
+            screenOptions={{
+              headerShown: false,
+            }}
           >
             {(config.isAppFirstLauched == undefined || //If the app was never launched
               config.isAppFirstLauched == false) && ( // the Intro Screen is added to the navigator

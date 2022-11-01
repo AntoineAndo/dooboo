@@ -1,6 +1,6 @@
 import axios from "axios";
 //@ts-ignore
-import { REACT_APP_PROXY_URL, REACT_APP_GOOGLE_API_KEY } from "@env";
+import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IPlaceFinder from "./interface/IPlaceFinder";
 import { buildUrl } from "./utils/utils";
 
@@ -41,7 +41,6 @@ class GoogleAdapter implements IPlaceFinder {
         .get(url)
         .then((response) => {
           // handle success
-          console.log(response.data.results);
           res(this.transform(response.data.results.slice(0, 5)));
         })
         .catch((error) => {

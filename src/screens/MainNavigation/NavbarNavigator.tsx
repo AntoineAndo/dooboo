@@ -31,6 +31,9 @@ function NavbarNavigator({}: Props) {
         labeled={true}
         activeColor={colors.primary}
         inactiveColor={colors.primary}
+        barStyle={{
+          marginTop: 0,
+        }}
       >
         <Tab.Screen
           name="HomeNavigation"

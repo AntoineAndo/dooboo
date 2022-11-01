@@ -65,11 +65,13 @@ function HomeScreen({ navigation }: Props) {
         <Text style={commonStyles.label}>
           {translation.t("latest_product")}
         </Text>
-        <ListComponent
-          itemList={productList}
-          onItemClick={onProductClick}
-          refresh={onRefresh}
-        ></ListComponent>
+        <View style={styles.list}>
+          <ListComponent
+            itemList={productList}
+            onItemClick={onProductClick}
+            refresh={onRefresh}
+          ></ListComponent>
+        </View>
       </View>
     </View>
   );
@@ -86,7 +88,12 @@ const styles = StyleSheet.create({
   },
   searchBarContainer: {},
   content: {
-    padding: 20,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "red",
+  },
+  list: {
+    borderWidth: 1,
   },
 });
 

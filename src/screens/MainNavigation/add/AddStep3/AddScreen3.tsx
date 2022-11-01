@@ -19,11 +19,7 @@ import {
   upsertStore,
 } from "../../../../lib/supabase";
 import HeaderComponent from "../../../../components/HeaderComponent";
-import IonIcons from "react-native-vector-icons/Ionicons";
-import { useTranslation } from "../../../../hooks/translation";
-// import { Button } from "react-native-paper";
 import { IconButton, Checkbox } from "react-native-paper";
-import colors from "../../../../config/colors";
 import Product from "../../../../types/product";
 import { useAppState } from "../../../../providers/AppStateProvider";
 

@@ -10,7 +10,8 @@ export function buildUrl(
   }
 ): string {
   //TODO check for dev or prod env
-  let url = `${REACT_APP_PROXY_URL}/${endpoint}?`;
+  // let url = `${REACT_APP_PROXY_URL}/${endpoint}?`;
+  let url = `${endpoint}?`;
 
   //Loop over the param object to add to the url
   Object.keys(params).forEach((key: string) => {
