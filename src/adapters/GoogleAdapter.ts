@@ -3,18 +3,19 @@ import axios from "axios";
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IPlaceFinder from "./interface/IPlaceFinder";
 import { buildUrl } from "./utils/utils";
+import Store from "../types/Store";
 
 class GoogleAdapter implements IPlaceFinder {
   constructor() {}
 
-  transform(results: any[]): any[] {
+  transform(results: Store[]): Store[] {
     return results.map((result: any) => {
       return {
         id: result.place_id,
         name: result.name,
         location: {
-          lat: result.geometry.location.lat,
-          lng: result.geometry.location.lng,
+          latitude: result.geometry.location.lat,
+          longitude: result.geometry.location.lng,
         },
         source: "google",
       };

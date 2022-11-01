@@ -3,13 +3,14 @@ import { ScrollView, View, StyleSheet, Text, Button } from "react-native";
 // import { Button } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
 
-import MapView, { Camera, Marker, Region } from "react-native-maps";
+import MapView, { Camera, LatLng, Marker, Region } from "react-native-maps";
 
 import * as Location from "expo-location";
 
 //@ts-ignore
 import SearchInput from "../../../../components/SearchInput";
 import { searchPlaces } from "../../../../lib/PlacesFinder";
+import Store from "../../../../types/Store";
 
 type Props = {
   route: any;
@@ -27,14 +28,7 @@ function AddScreen2({ route, navigation }: Props) {
   const [location, setLocation] = React.useState<any>(undefined);
   const [errorMsg, setErrorMsg] = React.useState("");
 
-  const [region, setRegion] = React.useState<Region>({
-    latitude: 37.555015,
-    longitude: 126.937007,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
-  });
-
-  const mapRef = React.useRef(null);
+  const mapRef = React.useRef<MapView>(null);
 
   //Location permission
   React.useEffect(() => {
@@ -86,9 +80,10 @@ function AddScreen2({ route, navigation }: Props) {
     navigation.navigate("AddStep3", { form: form });
   };
 
-  const placeSelected = (place: any) => {
+  const placeSelected = (place: Store) => {
     // google.map.setCenter(place.location);
-    setFormField("store", place);
+    navigateMapTo(place.location);
+    setFormField("store", place.id);
   };
 
   //Method used to update the form/state value
@@ -110,31 +105,28 @@ function AddScreen2({ route, navigation }: Props) {
       searchQuery: searchQuery,
     };
 
-    searchPlaces(options).then((results: any) => {
+    searchPlaces(options).then((results: Store[]) => {
       setPlaces(results);
 
       //Center map on the first marker
       if (results[0] != undefined) {
-        setRegion({
-          latitude: results[0].location.lat,
-          longitude: results[0].location.lng,
-          latitudeDelta: 1,
-          longitudeDelta: 1,
+        let coordinates = results.map((result: Store) => {
+          return result.location;
         });
-        // google.map.setCenter(results[0].location);
+        navigateMapTo(results[0].location as LatLng);
+        mapRef.current?.fitToCoordinates(coordinates);
       }
     });
   };
 
-  const handleMapPress = () => {
+  const navigateMapTo = ({ latitude, longitude }: LatLng) => {
     const region = {
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude,
+      longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     };
-    //@ts-ignore
-    mapRef.current.animateToRegion(region);
+    mapRef.current?.animateToRegion(region);
   };
 
   return (
@@ -156,21 +148,23 @@ function AddScreen2({ route, navigation }: Props) {
       <View style={styles.mapContainer}>
         <MapView //https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
           style={styles.mapContainer}
-          region={region}
+          initialRegion={{
+            latitude: 37.555015,
+            longitude: 126.937007,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}
           pitchEnabled={false}
           showsUserLocation={true}
           showsMyLocationButton={true}
           toolbarEnabled={false}
           ref={mapRef}
-          onPress={handleMapPress}
+          onPress={() => navigateMapTo(places[0].location as LatLng)}
         >
           {places.map((place: any, i: number) => {
             return (
               <Marker
-                coordinate={{
-                  latitude: place.location.lat,
-                  longitude: place.location.lng,
-                }}
+                coordinate={place.location}
                 title={place.name}
                 key={place.id}
                 onPress={() => placeSelected(place)}
