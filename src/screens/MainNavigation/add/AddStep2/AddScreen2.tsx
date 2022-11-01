@@ -1,4 +1,4 @@
-import React from "react";
+import React, { LegacyRef } from "react";
 import { ScrollView, View, StyleSheet, Text, Button } from "react-native";
 // import { Button } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
@@ -8,9 +8,7 @@ import MapView, { Camera, Marker, Region } from "react-native-maps";
 import * as Location from "expo-location";
 
 //@ts-ignore
-import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import SearchInput from "../../../../components/SearchInput";
-import MarkerComponent from "../../../../components/MarkerComponent";
 import { searchPlaces } from "../../../../lib/PlacesFinder";
 
 type Props = {
@@ -23,13 +21,22 @@ function AddScreen2({ route, navigation }: Props) {
 
   const [form, setForm] = React.useState(initialState);
   const [places, setPlaces] = React.useState<any[]>([]);
-  const [google, setGoogle] = React.useState<{ map?: any; maps?: any }>({});
   const [errors, setErrors] = React.useState<{
     [key: string]: any;
   }>({});
   const [location, setLocation] = React.useState<any>(undefined);
   const [errorMsg, setErrorMsg] = React.useState("");
 
+  const [region, setRegion] = React.useState<Region>({
+    latitude: 37.555015,
+    longitude: 126.937007,
+    latitudeDelta: 1,
+    longitudeDelta: 1,
+  });
+
+  const mapRef = React.useRef(null);
+
+  //Location permission
   React.useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -39,11 +46,15 @@ function AddScreen2({ route, navigation }: Props) {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
       setLocation(location);
     })();
   }, []);
 
+  /**
+   * @description Method used to check for errors in the specified fields
+   * @param fields Array of fields key to check
+   * @returns
+   */
   const checkErrors = (fields?: string[] | undefined) => {
     //Fields param allows us to specify for on which field to check for errors
     //if unspecified, all fields are checked
@@ -64,6 +75,10 @@ function AddScreen2({ route, navigation }: Props) {
     return newErrors;
   };
 
+  /**
+   * @description Called when the Next button is clicked
+   * Check for errors and if none, navigate to the next page
+   */
   const onSubmit = () => {
     if (form.store == undefined) {
       return;
@@ -72,7 +87,7 @@ function AddScreen2({ route, navigation }: Props) {
   };
 
   const placeSelected = (place: any) => {
-    google.map.setCenter(place.location);
+    // google.map.setCenter(place.location);
     setFormField("store", place);
   };
 
@@ -95,33 +110,35 @@ function AddScreen2({ route, navigation }: Props) {
       searchQuery: searchQuery,
     };
 
-    searchPlaces(options).then((result: any) => {
-      setPlaces(result);
+    searchPlaces(options).then((results: any) => {
+      setPlaces(results);
 
       //Center map on the first marker
-      if (result[0] != undefined) {
-        google.map.setCenter(result[0].location);
+      if (results[0] != undefined) {
+        setRegion({
+          latitude: results[0].location.lat,
+          longitude: results[0].location.lng,
+          latitudeDelta: 1,
+          longitudeDelta: 1,
+        });
+        // google.map.setCenter(results[0].location);
       }
     });
   };
 
-  const defaultProps = {
-    center: {
-      lat: 37.555015,
-      lng: 126.937007,
-    },
-    zoom: 15,
-  };
-
-  const initialRegion: Region = {
-    latitude: 37.555015,
-    longitude: 126.937007,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
+  const handleMapPress = () => {
+    const region = {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+    //@ts-ignore
+    mapRef.current.animateToRegion(region);
   };
 
   return (
-    <View>
+    <ScrollView style={styles.page}>
       <View style={styles.header}>
         <HeaderComponent
           title="Add a product"
@@ -137,12 +154,15 @@ function AddScreen2({ route, navigation }: Props) {
       />
 
       <View style={styles.mapContainer}>
-        <MapView
+        <MapView //https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
           style={styles.mapContainer}
-          initialRegion={initialRegion}
+          region={region}
           pitchEnabled={false}
           showsUserLocation={true}
           showsMyLocationButton={true}
+          toolbarEnabled={false}
+          ref={mapRef}
+          onPress={handleMapPress}
         >
           {places.map((place: any, i: number) => {
             return (
@@ -210,11 +230,15 @@ function AddScreen2({ route, navigation }: Props) {
           }}
         ></Button>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+    paddingBottom: 50,
+  },
   header: {
     marginTop: 10,
   },
