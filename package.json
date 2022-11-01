@@ -28,6 +28,7 @@
     "expo-constants": "^13.2.4",
     "expo-document-picker": "^10.3.0",
     "expo-localization": "^13.1.0",
+    "expo-location": "^14.3.0",
     "expo-splash-screen": "^0.16.2",
     "expo-status-bar": "~1.4.0",
     "google-map-react": "^2.2.0",

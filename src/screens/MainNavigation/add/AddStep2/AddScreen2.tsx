@@ -3,7 +3,9 @@ import { ScrollView, View, StyleSheet, Text, Button } from "react-native";
 // import { Button } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
 
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Camera, Marker, Region } from "react-native-maps";
+
+import * as Location from "expo-location";
 
 //@ts-ignore
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
@@ -25,13 +27,22 @@ function AddScreen2({ route, navigation }: Props) {
   const [errors, setErrors] = React.useState<{
     [key: string]: any;
   }>({});
+  const [location, setLocation] = React.useState<any>(undefined);
+  const [errorMsg, setErrorMsg] = React.useState("");
 
-  const handleApiLoaded = (map: any, maps: any) => {
-    setGoogle({
-      map,
-      maps,
-    });
-  };
+  React.useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+      setLocation(location);
+    })();
+  }, []);
 
   const checkErrors = (fields?: string[] | undefined) => {
     //Fields param allows us to specify for on which field to check for errors
@@ -102,6 +113,13 @@ function AddScreen2({ route, navigation }: Props) {
     zoom: 15,
   };
 
+  const initialRegion: Region = {
+    latitude: 37.555015,
+    longitude: 126.937007,
+    latitudeDelta: 1,
+    longitudeDelta: 1,
+  };
+
   return (
     <View>
       <View style={styles.header}>
@@ -119,7 +137,13 @@ function AddScreen2({ route, navigation }: Props) {
       />
 
       <View style={styles.mapContainer}>
-        <MapView style={styles.mapContainer}>
+        <MapView
+          style={styles.mapContainer}
+          initialRegion={initialRegion}
+          pitchEnabled={false}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+        >
           {places.map((place: any, i: number) => {
             return (
               <Marker
@@ -134,25 +158,6 @@ function AddScreen2({ route, navigation }: Props) {
             );
           })}
         </MapView>
-        {/* <GoogleMapReact
-          bootstrapURLKeys={{ key: REACT_APP_GOOGLE_API_KEY }}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
-          yesIWantToUseGoogleMapApiInternals={true}
-          onGoogleApiLoaded={({ map, maps }: any) => handleApiLoaded(map, maps)}
-        >
-          {places.map((place: any, i: number) => {
-            return (
-              <MarkerComponent
-                lat={place.location.lat}
-                lng={place.location.lng}
-                text={place.name}
-                key={place.id}
-                onTouch={() => placeSelected(place)}
-              />
-            );
-          })}
-        </GoogleMapReact> */}
       </View>
 
       {errors["store"] && (
