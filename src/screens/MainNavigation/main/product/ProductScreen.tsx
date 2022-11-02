@@ -34,16 +34,16 @@ function ProductScreen({ route, navigation }: Props) {
     });
     if (places.length != 0) {
       map.setCenter({
-        lat: parseFloat(places[0].lat),
-        lng: parseFloat(places[0].lng),
+        latitude: parseFloat(places[0].latitude),
+        longitude: parseFloat(places[0].longitude),
       });
     }
   };
 
   const defaultProps = {
     center: {
-      lat: 37.555015,
-      lng: 126.937007,
+      latitude: 37.555015,
+      longitude: 126.937007,
     },
     zoom: 15,
   };
@@ -64,27 +64,7 @@ function ProductScreen({ route, navigation }: Props) {
       />
       <Text style={styles.title}>{productInitialData.name}</Text>
 
-      <View style={styles.mapContainer}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: REACT_APP_GOOGLE_API_KEY }}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
-          yesIWantToUseGoogleMapApiInternals={true}
-          onGoogleApiLoaded={({ map, maps }: any) => handleApiLoaded(map, maps)}
-        >
-          {places.map((place: any, i: number) => {
-            return (
-              <MarkerComponent
-                lat={place.lat}
-                lng={place.lng}
-                text={place.name}
-                key={place.id}
-                onTouch={() => console.log(place)}
-              />
-            );
-          })}
-        </GoogleMapReact>
-      </View>
+      <View style={styles.mapContainer}></View>
     </View>
   );
 }

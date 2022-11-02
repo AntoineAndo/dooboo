@@ -102,8 +102,8 @@ export async function upsertStore(store: any) {
         technical_id: store.id,
         name: store.name,
         source: store.source,
-        lat: store.location.lat,
-        lng: store.location.lng,
+        lat: store.location.latitude,
+        lng: store.location.longitude,
       },
       { onConflict: "technical_id" }
     )

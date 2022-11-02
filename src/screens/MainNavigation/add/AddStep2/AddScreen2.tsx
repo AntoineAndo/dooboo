@@ -11,6 +11,7 @@ import * as Location from "expo-location";
 import SearchInput from "../../../../components/SearchInput";
 import { searchPlaces } from "../../../../lib/PlacesFinder";
 import Store from "../../../../types/Store";
+import Form from "../../../../types/Form";
 
 type Props = {
   route: any;
@@ -18,13 +19,11 @@ type Props = {
 };
 
 function AddScreen2({ route, navigation }: Props) {
-  let initialState = route.params != undefined ? route.params.form : {};
+  let initialState: Form = route.params != undefined ? route.params.form : {};
+  initialState.errors = {};
 
-  const [form, setForm] = React.useState(initialState);
+  const [form, setForm] = React.useState<Form>(initialState);
   const [places, setPlaces] = React.useState<any[]>([]);
-  const [errors, setErrors] = React.useState<{
-    [key: string]: any;
-  }>({});
   const [location, setLocation] = React.useState<any>(undefined);
   const [errorMsg, setErrorMsg] = React.useState("");
 
@@ -65,7 +64,7 @@ function AddScreen2({ route, navigation }: Props) {
       }
     }
 
-    setErrors(newErrors);
+    patchForm("errors", newErrors);
     return newErrors;
   };
 
@@ -74,20 +73,22 @@ function AddScreen2({ route, navigation }: Props) {
    * Check for errors and if none, navigate to the next page
    */
   const onSubmit = () => {
-    if (form.store == undefined) {
-      return;
+    if (form.store == undefined) return;
+
+    const _errors = checkErrors();
+    if (Object.values(_errors).length == 0) {
+      navigation.navigate("AddStep3", { form: form });
     }
-    navigation.navigate("AddStep3", { form: form });
   };
 
   const placeSelected = (place: Store) => {
     // google.map.setCenter(place.location);
     navigateMapTo(place.location);
-    setFormField("store", place.id);
+    patchForm("store", place);
   };
 
   //Method used to update the form/state value
-  const setFormField = (key: string, value: string | string[]) => {
+  const patchForm = (key: string, value: any) => {
     setForm({
       ...form,
       [key]: value,
@@ -174,7 +175,7 @@ function AddScreen2({ route, navigation }: Props) {
         </MapView>
       </View>
 
-      {errors["store"] && (
+      {form.errors["store"] && (
         <Text style={styles.error}>Please pick a store or skip the step</Text>
       )}
 

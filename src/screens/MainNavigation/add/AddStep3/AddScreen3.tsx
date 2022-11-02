@@ -22,6 +22,7 @@ import HeaderComponent from "../../../../components/HeaderComponent";
 import { IconButton, Checkbox } from "react-native-paper";
 import Product from "../../../../types/product";
 import { useAppState } from "../../../../providers/AppStateProvider";
+import Form from "../../../../types/Form";
 
 type Props = {
   route: any;
@@ -29,31 +30,65 @@ type Props = {
 };
 
 function AddScreen3({ route, navigation }: Props) {
-  let initialState = route.params != undefined ? route.params.form : {};
+  let initialState: Form = route.params != undefined ? route.params.form : {};
+  initialState.errors = {};
 
   //Hooks initialization
   const [form, setForm] = React.useState(initialState);
-  const [image, setImage] = useState<any>({});
+  const [mainImage, setMainImage] = useState<any>({});
   const app = useAppState();
 
   const pickDocument = async () => {
-    let result: DocumentResult = await getDocumentAsync({});
-    if (result != undefined) {
-      //@ts-ignore
-      setImage(result);
+    let result: any = await getDocumentAsync({});
+    if (result == undefined) return;
+
+    if (result.mimeType != "image/png" && result.mimeType != "image/jpeg") {
+      patchForm("errors", {
+        mainImage: "Only .jpg/jpeg and .png formats are supported",
+      });
+      setMainImage({});
+      console.log(form);
+      return;
+    } else {
+      console.log("clear");
+      patchForm("errors", {});
+
+      setMainImage(result);
     }
+  };
+
+  //Method used to update the form/state value
+  const patchForm = (key: string, value: any) => {
+    setForm({
+      ...form,
+      [key]: value,
+    });
   };
 
   const onSubmit = async () => {
     app.patchState("isLoading", true);
 
-    //Upload image
-    let imageInsertResult = await uploadImage(image.file);
-    if (imageInsertResult.error || imageInsertResult.data == null) {
-      app.patchState("isLoading", false);
-      return;
-    }
-
+    Promise.all([
+      uploadImage(mainImage.file),
+      addProduct(form),
+      upsertStore(form.store),
+    ])
+      .then(([imageInsertResult, productInsertResult, storeUpsertResult]) => {
+        console.log("imageInsertResult", imageInsertResult);
+        console.log("productInsertResult", productInsertResult);
+        console.log("storeUpsertResult", storeUpsertResult);
+        if (
+          imageInsertResult.error == null &&
+          productInsertResult.error == null &&
+          storeUpsertResult.error == null
+        ) {
+          console.log("OK");
+        }
+      })
+      .catch((reason: any) => {
+        console.error(reason);
+      });
+    /*
     //Insert product record
     let productInsertResult = await addProduct(form);
 
@@ -68,7 +103,7 @@ function AddScreen3({ route, navigation }: Props) {
 
     //Upsert store record
     let storeSelectResult = await upsertStore(form.store);
-    console.log(storeSelectResult);
+    console.log("storeSelectResult", storeSelectResult);
     if (
       storeSelectResult.status == 201 ||
       storeSelectResult?.error?.code == "42501"
@@ -81,12 +116,15 @@ function AddScreen3({ route, navigation }: Props) {
       form.store.id
     );
 
+    console.log("resultInsertProductStore", resultInsertProductStore);
+
     const categoriesToInsert = form.categories.map((category: any) => {
       return {
         fk_product_id: insertedProduct.id,
         fk_category_id: category.id,
       };
     });
+
     const resultInsertProductCategories = await linkProductCategories(
       categoriesToInsert
     );
@@ -102,6 +140,8 @@ function AddScreen3({ route, navigation }: Props) {
     app.patchState("isLoading", false);
 
     navigation.replace("AddStep4");
+    */
+    app.patchState("isLoading", false);
   };
 
   return (
@@ -115,7 +155,7 @@ function AddScreen3({ route, navigation }: Props) {
       </View>
 
       <View style={styles.contentView}>
-        {image.uri == undefined && (
+        {mainImage.uri == undefined && (
           <IconButton
             icon="image-multiple-outline"
             iconColor="white"
@@ -125,17 +165,20 @@ function AddScreen3({ route, navigation }: Props) {
             onPress={() => pickDocument()}
           />
         )}
-        {image.uri != undefined && (
+        {mainImage.uri != undefined && (
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={() => pickDocument()}
           >
-            <Image source={{ uri: image.uri }} style={styles.image}></Image>
+            <Image source={{ uri: mainImage.uri }} style={styles.image}></Image>
           </TouchableOpacity>
         )}
+        {/* {form.errors["mainImage"] && ( */}
+        <Text style={styles.error}>{form.errors["mainImage"]}</Text>
+        {/* )} */}
         <Button
           title="Next step"
-          disabled={image.uri == undefined}
+          disabled={mainImage.uri == undefined}
           onPress={() => {
             onSubmit();
           }}
@@ -151,6 +194,9 @@ const styles = StyleSheet.create({
   },
   contentView: {
     paddingHorizontal: 26,
+  },
+  error: {
+    color: "red",
   },
   inputGroup: {
     marginBottom: 24,

@@ -123,7 +123,6 @@ function GlobalNavigator({}: Props): any {
             )}
 
             <Stack.Screen name="Navbar" component={NavbarNavigator} />
-            <Stack.Screen name="AddStep4" component={AddScreen4} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

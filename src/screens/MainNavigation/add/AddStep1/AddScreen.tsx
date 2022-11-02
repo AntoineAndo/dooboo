@@ -34,18 +34,20 @@ function AddScreen({ navigation }: Props) {
     categories: [],
     store: undefined,
     countryId: config.country.id,
+    errors: [],
   });
 
-  const [errors, setErrors] = React.useState<{
-    [key: string]: any;
-  }>({});
-
-  function handleChange(key: string, value: string | string[]) {
-    //Enforce validation
+  //Method used to update the form/state value
+  const patchForm = (key: string, value: any) => {
     setForm({
       ...form,
       [key]: value,
     });
+  };
+
+  function handleChange(key: string, value: any) {
+    //Enforce validation
+    patchForm(key, value);
   }
 
   const handleCheck = function (option: any) {
@@ -93,8 +95,7 @@ function AddScreen({ navigation }: Props) {
         newErrors["categories"] = true;
       }
     }
-
-    setErrors(newErrors);
+    patchForm("errors", newErrors);
     return newErrors;
   };
 
@@ -147,7 +148,7 @@ function AddScreen({ navigation }: Props) {
               returnKeyType="next"
             ></TextInput>
           </View>
-          {errors["name"] && (
+          {form.errors["name"] && (
             <Text style={styles.error}>Product name is mandatory</Text>
           )}
         </View>
@@ -174,7 +175,7 @@ function AddScreen({ navigation }: Props) {
             </View>
           );
         })}
-        {errors["categories"] && (
+        {form.errors["categories"] && (
           <Text style={styles.error}>Please select at least one category</Text>
         )}
 
