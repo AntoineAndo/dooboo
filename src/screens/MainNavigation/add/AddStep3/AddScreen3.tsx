@@ -10,6 +10,7 @@ import { DocumentResult, getDocumentAsync } from "expo-document-picker";
 import { Image, Button } from "react-native";
 import {
   addProduct,
+  deleteByTableAndId,
   deleteImage,
   linkProductCategories,
   linkProductImage,
@@ -47,10 +48,8 @@ function AddScreen3({ route, navigation }: Props) {
         mainImage: "Only .jpg/jpeg and .png formats are supported",
       });
       setMainImage({});
-      console.log(form);
       return;
     } else {
-      console.log("clear");
       patchForm("errors", {});
 
       setMainImage(result);
@@ -68,26 +67,53 @@ function AddScreen3({ route, navigation }: Props) {
   const onSubmit = async () => {
     app.patchState("isLoading", true);
 
-    Promise.all([
-      uploadImage(mainImage.file),
-      addProduct(form),
-      upsertStore(form.store),
-    ])
-      .then(([imageInsertResult, productInsertResult, storeUpsertResult]) => {
-        console.log("imageInsertResult", imageInsertResult);
-        console.log("productInsertResult", productInsertResult);
-        console.log("storeUpsertResult", storeUpsertResult);
-        if (
-          imageInsertResult.error == null &&
-          productInsertResult.error == null &&
-          storeUpsertResult.error == null
-        ) {
-          console.log("OK");
-        }
-      })
-      .catch((reason: any) => {
-        console.error(reason);
-      });
+    const [imageInsertResult, productInsertResult, storeUpsertResult] =
+      await Promise.all([
+        uploadImage(mainImage.file),
+        addProduct(form),
+        upsertStore(form.store),
+      ]);
+
+    //ROLLBACK
+    //If at last one of the three inserts failed
+    // the ones who did not failed are deleted
+    if (
+      imageInsertResult.error != null ||
+      productInsertResult.error != null ||
+      storeUpsertResult.error != null
+    ) {
+      if (imageInsertResult.error == null) {
+        //Delete image
+        if (imageInsertResult.data?.path != undefined)
+          deleteImage(imageInsertResult.data?.path);
+      }
+      if (productInsertResult.error == null) {
+        //Delete product record
+        if (productInsertResult.data != null)
+          deleteByTableAndId("product", productInsertResult.data[0].id);
+      }
+      if (storeUpsertResult.error == null) {
+        if (storeUpsertResult.data != null)
+          deleteByTableAndId("store", storeUpsertResult.data[0].id);
+      }
+      return;
+    }
+
+    // .then(([imageInsertResult, productInsertResult, storeUpsertResult]) => {
+    //   console.log("imageInsertResult", imageInsertResult);
+    //   console.log("productInsertResult", productInsertResult);
+    //   console.log("storeUpsertResult", storeUpsertResult);
+    //   if (
+    //     imageInsertResult.error == null &&
+    //     productInsertResult.error == null &&
+    //     storeUpsertResult.error == null
+    //   ) {
+    //     console.log("OK");
+    //   }
+    // })
+    // .catch((reason: any) => {
+    //   console.error(reason);
+    // });
     /*
     //Insert product record
     let productInsertResult = await addProduct(form);

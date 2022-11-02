@@ -146,3 +146,14 @@ export async function deleteImage(path: string) {
 
   return { data, error };
 }
+
+/**
+ * @description Generic function which delete a table entry
+ * @param table Name of the table where the record should be deleted
+ * @param id Id of the record to delete
+ */
+export async function deleteByTableAndId(table: string, id: number) {
+  const { data, error } = await supabase.from(table).delete().eq("id", id);
+
+  return { data, error };
+}
