@@ -1,14 +1,17 @@
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { useAppState } from "../../../../providers/AppStateProvider";
 
-type Props = {
-  navigation: any;
-};
-
-function AddScreen4({ navigation }: Props) {
+function AddScreen4() {
+  const navigation = useNavigation();
   const onSubmit = () => {
-    navigation.replace("Navbar");
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Navbar" }],
+      })
+    );
   };
 
   return (
