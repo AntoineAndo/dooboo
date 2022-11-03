@@ -53,6 +53,7 @@ export function getProducts(searchQuery: any): Promise<any> {
       query.in("product_category.fk_category_id", searchQuery.categoriesId);
     }
 
+    //Fetch and handle response
     query.then(({ data: products, error }) => {
       if (error != undefined) {
         console.error(error.message);
@@ -76,8 +77,24 @@ export async function getCategories(countryId: string): Promise<any> {
   });
 }
 
-export async function linkProductCategories(categoriesToInsert: []) {
-  return await supabase.from("product_category").insert(categoriesToInsert);
+export async function linkProductCategories(categoriesToInsert: any[]) {
+  const { data, error } = await supabase
+    .from("product_category")
+    .insert(categoriesToInsert)
+    .select();
+
+  //Define rollback infos
+  // to allow for generic rollback
+  let rollbackInfos;
+  if (data != null) {
+    rollbackInfos = {
+      type: "row",
+      table: "product_category",
+      id: data[0].id,
+    };
+  }
+
+  return { data, error, rollbackInfos };
 }
 
 export async function addProduct(formData: Form) {
@@ -86,7 +103,18 @@ export async function addProduct(formData: Form) {
     .insert([{ name: formData.name, fk_country_id: formData.countryId }])
     .select();
 
-  return { data, error };
+  //Define rollback infos
+  // to allow for generic rollback
+  let rollbackInfos;
+  if (data != null) {
+    rollbackInfos = {
+      type: "row",
+      table: "product",
+      id: data[0].id,
+    };
+  }
+
+  return { data, error, rollbackInfos };
 }
 
 //Return the default country
@@ -111,29 +139,70 @@ export async function upsertStore(store: any) {
 }
 
 export async function linkProductStore(productId: string, storeId: string) {
-  return await supabase.from("product_store").insert([
-    {
-      fk_product_id: productId,
-      fk_store_id: storeId,
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("product_store")
+    .insert([
+      {
+        fk_product_id: productId,
+        fk_store_id: storeId,
+      },
+    ])
+    .select();
+
+  //Define rollback infos
+  // to allow for generic rollback
+  let rollbackInfos;
+  if (data != null) {
+    rollbackInfos = {
+      type: "row",
+      table: "product_store",
+      id: data[0].id,
+    };
+  }
+  return { data, error, rollbackInfos };
 }
 
 export async function linkProductImage(productId: string, imageUrl: string) {
-  return await supabase.from("product_image").insert([
-    {
-      fk_product_id: productId,
-      image_url: imageUrl,
-    },
-  ]);
+  const { data, error } = await supabase
+    .from("product_image")
+    .insert([
+      {
+        fk_product_id: productId,
+        image_url: imageUrl,
+      },
+    ])
+    .select();
+
+  //Define rollback infos
+  // to allow for generic rollback
+  let rollbackInfos;
+  if (data != null) {
+    rollbackInfos = {
+      type: "row",
+      table: "product_image",
+      id: data[0].id,
+    };
+  }
+  return { data, error, rollbackInfos };
 }
 
-export async function uploadImage(image: any) {
-  let { data, error } = await supabase.storage
+export async function uploadImage(image: File) {
+  console.log(image);
+  let { data, error }: any = await supabase.storage
     .from("images")
     .upload("products/" + uuidv4() + ".jpg", image as File);
 
-  return { data, error };
+  //Define rollback infos
+  // to allow for generic rollback
+  let rollbackInfos;
+  if (data != null) {
+    rollbackInfos = {
+      type: "file",
+      path: data.path,
+    };
+  }
+
+  return { data, error, rollbackInfos };
 }
 
 export async function downloadImage(imageUrl: string) {

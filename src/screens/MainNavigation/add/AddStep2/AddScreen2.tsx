@@ -160,7 +160,6 @@ function AddScreen2({ route, navigation }: Props) {
           showsMyLocationButton={true}
           toolbarEnabled={false}
           ref={mapRef}
-          onPress={() => navigateMapTo(places[0].location as LatLng)}
         >
           {places.map((place: any, i: number) => {
             return (
