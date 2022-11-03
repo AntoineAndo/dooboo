@@ -6,6 +6,7 @@ import MarkerComponent from "../../../../components/MarkerComponent";
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { Button } from "react-native-paper";
+import MapView, { Marker } from "react-native-maps";
 
 type Props = {
   route: any;
@@ -22,16 +23,9 @@ function ProductScreen({ route, navigation }: Props) {
     product.product_store.forEach(({ store }: any) => {
       initialStores.push(store);
     });
+    console.log(initialStores);
     setPlaces(initialStores);
   }, []);
-
-  const defaultProps = {
-    center: {
-      latitude: 37.555015,
-      longitude: 126.937007,
-    },
-    zoom: 15,
-  };
 
   console.log(product);
 
@@ -51,7 +45,34 @@ function ProductScreen({ route, navigation }: Props) {
       <Text style={styles.title}>{product.name}</Text>
       <Button onPress={() => openContribution()}>I found this product</Button>
 
-      <View style={styles.mapContainer}></View>
+      <View style={styles.mapContainer}>
+        <MapView //https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
+          style={styles.map}
+          initialRegion={{
+            latitude: 37.555015,
+            longitude: 126.937007,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}
+          pitchEnabled={false}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          toolbarEnabled={false}
+        >
+          {places.map((place: any, i: number) => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(place.lat),
+                  longitude: parseFloat(place.lng),
+                }}
+                title={place.name}
+                key={place.id}
+              />
+            );
+          })}
+        </MapView>
+      </View>
     </View>
   );
 }
@@ -67,6 +88,10 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     height: 300,
+  },
+  map: {
+    height: "100%",
+    width: "100%",
   },
   backButton: {
     backgroundColor: "white",
