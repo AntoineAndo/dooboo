@@ -5,6 +5,7 @@ import MarkerComponent from "../../../../components/MarkerComponent";
 //@ts-ignore
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { Button } from "react-native-paper";
 
 type Props = {
   route: any;
@@ -12,33 +13,17 @@ type Props = {
 };
 
 function ProductScreen({ route, navigation }: Props) {
-  const [google, setGoogle] = React.useState<{ map?: any; maps?: any }>({});
   const [places, setPlaces] = React.useState<any[]>([]);
 
-  let productInitialData = route.params.product;
+  let product = route.params.product;
   let initialStores: any[] = [];
 
   React.useEffect(() => {
-    productInitialData.product_store.forEach(({ store }: any) => {
+    product.product_store.forEach(({ store }: any) => {
       initialStores.push(store);
     });
     setPlaces(initialStores);
-    console.log(productInitialData);
-    console.log(initialStores);
   }, []);
-
-  const handleApiLoaded = (map: any, maps: any) => {
-    setGoogle({
-      map,
-      maps,
-    });
-    if (places.length != 0) {
-      map.setCenter({
-        latitude: parseFloat(places[0].latitude),
-        longitude: parseFloat(places[0].longitude),
-      });
-    }
-  };
 
   const defaultProps = {
     center: {
@@ -48,7 +33,11 @@ function ProductScreen({ route, navigation }: Props) {
     zoom: 15,
   };
 
-  console.log(productInitialData);
+  console.log(product);
+
+  const openContribution = () => {
+    navigation.navigate("Contribution", { product: product });
+  };
 
   return (
     <View>
@@ -58,11 +47,9 @@ function ProductScreen({ route, navigation }: Props) {
       >
         <IonIcons name={"arrow-back-outline"} size={40} />
       </TouchableOpacity>
-      <Image
-        source={{ uri: productInitialData.imageUrl }}
-        style={styles.mainImage}
-      />
-      <Text style={styles.title}>{productInitialData.name}</Text>
+      <Image source={{ uri: product.imageUrl }} style={styles.mainImage} />
+      <Text style={styles.title}>{product.name}</Text>
+      <Button onPress={() => openContribution()}>I found this product</Button>
 
       <View style={styles.mapContainer}></View>
     </View>

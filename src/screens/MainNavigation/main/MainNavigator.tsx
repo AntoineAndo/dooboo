@@ -9,6 +9,7 @@ import SearchResultScreen from "./searchResult/SearchResultScreen";
 import SearchCategoriesScreen from "./SearchCategoriesScreen/SearchCategoriesScreen";
 import ProductScreen from "./product/ProductScreen";
 import { View } from "react-native";
+import ContributionScreen from "./contribution/ContributionScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +37,8 @@ function HomeNavigation({ navigation }: Props) {
         name="Search categories"
         component={SearchCategoriesScreen}
       />
-      {/* <Stack.Screen name="Product" component={ProductScreen} /> */}
+      <Stack.Screen name="Product" component={ProductScreen} />
+      <Stack.Screen name="Contribution" component={ContributionScreen} />
     </Stack.Navigator>
   );
 }

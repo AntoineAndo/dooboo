@@ -14,7 +14,7 @@ function SearchInput({ onSubmit }: Props) {
 
   return (
     <View style={styles.searchBar}>
-      <IonIcons name={"search-outline"} style={styles.image} size={40} />
+      <IonIcons name={"search-outline"} style={styles.image} size={30} />
       <TextInput
         style={styles.input}
         placeholder={translation.t("search_placeholder")}
@@ -37,22 +37,21 @@ const styles = StyleSheet.create({
   input: {
     //@ts-ignore
     outlineStyle: "none",
-    marginLeft: 10,
-    fontSize: 20,
+    marginLeft: 0,
+    fontSize: 16,
+    flex: 1,
   },
   searchBar: {
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#000",
     borderRadius: 100,
-    padding: 5,
+    padding: 1,
     flexDirection: "row",
+    backgroundColor: "white",
   },
   image: {
     resizeMode: "contain",
     margin: 5,
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     marginHorizontal: gap,
   },
 });
