@@ -1,11 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MapView, { LatLng, Marker } from "react-native-maps";
 import SearchInput from "../../../../components/SearchInput";
 import { searchPlaces } from "../../../../lib/PlacesFinder";
 import Product from "../../../../types/product";
 import Store from "../../../../types/Store";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { Button } from "react-native-paper";
+import { useAppState } from "../../../../providers/AppStateProvider";
+import { linkProductStore, upsertStore } from "../../../../lib/supabase";
 
 type Props = {
   navigation: any;
@@ -18,6 +27,8 @@ function ContributionScreen({ navigation, route }: Props) {
   const [selectedStore, setSelectedStore] = React.useState<Store | undefined>(
     undefined
   );
+  const app = useAppState();
+
   const product: Product = route.params.product;
 
   const storeSelected = (store: Store) => {
@@ -58,6 +69,26 @@ function ContributionScreen({ navigation, route }: Props) {
         mapRef.current?.fitToCoordinates(coordinates);
       }
     });
+  };
+
+  const onSubmit = async () => {
+    if (selectedStore == undefined) return;
+
+    //Show the loading overlay
+    app.patchState("isLoading", true);
+
+    const storeUpsertResult = await upsertStore(selectedStore);
+    if (storeUpsertResult.error != null) {
+      app.patchState("isLoading", false);
+      return;
+    }
+
+    const linkProductStoreResult = await linkProductStore(
+      product.id,
+      selectedStore.id
+    );
+
+    app.patchState("isLoading", false);
   };
 
   return (
@@ -102,6 +133,40 @@ function ContributionScreen({ navigation, route }: Props) {
           })}
         </MapView>
       </View>
+      {places.length != 0 && (
+        <>
+          <ScrollView
+            style={styles.contentView}
+            keyboardShouldPersistTaps={"handled"}
+          >
+            {places.map((place: any) => {
+              return (
+                <Text
+                  key={place.id}
+                  onPress={() => storeSelected(place)}
+                  style={[
+                    styles.storeListItem,
+                    selectedStore?.id == place.id //Add the selected style if the place is the one selected
+                      ? styles.storeListItemSelected
+                      : undefined,
+                  ]}
+                >
+                  {place.name}
+                </Text>
+              );
+            })}
+          </ScrollView>
+        </>
+      )}
+      <Button
+        // style={styles.button}
+        disabled={selectedStore == undefined}
+        onPress={() => {
+          onSubmit();
+        }}
+      >
+        OK
+      </Button>
     </View>
   );
 }
@@ -128,6 +193,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 999,
     bottom: 20,
+  },
+  storeListItem: {
+    margin: 10,
+  },
+  storeListItemSelected: {
+    textDecorationLine: "underline",
   },
   backButton: {
     backgroundColor: "white",
