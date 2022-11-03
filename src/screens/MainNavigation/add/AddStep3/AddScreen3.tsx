@@ -1,29 +1,21 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { DocumentResult, getDocumentAsync } from "expo-document-picker";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { getDocumentAsync } from "expo-document-picker";
 import { Image, Button } from "react-native";
 import {
   addProduct,
-  deleteByTableAndId,
-  deleteImage,
   linkProductCategories,
   linkProductImage,
   linkProductStore,
-  supabase,
   uploadImage,
   upsertStore,
 } from "../../../../lib/supabase";
 import HeaderComponent from "../../../../components/HeaderComponent";
-import { IconButton, Checkbox } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 import Product from "../../../../types/product";
 import { useAppState } from "../../../../providers/AppStateProvider";
 import Form from "../../../../types/Form";
+import { rollback } from "../../../../adapters/utils/FormUtils";
 
 type Props = {
   route: any;
@@ -40,9 +32,10 @@ function AddScreen3({ route, navigation }: Props) {
   const app = useAppState();
 
   const pickDocument = async () => {
-    let result: any = await getDocumentAsync({});
+    let result = await getDocumentAsync({});
     if (result == undefined) return;
 
+    //@ts-ignore
     if (result.mimeType != "image/png" && result.mimeType != "image/jpeg") {
       patchForm("errors", {
         mainImage: "Only .jpg/jpeg and .png formats are supported",
@@ -65,85 +58,34 @@ function AddScreen3({ route, navigation }: Props) {
   };
 
   const onSubmit = async () => {
+    if (form.store == undefined) return;
+
+    //Show the loading overlay
     app.patchState("isLoading", true);
 
     const [imageInsertResult, productInsertResult, storeUpsertResult] =
       await Promise.all([
-        uploadImage(mainImage.file),
+        uploadImage(mainImage),
         addProduct(form),
         upsertStore(form.store),
       ]);
 
-    //ROLLBACK
-    //If at last one of the three inserts failed
-    // the ones who did not failed are deleted
+    //If at least one result is an error
+    // then rollback all
     if (
-      imageInsertResult.error != null ||
-      productInsertResult.error != null ||
-      storeUpsertResult.error != null
+      imageInsertResult.data == null ||
+      productInsertResult.data == null ||
+      storeUpsertResult.data == null
     ) {
-      if (imageInsertResult.error == null) {
-        //Delete image
-        if (imageInsertResult.data?.path != undefined)
-          deleteImage(imageInsertResult.data?.path);
-      }
-      if (productInsertResult.error == null) {
-        //Delete product record
-        if (productInsertResult.data != null)
-          deleteByTableAndId("product", productInsertResult.data[0].id);
-      }
-      if (storeUpsertResult.error == null) {
-        if (storeUpsertResult.data != null)
-          deleteByTableAndId("store", storeUpsertResult.data[0].id);
-      }
-      return;
-    }
+      rollback([imageInsertResult, productInsertResult, storeUpsertResult]);
 
-    // .then(([imageInsertResult, productInsertResult, storeUpsertResult]) => {
-    //   console.log("imageInsertResult", imageInsertResult);
-    //   console.log("productInsertResult", productInsertResult);
-    //   console.log("storeUpsertResult", storeUpsertResult);
-    //   if (
-    //     imageInsertResult.error == null &&
-    //     productInsertResult.error == null &&
-    //     storeUpsertResult.error == null
-    //   ) {
-    //     console.log("OK");
-    //   }
-    // })
-    // .catch((reason: any) => {
-    //   console.error(reason);
-    // });
-    /*
-    //Insert product record
-    let productInsertResult = await addProduct(form);
-
-    //If there is an error
-    if (productInsertResult.error != null || productInsertResult.data == null) {
-      //Delete image previously inserted
-      await deleteImage(imageInsertResult.data.path);
       app.patchState("isLoading", false);
       return;
     }
+
     const insertedProduct: Product = productInsertResult.data[0];
 
-    //Upsert store record
-    let storeSelectResult = await upsertStore(form.store);
-    console.log("storeSelectResult", storeSelectResult);
-    if (
-      storeSelectResult.status == 201 ||
-      storeSelectResult?.error?.code == "42501"
-    ) {
-    }
-
-    //Link the product and the store
-    const resultInsertProductStore = await linkProductStore(
-      insertedProduct.id,
-      form.store.id
-    );
-
-    console.log("resultInsertProductStore", resultInsertProductStore);
-
+    //Build the payload for the categories insert
     const categoriesToInsert = form.categories.map((category: any) => {
       return {
         fk_product_id: insertedProduct.id,
@@ -151,23 +93,44 @@ function AddScreen3({ route, navigation }: Props) {
       };
     });
 
-    const resultInsertProductCategories = await linkProductCategories(
-      categoriesToInsert
-    );
-    if (resultInsertProductCategories.status != 201) {
+    //link the product with the store
+    //link the product with the selected categories
+    //link the product with the image previously uploaded
+    const [
+      linkProductStoreResult,
+      linkProductCategoriesResult,
+      linkProductImageResult,
+    ] = await Promise.all([
+      linkProductStore(insertedProduct.id, form.store.id),
+      linkProductCategories(categoriesToInsert),
+      linkProductImage(insertedProduct.id, imageInsertResult.data.path),
+    ]);
+
+    //If at least one of the record is in error
+    // then rollback them + the previous ones
+    if (
+      linkProductStoreResult.error != null ||
+      linkProductCategoriesResult.error != null ||
+      linkProductImageResult.error != null
+    ) {
+      //Rollback
+      rollback([
+        linkProductStoreResult,
+        linkProductCategoriesResult,
+        linkProductImageResult,
+        imageInsertResult,
+        productInsertResult,
+        storeUpsertResult,
+      ]);
+
+      app.patchState("isLoading", false);
+
       return;
     }
 
-    //Link the product and the image
-    const resultInsertProductImage = await linkProductImage(
-      insertedProduct.id,
-      imageInsertResult.data.path
-    );
     app.patchState("isLoading", false);
 
     navigation.replace("AddStep4");
-    */
-    app.patchState("isLoading", false);
   };
 
   return (
@@ -199,9 +162,9 @@ function AddScreen3({ route, navigation }: Props) {
             <Image source={{ uri: mainImage.uri }} style={styles.image}></Image>
           </TouchableOpacity>
         )}
-        {/* {form.errors["mainImage"] && ( */}
-        <Text style={styles.error}>{form.errors["mainImage"]}</Text>
-        {/* )} */}
+        {form.errors["mainImage"] && (
+          <Text style={styles.error}>{form.errors["mainImage"]}</Text>
+        )}
         <Button
           title="Next step"
           disabled={mainImage.uri == undefined}
