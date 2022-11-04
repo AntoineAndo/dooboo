@@ -5,10 +5,7 @@ import GlobalNavigator from "./src/screens/GlobalNavigator";
 import { ConfigProvider } from "./src/providers/ConfigProvider";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import {
-  MD3LightTheme as DefaultTheme,
-  Provider as PaperProvider,
-} from "react-native-paper";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { AppStateProvider } from "./src/providers/AppStateProvider";
 
 //Theme configuration

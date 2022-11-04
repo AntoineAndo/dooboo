@@ -41,27 +41,24 @@ function HomeScreen({ navigation }: Props) {
   //Refetch on refresh
   const onRefresh = refetch;
 
-  if (isLoading) {
-    return (
-      <View style={styles.page}>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
-  if (isError) {
-    return (
-      <View style={styles.page}>
-        <Text>Error</Text>
-      </View>
-    );
-  }
+  const displayContent = () => {
+    if (isLoading) {
+      return (
+        <View style={styles.page}>
+          <Text>Loading</Text>
+        </View>
+      );
+    }
+    if (isError) {
+      return (
+        <View style={styles.page}>
+          <Text>Error</Text>
+        </View>
+      );
+    }
 
-  return (
-    <View style={styles.page}>
-      <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
-        <SearchBarComponent onTouch={() => startSearch(navigation)} />
-      </View>
-      <View style={styles.content}>
+    return (
+      <>
         <Text style={commonStyles.label}>
           {translation.t("latest_product")}
         </Text>
@@ -72,7 +69,16 @@ function HomeScreen({ navigation }: Props) {
             refresh={onRefresh}
           ></ListComponent>
         </View>
+      </>
+    );
+  };
+
+  return (
+    <View style={styles.page}>
+      <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
+        <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
+      <View style={styles.content}>{displayContent()}</View>
     </View>
   );
 }

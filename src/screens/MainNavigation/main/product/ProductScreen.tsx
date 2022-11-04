@@ -5,8 +5,10 @@ import MarkerComponent from "../../../../components/MarkerComponent";
 //@ts-ignore
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { Button } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "../../../../lib/supabase";
+import { Button } from "react-native-paper";
 
 type Props = {
   route: any;
@@ -16,22 +18,41 @@ type Props = {
 function ProductScreen({ route, navigation }: Props) {
   const [places, setPlaces] = React.useState<any[]>([]);
 
-  let product = route.params.product;
+  let productInitialData = route.params.product;
+  const imageUrl = productInitialData.imageUrl;
+
+  console.log(productInitialData);
   let initialStores: any[] = [];
 
   React.useEffect(() => {
-    product.product_store.forEach(({ store }: any) => {
+    productInitialData.product_store.forEach(({ store }: any) => {
       initialStores.push(store);
     });
     console.log(initialStores);
     setPlaces(initialStores);
   }, []);
 
-  console.log(product);
+  const {
+    isLoading,
+    isError,
+    data: product,
+    refetch,
+  } = useQuery({
+    queryKey: ["product_" + productInitialData.id],
+    queryFn: () => {
+      const searchQuery = {
+        id: productInitialData.id,
+      };
+      return getProducts(searchQuery);
+    },
+    initialData: productInitialData,
+  });
 
   const openContribution = () => {
     navigation.navigate("Contribution", { product: product });
   };
+
+  console.log(product);
 
   return (
     <View>
@@ -41,7 +62,7 @@ function ProductScreen({ route, navigation }: Props) {
       >
         <IonIcons name={"arrow-back-outline"} size={40} />
       </TouchableOpacity>
-      <Image source={{ uri: product.imageUrl }} style={styles.mainImage} />
+      <Image source={{ uri: imageUrl }} style={styles.mainImage} />
       <Text style={styles.title}>{product.name}</Text>
       <Button onPress={() => openContribution()}>I found this product</Button>
 

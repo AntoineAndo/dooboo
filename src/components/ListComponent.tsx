@@ -30,7 +30,7 @@ function ListComponent({ itemList, onItemClick, refresh }: Props) {
 
   return (
     <FlatList
-      data={[...itemList, ...itemList, ...itemList]}
+      data={[...itemList]}
       renderItem={({ item, index }) => {
         return (
           <View

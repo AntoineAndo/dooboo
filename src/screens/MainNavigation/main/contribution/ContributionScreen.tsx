@@ -12,9 +12,9 @@ import { searchPlaces } from "../../../../lib/PlacesFinder";
 import Product from "../../../../types/product";
 import Store from "../../../../types/Store";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { Button } from "react-native-paper";
 import { useAppState } from "../../../../providers/AppStateProvider";
 import { linkProductStore, upsertStore } from "../../../../lib/supabase";
+import { Button } from "react-native-paper";
 
 type Props = {
   navigation: any;

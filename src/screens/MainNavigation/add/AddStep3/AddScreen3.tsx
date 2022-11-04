@@ -142,13 +142,12 @@ function AddScreen3({ route, navigation }: Props) {
           subtitle="Product pictures"
         />
       </View>
-
       <View style={styles.contentView}>
         {mainImage.uri == undefined && (
           <IconButton
             icon="image-multiple-outline"
-            iconColor="white"
-            containerColor="grey"
+            color="white"
+            // containerColor="grey"
             size={100}
             style={styles.imageContainer}
             onPress={() => pickDocument()}

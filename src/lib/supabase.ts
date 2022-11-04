@@ -43,6 +43,11 @@ export function getProducts(searchQuery: any): Promise<any> {
       `
     );
 
+    //ID filter
+    if (searchQuery.id != undefined) {
+      query.eq("id", searchQuery.id);
+    }
+
     //Country filter
     if (searchQuery.country != undefined) {
       query.eq("fk_country_id", searchQuery.country);
