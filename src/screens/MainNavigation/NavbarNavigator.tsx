@@ -9,7 +9,7 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Screen imports
 // import HomeScreen from "./main/home/HomeScreen";
-import ProfileScreen from "./profile/ProfileScreen";
+import ProfileScreen from "./profile/ProfileHomeScreen";
 import AddScreen from "./add/AddStep1/AddScreen";
 
 //Style import
@@ -18,6 +18,7 @@ import HomeNavigation from "./main/MainNavigator";
 
 import AddNavigator from "./add/AddNavigator";
 import { NavigationContainer } from "@react-navigation/native";
+import ProfileNavigation from "./profile/ProfileNavigation";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -33,6 +34,7 @@ function NavbarNavigator({}: Props) {
         inactiveColor={colors.primary}
         barStyle={{
           marginTop: 0,
+          backgroundColor: "white",
         }}
       >
         <Tab.Screen
@@ -54,8 +56,8 @@ function NavbarNavigator({}: Props) {
           }}
         ></Tab.Screen>
         <Tab.Screen
-          name={"ProfileScreen"}
-          component={ProfileScreen}
+          name={"Profile"}
+          component={ProfileNavigation}
           options={{
             tabBarIcon: ({ color }) => {
               return <IonIcons name="person" color={color} size={26} />;

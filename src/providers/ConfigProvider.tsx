@@ -6,11 +6,12 @@ export class Config {
   isAppFirstLauched?: Boolean = false;
   country: any;
   categories: any[] = [];
+  session: any = undefined;
 }
 
 //Creation of the Context
 const ConfigContext = createContext<
-  { config: Config; setConfig: Function } | undefined
+  { config: Config; setConfig: Function; patchConfig: Function } | undefined
 >(undefined);
 
 function updateAsyncStorage(
@@ -28,16 +29,29 @@ function ConfigProvider({ children }: { children: React.ReactNode }) {
     updateAsyncStorage,
     {}
   );
+
+  const patchConfig = (key: string, value: string | string[]) => {
+    //Enforce validation
+
+    setConfig({
+      ...config,
+      [key]: value,
+    });
+  };
   //@@ NOTE: you *might* need to memoize this value
   //@@ Learn more in http://kcd.im/optimize-context
   return (
-    <ConfigContext.Provider value={{ config, setConfig }}>
+    <ConfigContext.Provider value={{ config, setConfig, patchConfig }}>
       {children}
     </ConfigContext.Provider>
   );
 }
 
-function useConfig(): { config: Config; setConfig: Function } {
+function useConfig(): {
+  config: Config;
+  setConfig: Function;
+  patchConfig: Function;
+} {
   const context = useContext(ConfigContext);
 
   if (context == undefined) {

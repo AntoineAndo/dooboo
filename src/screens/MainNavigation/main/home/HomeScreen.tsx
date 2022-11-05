@@ -18,7 +18,7 @@ type Props = {
 };
 
 function HomeScreen({ navigation }: Props) {
-  const { config, setConfig } = useConfig();
+  const { config } = useConfig();
 
   const translation = useTranslation();
 

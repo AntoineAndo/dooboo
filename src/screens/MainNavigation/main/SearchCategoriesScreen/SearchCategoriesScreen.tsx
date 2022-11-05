@@ -6,7 +6,7 @@ import { useTranslation } from "../../../../hooks/translation";
 import { useConfig } from "../../../../providers/ConfigProvider";
 
 function SearchCategoriesScreen({ navigation }: any) {
-  const { config, setConfig } = useConfig();
+  const { config } = useConfig();
   const translation = useTranslation();
   const [searchForm, setSearchForm] = React.useState<any>({
     categories: [],
