@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import { Text, View, Button, TextInput, StyleSheet } from "react-native";
-import { supabase } from "../../../lib/supabase";
-import PhoneInput from "react-phone-number-input/react-native-input";
-import SecureStorage from "../../../lib/SecureStorage";
+import { Text, View, Button, StyleSheet } from "react-native";
+import { useAuth } from "../../../providers/AuthProvider";
 // import { isValidPhoneNumber } from "react-phone-number-input";
 
 type Props = {
@@ -10,23 +8,17 @@ type Props = {
 };
 
 function ProfileHomeScreen({ navigation }: Props) {
-  useEffect(() => {
-    SecureStorage.getValueFor("session").then((value: string | null) => {
-      if (value != null) {
-        console.log(JSON.parse(value));
-      }
-    });
-  }, []);
+  const { auth } = useAuth();
 
   return (
     <View>
-      {/* {config.session == undefined && ( */}
-      <Button
-        title="Log in"
-        onPress={() => navigation.navigate("Authentication")}
-      ></Button>
-      {/* )} */}
-      {/* {config.session != undefined && <Text>Logged in</Text>} */}
+      {auth.phoneNumber == undefined && (
+        <Button
+          title="Log in"
+          onPress={() => navigation.navigate("Authentication")}
+        ></Button>
+      )}
+      {auth.phoneNumber != undefined && <Text>Logged in</Text>}
     </View>
   );
 }

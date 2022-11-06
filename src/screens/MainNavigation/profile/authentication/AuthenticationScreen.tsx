@@ -4,6 +4,7 @@ import { supabase } from "../../../../lib/supabase";
 import PhoneInput from "react-phone-number-input/react-native-input";
 import { useConfig } from "../../../../providers/ConfigProvider";
 import SecureStorage from "../../../../lib/SecureStorage";
+import { useAuth } from "../../../../providers/AuthProvider";
 // import { isValidPhoneNumber } from "react-phone-number-input";
 type Props = {
   navigation: any;
@@ -13,11 +14,12 @@ function AuthenticationScreen({ navigation }: Props) {
   const [phoneNumber, setPhoneNumber] = React.useState<any>("");
   const [verificationCode, setVerificationCode] = React.useState("");
   const [smsSent, setSmsSent] = React.useState<boolean>(false);
-  const { config, patchConfig } = useConfig();
+  const { auth, setAuth } = useAuth();
 
   //SEND SMS
   const sendSms = async () => {
     // if (!isValidPhoneNumber(phoneNumber)) return;
+    setSmsSent(true);
     let { data, error } = await supabase.auth.signInWithOtp({
       phone: phoneNumber,
     });
@@ -27,7 +29,6 @@ function AuthenticationScreen({ navigation }: Props) {
 
     if (error == null) {
       console.log(data);
-      setSmsSent(true);
     }
   };
 
@@ -51,7 +52,11 @@ function AuthenticationScreen({ navigation }: Props) {
 
     if (data.session != undefined) {
       console.log(data);
-      SecureStorage.save("session", JSON.stringify(data.session));
+      setAuth({
+        phoneNumber: phoneNumber,
+        accessToken: data.session.access_token,
+      });
+      navigation.navigate("ProfileHome");
     }
   };
 
