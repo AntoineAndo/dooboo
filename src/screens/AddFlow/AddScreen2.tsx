@@ -1,17 +1,17 @@
 import React, { LegacyRef } from "react";
 import { ScrollView, View, StyleSheet, Text, Button } from "react-native";
 // import { Button } from "react-native-paper";
-import HeaderComponent from "../../../../components/HeaderComponent";
+import HeaderComponent from "../../components/HeaderComponent";
 
 import MapView, { Camera, LatLng, Marker, Region } from "react-native-maps";
 
 import * as Location from "expo-location";
 
 //@ts-ignore
-import SearchInput from "../../../../components/SearchInput";
-import { searchPlaces } from "../../../../lib/PlacesFinder";
-import Store from "../../../../types/Store";
-import Form from "../../../../types/Form";
+import SearchInput from "../../components/SearchInput";
+import { searchPlaces } from "../../lib/PlacesFinder";
+import Store from "../../types/Store";
+import Form from "../../types/Form";
 
 type Props = {
   route: any;

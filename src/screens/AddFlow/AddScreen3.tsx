@@ -9,13 +9,13 @@ import {
   linkProductStore,
   uploadImage,
   upsertStore,
-} from "../../../../lib/supabase";
-import HeaderComponent from "../../../../components/HeaderComponent";
+} from "../../lib/supabase";
+import HeaderComponent from "../../components/HeaderComponent";
 import { IconButton } from "react-native-paper";
-import Product from "../../../../types/product";
-import { useAppState } from "../../../../providers/AppStateProvider";
-import Form from "../../../../types/Form";
-import { rollback } from "../../../../adapters/utils/FormUtils";
+import Product from "../../types/product";
+import { useAppState } from "../../providers/AppStateProvider";
+import Form from "../../types/Form";
+import { rollback } from "../../adapters/utils/FormUtils";
 
 type Props = {
   route: any;

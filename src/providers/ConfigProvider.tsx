@@ -6,7 +6,6 @@ export class Config {
   isAppFirstLauched?: Boolean = false;
   country: any;
   categories: any[] = [];
-  session: any = undefined;
 }
 
 //Creation of the Context

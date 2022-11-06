@@ -3,11 +3,14 @@ import React from "react";
 import AuthenticationScreen from "./authentication/AuthenticationScreen";
 import ProfileHomeScreen from "./ProfileHomeScreen";
 
-type Props = {};
+type Props = {
+  route: any;
+};
 
 const Stack = createNativeStackNavigator();
 
-function ProfileNavigation({}: Props) {
+function ProfileNavigation({ route }: Props) {
+  console.log(route.params);
   return (
     <Stack.Navigator
       initialRouteName="ProfileHome"

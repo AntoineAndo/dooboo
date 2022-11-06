@@ -10,62 +10,80 @@ import IonIcons from "react-native-vector-icons/Ionicons";
 //Screen imports
 // import HomeScreen from "./main/home/HomeScreen";
 import ProfileScreen from "./profile/ProfileHomeScreen";
-import AddScreen from "./add/AddStep1/AddScreen";
+import AddScreen from "../AddFlow/AddScreen";
 
 //Style import
 import colors from "../../config/colors";
 import HomeNavigation from "./main/MainNavigator";
 
-import AddNavigator from "./add/AddNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import ProfileNavigation from "./profile/ProfileNavigation";
+import { useAuth } from "../../providers/AuthProvider";
+import AddNavigator from "../AddFlow/AddNavigator";
 
 const Tab = createMaterialBottomTabNavigator();
 
-type Props = {};
+type Props = {
+  navigation: any;
+};
 
-function NavbarNavigator({}: Props) {
+function NavbarNavigator({ navigation }: Props) {
+  const { auth } = useAuth();
+
   return (
-    <NavigationContainer independent={true}>
-      <Tab.Navigator
-        initialRouteName={"HomeNavigation"}
-        labeled={true}
-        activeColor={colors.primary}
-        inactiveColor={colors.primary}
-        barStyle={{
-          marginTop: 0,
-          backgroundColor: "white",
+    <Tab.Navigator
+      initialRouteName={"HomeNavigation"}
+      labeled={true}
+      activeColor={colors.primary}
+      inactiveColor={colors.primary}
+      barStyle={{
+        marginTop: 0,
+        backgroundColor: "white",
+      }}
+    >
+      <Tab.Screen
+        name="HomeNavigation"
+        component={HomeNavigation}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <IonIcons name="home" color={color} size={26} />;
+          },
         }}
-      >
-        <Tab.Screen
-          name="HomeNavigation"
-          component={HomeNavigation}
-          options={{
-            tabBarIcon: ({ color }) => {
-              return <IonIcons name="home" color={color} size={26} />;
-            },
-          }}
-        />
-        <Tab.Screen
-          name={"Add"}
-          component={AddNavigator}
-          options={{
-            tabBarIcon: ({ color }) => {
-              return <IonIcons name="add" color={color} size={26} />;
-            },
-          }}
-        ></Tab.Screen>
-        <Tab.Screen
-          name={"Profile"}
-          component={ProfileNavigation}
-          options={{
-            tabBarIcon: ({ color }) => {
-              return <IonIcons name="person" color={color} size={26} />;
-            },
-          }}
-        ></Tab.Screen>
-      </Tab.Navigator>
-    </NavigationContainer>
+      />
+      <Tab.Screen
+        name={"Add"}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            if (auth.phoneNumber != undefined) {
+              navigation.navigate("AddNavigation");
+            } else {
+              navigation.navigate("ProfileNavigation", {
+                redirect: "Authentication",
+              });
+            }
+            return () => {
+              console.log("focus out");
+            };
+          },
+        }}
+        children={AddNavigator}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <IonIcons name="add" color={color} size={26} />;
+          },
+        }}
+      ></Tab.Screen>
+      <Tab.Screen
+        name={"ProfileNavigation"}
+        component={ProfileNavigation}
+        options={{
+          tabBarIcon: ({ color }) => {
+            return <IonIcons name="person" color={color} size={26} />;
+          },
+        }}
+      ></Tab.Screen>
+    </Tab.Navigator>
   );
 }
 

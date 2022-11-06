@@ -1,7 +1,7 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
-import { useAppState } from "../../../../providers/AppStateProvider";
+import { useAppState } from "../../providers/AppStateProvider";
 
 function AddScreen4() {
   const navigation = useNavigation();

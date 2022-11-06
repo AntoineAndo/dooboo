@@ -4,6 +4,7 @@ import SecureStorage from "../lib/SecureStorage";
 export class AuthState {
   phoneNumber?: string;
   accessToken?: string;
+  isLoggedIn?: boolean;
 }
 
 //Creation of the Context

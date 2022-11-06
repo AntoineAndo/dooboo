@@ -9,10 +9,11 @@ import Storage from "../lib/storage";
 import { initializeTranslations } from "../hooks/translation";
 import storage from "../lib/storage";
 import { getCategories, getDefaultCountry } from "../lib/supabase";
-import AddScreen4 from "./MainNavigation/add/AddStep4/AddScreen4";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
 import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
+import { useAuth } from "../providers/AuthProvider";
+import AddNavigator from "./AddFlow/AddNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ function GlobalNavigator({}: Props): any {
   const [appIsReady, setAppIsReady] = useState(false);
   const app = useAppState();
   const { config, setConfig } = useConfig();
+  const { auth } = useAuth();
 
   useEffect(() => {
     function loadResourcesAndDataAsync(cb: Function) {
@@ -123,6 +125,10 @@ function GlobalNavigator({}: Props): any {
             )}
 
             <Stack.Screen name="Navbar" component={NavbarNavigator} />
+
+            {auth.phoneNumber != undefined && (
+              <Stack.Screen name="AddNavigation" component={AddNavigator} />
+            )}
           </Stack.Navigator>
         </NavigationContainer>
       </View>

@@ -7,14 +7,14 @@ import {
   Button,
   ScrollView,
 } from "react-native";
-import HeaderComponent from "../../../../components/HeaderComponent";
+import HeaderComponent from "../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
-import { useTranslation } from "../../../../hooks/translation";
+import { useTranslation } from "../../hooks/translation";
 import { Checkbox } from "react-native-paper";
-import { useConfig } from "../../../../providers/ConfigProvider";
-import Form from "../../../../types/Form";
+import { useConfig } from "../../providers/ConfigProvider";
+import Form from "../../types/Form";
 import { useQuery } from "@tanstack/react-query";
-import { getCategories } from "../../../../lib/supabase";
+import { getCategories } from "../../lib/supabase";
 
 type Props = {
   navigation: any;
