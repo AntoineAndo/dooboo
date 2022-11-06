@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Button,
   ScrollView,
+  BackHandler,
+  Alert,
 } from "react-native";
 import HeaderComponent from "../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
@@ -23,6 +25,7 @@ type Props = {
 function AddScreen({ navigation }: Props) {
   const translation = useTranslation();
   const { config } = useConfig();
+  let [formTouched, setFormTouched] = React.useState(false);
   const { isLoading, isError, data, error } = useQuery(
     ["categories_" + config.country.code],
     () => getCategories(config.country.id)
@@ -37,8 +40,34 @@ function AddScreen({ navigation }: Props) {
     errors: [],
   });
 
+  React.useEffect(() => {
+    const backAction = () => {
+      if (!formTouched) {
+        navigation.goBack();
+      } else {
+        Alert.alert("Hold on!", "Are you sure you want to go back?", [
+          {
+            text: "Cancel",
+            onPress: () => null,
+            style: "cancel",
+          },
+          { text: "YES", onPress: () => navigation.goBack() },
+        ]);
+      }
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   //Method used to update the form/state value
   const patchForm = (key: string, value: any) => {
+    formTouched = true;
     setForm({
       ...form,
       [key]: value,

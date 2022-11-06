@@ -23,15 +23,6 @@ function AddScreen4() {
           }}
           title="Go to Homepage"
         ></Button>
-        {/* <Button
-        
-          mode="contained"
-          onPress={() => {
-            onSubmit();
-          }}
-        >
-          Go to Homepage
-        </Button> */}
       </View>
     </View>
   );
