@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
+import { supabase } from "../../../lib/supabase";
 import { useAuth } from "../../../providers/AuthProvider";
 // import { isValidPhoneNumber } from "react-phone-number-input";
 
@@ -8,7 +9,16 @@ type Props = {
 };
 
 function ProfileHomeScreen({ navigation }: Props) {
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
+
+  const logout = async () => {
+    console.log("LOGOUT");
+    const logoutResult = await supabase.auth.signOut();
+    if (logoutResult.error == null) {
+      setAuth({});
+    }
+    console.log(logoutResult);
+  };
 
   return (
     <View>
@@ -18,7 +28,12 @@ function ProfileHomeScreen({ navigation }: Props) {
           onPress={() => navigation.navigate("Authentication")}
         ></Button>
       )}
-      {auth.phoneNumber != undefined && <Text>Logged in</Text>}
+      {auth.phoneNumber != undefined && (
+        <View>
+          <Text>Logged In</Text>
+          <Button title="Log out" onPress={logout}></Button>
+        </View>
+      )}
     </View>
   );
 }
