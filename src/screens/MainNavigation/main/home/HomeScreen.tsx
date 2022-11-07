@@ -13,6 +13,14 @@ import commonStyles from "../../../../config/stylesheet";
 import { useTranslation } from "../../../../hooks/translation";
 import { useConfig } from "../../../../providers/ConfigProvider";
 
+import { Dimensions, StatusBar } from "react-native";
+
+const screenHeight = Dimensions.get("screen").height;
+const windowHeight = Dimensions.get("window").height;
+const statusBarHeight =
+  StatusBar.currentHeight != undefined ? StatusBar.currentHeight : 0;
+const navbarHeight = screenHeight - windowHeight + statusBarHeight;
+
 type Props = {
   navigation: any;
 };
@@ -89,17 +97,15 @@ function startSearch(navigation: any) {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: "#fff",
-    height: "100%",
+    height: Dimensions.get("window").height - navbarHeight,
   },
   searchBarContainer: {},
   content: {
     paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "red",
+    flex: 1,
   },
   list: {
-    borderWidth: 1,
+    flex: 1,
   },
 });
 

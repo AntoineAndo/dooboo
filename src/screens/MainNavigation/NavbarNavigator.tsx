@@ -32,7 +32,7 @@ function NavbarNavigator({ navigation }: Props) {
 
   return (
     <Tab.Navigator
-      initialRouteName={"HomeNavigation"}
+      initialRouteName={"Home"}
       labeled={true}
       activeColor={colors.primary}
       inactiveColor={colors.primary}
@@ -42,7 +42,7 @@ function NavbarNavigator({ navigation }: Props) {
       }}
     >
       <Tab.Screen
-        name="HomeNavigation"
+        name="Home"
         component={HomeNavigation}
         options={{
           tabBarIcon: ({ color }) => {
@@ -58,7 +58,7 @@ function NavbarNavigator({ navigation }: Props) {
             if (auth.phoneNumber != undefined) {
               navigation.navigate("AddNavigation");
             } else {
-              navigation.navigate("ProfileNavigation", {
+              navigation.navigate("Profile", {
                 redirect: "Authentication",
               });
             }
@@ -75,7 +75,7 @@ function NavbarNavigator({ navigation }: Props) {
         }}
       ></Tab.Screen>
       <Tab.Screen
-        name={"ProfileNavigation"}
+        name={"Profile"}
         component={ProfileNavigation}
         options={{
           tabBarIcon: ({ color }) => {

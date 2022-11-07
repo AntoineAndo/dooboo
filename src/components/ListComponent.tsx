@@ -5,8 +5,10 @@ import {
   StyleSheet,
   Touchable,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { TouchableRipple } from "react-native-paper";
 import Product from "../types/product";
 
 //Types import
@@ -30,16 +32,17 @@ function ListComponent({ itemList, onItemClick, refresh }: Props) {
 
   return (
     <FlatList
+      contentContainerStyle={styles.list}
       data={[...itemList]}
       renderItem={({ item, index }) => {
         return (
-          <View
+          <TouchableRipple
             style={styles.listElement}
             key={item.id}
-            onTouchEnd={() => onItemClick(item)}
+            onPress={() => onItemClick(item)}
           >
             <ListItemComponent>{item}</ListItemComponent>
-          </View>
+          </TouchableRipple>
         );
       }}
       keyExtractor={(item) => item.id}
@@ -52,42 +55,12 @@ function ListComponent({ itemList, onItemClick, refresh }: Props) {
   );
 }
 
-// function renderChildItem({
-//   item,
-//   onItemClick,
-// }: {
-//   item: Product;
-//   onItemClick: Function;
-// }) {
-//   return (
-//     <TouchableOpacity
-//       style={styles.listElement}
-//       key={item.id}
-//       onPress={() => onItemClick(item)}
-//     >
-//       <ListItemComponent>{item}</ListItemComponent>
-//     </TouchableOpacity>
-//   );
-// }
-
-// function renderChildItems(list: Array<Product>, onItemClick: Function) {
-//   return list.map((element, index) => {
-//     return (
-//       <TouchableOpacity
-//         style={styles.listElement}
-//         key={index}
-//         onPress={() => onItemClick(element)}
-//       >
-//         <ListItemComponent>{element}</ListItemComponent>
-//       </TouchableOpacity>
-//     );
-//   });
-// }
-
 const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+  },
   listElement: {
-    marginTop: 5,
-    marginBottom: 5,
+    marginBottom: 10,
   },
 });
 
