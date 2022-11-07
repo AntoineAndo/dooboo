@@ -16,6 +16,7 @@ import Product from "../../types/product";
 import { useAppState } from "../../providers/AppStateProvider";
 import Form from "../../types/Form";
 import { rollback } from "../../adapters/utils/FormUtils";
+import { useAuth } from "../../providers/AuthProvider";
 
 type Props = {
   route: any;
@@ -30,6 +31,7 @@ function AddScreen3({ route, navigation }: Props) {
   const [form, setForm] = React.useState(initialState);
   const [mainImage, setMainImage] = useState<any>({});
   const app = useAppState();
+  const { auth } = useAuth();
 
   const pickDocument = async () => {
     let result = await getDocumentAsync({});
@@ -60,13 +62,18 @@ function AddScreen3({ route, navigation }: Props) {
   const onSubmit = async () => {
     if (form.store == undefined) return;
 
+    if (auth.user == undefined) {
+      //TODO redirect to auth page
+      return;
+    }
+
     //Show the loading overlay
     app.patchState("isLoading", true);
 
     const [imageInsertResult, productInsertResult, storeUpsertResult] =
       await Promise.all([
         uploadImage(mainImage),
-        addProduct(form),
+        addProduct(form, auth.user),
         upsertStore(form.store),
       ]);
 
@@ -101,7 +108,7 @@ function AddScreen3({ route, navigation }: Props) {
       linkProductCategoriesResult,
       linkProductImageResult,
     ] = await Promise.all([
-      linkProductStore(insertedProduct.id, form.store.id),
+      linkProductStore(insertedProduct.id, form.store.id, auth.user),
       linkProductCategories(categoriesToInsert),
       linkProductImage(insertedProduct.id, imageInsertResult.data.path),
     ]);

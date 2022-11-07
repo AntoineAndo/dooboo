@@ -16,7 +16,6 @@ function ProfileHomeScreen({ navigation }: Props) {
     if (logoutResult.error == null) {
       setAuth({});
     }
-    console.log(logoutResult);
   };
 
   return (

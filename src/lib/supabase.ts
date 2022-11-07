@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-url-polyfill/auto";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, User } from "@supabase/supabase-js";
 //@ts-ignore
 import { REACT_APP_API_URL, REACT_APP_API_ANON_KEY } from "@env";
 
@@ -103,10 +103,16 @@ export async function linkProductCategories(categoriesToInsert: any[]) {
   return { data, error, rollbackInfos };
 }
 
-export async function addProduct(formData: Form) {
+export async function addProduct(formData: Form, user: User) {
   let { data, error } = await supabase
     .from("product")
-    .insert([{ name: formData.name, fk_country_id: formData.countryId }])
+    .insert([
+      {
+        name: formData.name,
+        fk_country_id: formData.countryId,
+        fk_created_by: user.id,
+      },
+    ])
     .select();
 
   //Define rollback infos
@@ -144,15 +150,18 @@ export async function upsertStore(store: any) {
     .select();
 }
 
-export async function linkProductStore(productId: string, storeId: string) {
-  console.log(productId);
-  console.log(storeId);
+export async function linkProductStore(
+  productId: string,
+  storeId: string,
+  user: User
+) {
   const { data, error } = await supabase
     .from("product_store")
     .insert([
       {
         fk_product_id: productId,
         fk_store_id: storeId,
+        fk_profile_id: user.id,
       },
     ])
     .select();
