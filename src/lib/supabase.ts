@@ -6,6 +6,7 @@ import { REACT_APP_API_URL, REACT_APP_API_ANON_KEY } from "@env";
 
 import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
+import SecureStorage from "./SecureStorage";
 
 const supabaseUrl = REACT_APP_API_URL as string;
 const supabaseAnonKey = REACT_APP_API_ANON_KEY as string;

@@ -8,7 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 import Storage from "../lib/storage";
 import { initializeTranslations } from "../hooks/translation";
 import storage from "../lib/storage";
-import { getCategories, getDefaultCountry } from "../lib/supabase";
+import { getCategories, getDefaultCountry, supabase } from "../lib/supabase";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
 import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
@@ -23,7 +23,7 @@ function GlobalNavigator({}: Props): any {
   const [appIsReady, setAppIsReady] = useState(false);
   const app = useAppState();
   const { config, setConfig } = useConfig();
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   useEffect(() => {
     function loadResourcesAndDataAsync(cb: Function) {
@@ -36,8 +36,9 @@ function GlobalNavigator({}: Props): any {
         const configuration = Storage.getData("config");
         const defaultCountry = getDefaultCountry();
         const categories = getCategories("");
-        Promise.all([configuration, defaultCountry, categories]).then(
-          ([configuration, defaultCountryResult, categories]) => {
+        const session = supabase.auth.getSession();
+        Promise.all([configuration, defaultCountry, categories, session]).then(
+          ([configuration, defaultCountryResult, categories, session]) => {
             let configurationObject: Config;
 
             if (defaultCountryResult.data == null) {
@@ -47,6 +48,27 @@ function GlobalNavigator({}: Props): any {
 
             const defaultCountry = defaultCountryResult.data[0];
             configuration = undefined;
+
+            //Session ?
+            if (session.data != null && session.data.session != undefined) {
+              supabase.auth
+                .refreshSession({
+                  refresh_token: session.data.session.refresh_token,
+                })
+                .then((response) => {
+                  if (response.error == null && response.data != null) {
+                    console.log("session refresh");
+                    console.log(response);
+                    setAuth(response.data);
+                    return;
+                  }
+
+                  //If there is an error during the session refresh
+                  // then the user is signed out
+                  supabase.auth.signOut();
+                  setAuth({});
+                });
+            }
 
             //If the stored configuration is empty
             //Then we assume that this is the first time the app is launched
@@ -126,7 +148,7 @@ function GlobalNavigator({}: Props): any {
 
             <Stack.Screen name="Navbar" component={NavbarNavigator} />
 
-            {auth.phoneNumber != undefined && (
+            {auth.session != undefined && (
               <Stack.Screen name="AddNavigation" component={AddNavigator} />
             )}
           </Stack.Navigator>

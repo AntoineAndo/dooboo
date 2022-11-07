@@ -55,7 +55,7 @@ function NavbarNavigator({ navigation }: Props) {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            if (auth.phoneNumber != undefined) {
+            if (auth.session != undefined) {
               navigation.navigate("AddNavigation");
             } else {
               navigation.navigate("Profile", {

@@ -1,10 +1,10 @@
+import { Session, User } from "@supabase/supabase-js";
 import React, { createContext, useContext } from "react";
 import SecureStorage from "../lib/SecureStorage";
 
 export class AuthState {
-  phoneNumber?: string;
-  accessToken?: string;
-  isLoggedIn?: boolean;
+  session?: Session;
+  user?: User;
 }
 
 //Creation of the Context
@@ -18,7 +18,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   // Get current auth state from SecureStorage
   const getAuthState = async () => {
     try {
-      const authDataString = await SecureStorage.getValueFor("auth");
+      const authDataString = await SecureStorage.getItem("auth");
       let authData = {};
       if (authDataString != null) {
         authData = JSON.parse(authDataString);
@@ -34,7 +34,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Update SecureStorage & context state
   const setAuth = async (auth: AuthState) => {
-    console.log("save", auth);
     try {
       await SecureStorage.save("auth", JSON.stringify(auth));
       // Configure axios headers

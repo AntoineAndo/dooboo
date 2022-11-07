@@ -18,7 +18,7 @@ function AddNavigator({}: Props) {
 
   return shouldHide ? null : (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {auth.phoneNumber != undefined && (
+      {auth.session != undefined && (
         <>
           <Stack.Screen name="AddStep1" component={AddScreen} options={{}} />
           <Stack.Screen name="AddStep2" component={AddScreen2} options={{}} />

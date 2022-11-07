@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import ListComponent from "../../../../components/ListComponent";
 import SearchBarComponent from "../../../../components/SearchBarComponent";
-import { getProducts } from "../../../../lib/supabase";
+import { getProducts, supabase } from "../../../../lib/supabase";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -20,6 +20,8 @@ import { useTranslation } from "../../../../hooks/translation";
 import { useConfig } from "../../../../providers/ConfigProvider";
 
 import { Dimensions, StatusBar } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import SecureStorage from "../../../../lib/SecureStorage";
 
 const screenHeight = Dimensions.get("screen").height;
 const windowHeight = Dimensions.get("window").height;

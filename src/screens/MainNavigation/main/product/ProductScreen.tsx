@@ -21,7 +21,6 @@ function ProductScreen({ route, navigation }: Props) {
   const [places, setPlaces] = React.useState<any[]>([]);
 
   useFocusEffect(() => {
-    console.log("refech");
     refetch();
   });
 

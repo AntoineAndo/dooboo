@@ -12,7 +12,6 @@ function ProfileHomeScreen({ navigation }: Props) {
   const { auth, setAuth } = useAuth();
 
   const logout = async () => {
-    console.log("LOGOUT");
     const logoutResult = await supabase.auth.signOut();
     if (logoutResult.error == null) {
       setAuth({});
@@ -22,13 +21,13 @@ function ProfileHomeScreen({ navigation }: Props) {
 
   return (
     <View>
-      {auth.phoneNumber == undefined && (
+      {auth.session == undefined && (
         <Button
           title="Log in"
           onPress={() => navigation.navigate("Authentication")}
         ></Button>
       )}
-      {auth.phoneNumber != undefined && (
+      {auth.session != undefined && (
         <View>
           <Text>Logged In</Text>
           <Button title="Log out" onPress={logout}></Button>
