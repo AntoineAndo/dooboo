@@ -9,6 +9,8 @@ import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../../../lib/supabase";
 import { Button } from "react-native-paper";
+import Product from "../../../../types/product";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = {
   route: any;
@@ -18,19 +20,13 @@ type Props = {
 function ProductScreen({ route, navigation }: Props) {
   const [places, setPlaces] = React.useState<any[]>([]);
 
+  useFocusEffect(() => {
+    console.log("refech");
+    refetch();
+  });
+
   let productInitialData = route.params.product;
   const imageUrl = productInitialData.imageUrl;
-
-  console.log(productInitialData);
-  let initialStores: any[] = [];
-
-  React.useEffect(() => {
-    productInitialData.product_store.forEach(({ store }: any) => {
-      initialStores.push(store);
-    });
-    console.log(initialStores);
-    setPlaces(initialStores);
-  }, []);
 
   const {
     isLoading,
@@ -45,6 +41,11 @@ function ProductScreen({ route, navigation }: Props) {
       };
       return getProducts(searchQuery);
     },
+    select: (data: any[]) => {
+      if (data.length != 0) {
+        return data[0];
+      }
+    },
     initialData: productInitialData,
   });
 
@@ -53,6 +54,10 @@ function ProductScreen({ route, navigation }: Props) {
   };
 
   console.log(product);
+
+  if (product == undefined) {
+    return <></>;
+  }
 
   return (
     <View>
@@ -80,15 +85,16 @@ function ProductScreen({ route, navigation }: Props) {
           showsMyLocationButton={true}
           toolbarEnabled={false}
         >
-          {places.map((place: any, i: number) => {
+          {product.product_store.map(({ store }: any, i: number) => {
+            console.log(store);
             return (
               <Marker
                 coordinate={{
-                  latitude: parseFloat(place.lat),
-                  longitude: parseFloat(place.lng),
+                  latitude: parseFloat(store.lat),
+                  longitude: parseFloat(store.lng),
                 }}
-                title={place.name}
-                key={place.id}
+                title={store.name}
+                key={store.id}
               />
             );
           })}

@@ -144,6 +144,8 @@ export async function upsertStore(store: any) {
 }
 
 export async function linkProductStore(productId: string, storeId: string) {
+  console.log(productId);
+  console.log(storeId);
   const { data, error } = await supabase
     .from("product_store")
     .insert([

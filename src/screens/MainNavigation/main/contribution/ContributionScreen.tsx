@@ -83,12 +83,20 @@ function ContributionScreen({ navigation, route }: Props) {
       return;
     }
 
+    console.log(storeUpsertResult);
+
+    console.log(product);
+    console.log(selectedStore);
+
     const linkProductStoreResult = await linkProductStore(
       product.id,
       selectedStore.id
     );
 
+    console.log(linkProductStoreResult);
+
     app.patchState("isLoading", false);
+    navigation.goBack();
   };
 
   return (
