@@ -9,7 +9,7 @@ function AddScreen4() {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: "HomeNavigation" }],
+        routes: [{ name: "Navbar" }],
       })
     );
   };
