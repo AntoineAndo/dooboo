@@ -87,6 +87,9 @@ function HomeScreen({ navigation }: Props) {
         <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
       <View style={styles.content}>{displayContent()}</View>
+      <View
+        style={{ height: 10, marginBottom: 10, backgroundColor: "yellow" }}
+      ></View>
     </View>
   );
 }
@@ -98,14 +101,21 @@ function startSearch(navigation: any) {
 const styles = StyleSheet.create({
   page: {
     height: Dimensions.get("window").height - navbarHeight,
+    backgroundColor: "red",
+    marginTop: -5,
   },
-  searchBarContainer: {},
+  searchBarContainer: {
+    height: 100,
+    borderWidth: 1,
+  },
   content: {
-    paddingHorizontal: 10,
     flex: 1,
+    backgroundColor: "green",
+    paddingHorizontal: 10,
   },
   list: {
     flex: 1,
+    backgroundColor: "blue",
   },
 });
 
