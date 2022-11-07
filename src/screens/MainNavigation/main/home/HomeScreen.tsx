@@ -1,5 +1,11 @@
 import React from "react";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import ListComponent from "../../../../components/ListComponent";
 import SearchBarComponent from "../../../../components/SearchBarComponent";
 import { getProducts } from "../../../../lib/supabase";
@@ -29,6 +35,7 @@ function HomeScreen({ navigation }: Props) {
   const { config } = useConfig();
 
   const translation = useTranslation();
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const {
     isLoading,
@@ -46,8 +53,12 @@ function HomeScreen({ navigation }: Props) {
     navigation.navigate("Product", { product });
   };
 
-  //Refetch on refresh
-  const onRefresh = refetch;
+  //On list refetch
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    refetch().then(() => setRefreshing(false));
+  }, []);
 
   const displayContent = () => {
     if (isLoading) {
@@ -74,7 +85,6 @@ function HomeScreen({ navigation }: Props) {
           <ListComponent
             itemList={productList}
             onItemClick={onProductClick}
-            refresh={onRefresh}
           ></ListComponent>
         </View>
       </>
@@ -86,9 +96,16 @@ function HomeScreen({ navigation }: Props) {
       <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
         <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
-      <View style={styles.content}>{displayContent()}</View>
+      <ScrollView
+        style={styles.content}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {displayContent()}
+      </ScrollView>
       <View
-        style={{ height: 10, marginBottom: 10, backgroundColor: "yellow" }}
+        style={{ height: 0, marginBottom: 0, backgroundColor: "yellow" }}
       ></View>
     </View>
   );
@@ -101,21 +118,17 @@ function startSearch(navigation: any) {
 const styles = StyleSheet.create({
   page: {
     height: Dimensions.get("window").height - navbarHeight,
-    backgroundColor: "red",
     marginTop: -5,
   },
   searchBarContainer: {
     height: 100,
-    borderWidth: 1,
   },
   content: {
     flex: 1,
-    backgroundColor: "green",
     paddingHorizontal: 10,
   },
   list: {
     flex: 1,
-    backgroundColor: "blue",
   },
 });
 

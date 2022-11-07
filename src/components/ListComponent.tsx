@@ -17,24 +17,12 @@ import ListItemComponent from "./ListItemComponent";
 type Props = {
   itemList: Array<Product>;
   onItemClick: Function;
-  refresh: Function;
 };
 
-function ListComponent({ itemList, onItemClick, refresh }: Props) {
-  const [refreshing, setRefreshing] = React.useState(false);
-
-  //TODO
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-
-    refresh().then(() => setRefreshing(false));
-  }, []);
-
+function ListComponent({ itemList, onItemClick }: Props) {
   return (
-    <FlatList
-      contentContainerStyle={styles.list}
-      data={[...itemList]}
-      renderItem={({ item, index }) => {
+    <View>
+      {itemList.map((item) => {
         return (
           <TouchableRipple
             style={styles.listElement}
@@ -44,14 +32,8 @@ function ListComponent({ itemList, onItemClick, refresh }: Props) {
             <ListItemComponent>{item}</ListItemComponent>
           </TouchableRipple>
         );
-      }}
-      keyExtractor={(item) => item.id}
-      onRefresh={() => {}}
-      refreshing={true}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    ></FlatList>
+      })}
+    </View>
   );
 }
 
