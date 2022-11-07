@@ -246,8 +246,9 @@ const styles = StyleSheet.create({
   },
   input: {
     outlineStyle: "none",
-    marginLeft: 10,
+    paddingLeft: 10,
     fontSize: 20,
+    flex: 1,
   },
   searchBar: {
     marginVertical: 16,
