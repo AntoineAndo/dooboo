@@ -12,11 +12,10 @@ class GoogleAdapter implements IPlaceFinder {
     return results.map((result: any) => {
       return {
         id: result.place_id,
+        technical_id: result.technical_id,
         name: result.name,
-        location: {
-          latitude: result.geometry.location.lat,
-          longitude: result.geometry.location.lng,
-        },
+        lat: result.geometry.location.lat,
+        lng: result.geometry.location.lng,
         source: "google",
       };
     });

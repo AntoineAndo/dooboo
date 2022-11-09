@@ -30,6 +30,11 @@ function ProfileHomeScreen({ navigation }: Props) {
         <View>
           <Text>Logged In</Text>
           <Button title="Log out" onPress={logout}></Button>
+
+          <Button
+            title="My contributions"
+            onPress={() => navigation.navigate("My Contributions")}
+          ></Button>
         </View>
       )}
     </View>

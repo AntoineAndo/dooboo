@@ -22,7 +22,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 //Get all the products from a given country, joined with the store presence info
 //Main request to list products
-export function getProducts(searchQuery: any): Promise<any> {
+export function getProducts(searchQuery: any): Promise<Array<any>> {
   return new Promise((res, rej) => {
     let query = supabase.from("product").select(
       `
@@ -179,6 +179,23 @@ export async function linkProductStore(
   return { data, error, rollbackInfos };
 }
 
+export async function deleteContribution(
+  productId: string,
+  storeId: string,
+  user: User
+) {
+  console.log([productId, storeId, user.id]);
+
+  const { data, error } = await supabase
+    .from("product_store")
+    .delete()
+    .eq("fk_product_id", productId)
+    .eq("fk_store_id", storeId)
+    .eq("fk_profile_id", user.id);
+
+  return { data, error };
+}
+
 export async function linkProductImage(productId: string, imageUrl: string) {
   const { data, error } = await supabase
     .from("product_image")
@@ -242,4 +259,29 @@ export async function deleteByTableAndId(table: string, id: number) {
   const { data, error } = await supabase.from(table).delete().eq("id", id);
 
   return { data, error };
+}
+
+export async function getContributions(userId: string) {
+  const { data, error } = await supabase
+    .from("product_store")
+    .select(
+      `
+        id,
+        fk_store_id,
+        store!inner(
+          *
+        ),
+        fk_profile_id,
+        fk_product_id,
+        product!inner(
+          *,
+          product_image!inner(
+            image_url
+          )
+        )
+      `
+    )
+    .eq("fk_profile_id", userId);
+
+  return data;
 }

@@ -1,7 +1,5 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import GoogleMapReact from "google-map-react";
-import MarkerComponent from "../../../../components/MarkerComponent";
 //@ts-ignore
 import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IonIcons from "react-native-vector-icons/Ionicons";
@@ -9,7 +7,6 @@ import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../../../lib/supabase";
 import { Button } from "react-native-paper";
-import Product from "../../../../types/product";
 import { useFocusEffect } from "@react-navigation/native";
 
 type Props = {

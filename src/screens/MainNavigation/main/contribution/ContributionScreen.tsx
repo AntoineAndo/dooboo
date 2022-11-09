@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,8 +14,16 @@ import Product from "../../../../types/product";
 import Store from "../../../../types/Store";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useAppState } from "../../../../providers/AppStateProvider";
-import { linkProductStore, upsertStore } from "../../../../lib/supabase";
+import {
+  deleteContribution,
+  getContributions,
+  linkProductStore,
+  upsertStore,
+} from "../../../../lib/supabase";
 import { Button } from "react-native-paper";
+import { useAuth } from "../../../../providers/AuthProvider";
+import { useQuery } from "@tanstack/react-query";
+import colors from "../../../../config/colors";
 
 type Props = {
   navigation: any;
@@ -28,12 +37,62 @@ function ContributionScreen({ navigation, route }: Props) {
     undefined
   );
   const app = useAppState();
+  const { auth } = useAuth();
+  let myC = [];
+  const {
+    isLoading,
+    isError,
+    data: myContributions,
+    refetch,
+  } = useQuery({
+    queryKey: ["contributions_" + auth.user?.id],
+    queryFn: () => {
+      if (auth.user != undefined) {
+        return getContributions(auth.user.id);
+      }
+    },
+    select: (data: any) => {
+      if (data.length != 0) {
+        myC = data;
+        let storeList = data.map((p_s: any) => {
+          return p_s.store;
+        });
+        //memoize value
+        myC = storeList;
+        return storeList;
+      }
+      return [];
+    },
+    initialData: [],
+  });
 
   const product: Product = route.params.product;
 
   const storeSelected = (store: Store) => {
-    navigateMapTo(store.location);
+    navigateMapTo({ latitude: store.lat, longitude: store.lng } as LatLng);
     setSelectedStore(store);
+  };
+
+  const deleteMarker = (store: Store) => {
+    Alert.alert("Confirm", "Are you sure you want to delete this marker?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          if (auth.user == undefined) return;
+
+          deleteContribution(product.id, store.technical_id, auth.user).then(
+            () => {
+              refetch();
+            }
+          );
+        },
+      },
+    ]);
   };
 
   const navigateMapTo = ({ latitude, longitude }: LatLng) => {
@@ -63,9 +122,12 @@ function ContributionScreen({ navigation, route }: Props) {
       //Center map on the first marker
       if (results[0] != undefined) {
         let coordinates = results.map((result: Store) => {
-          return result.location;
+          return { latitude: result.lat, longitude: result.lng } as LatLng;
         });
-        navigateMapTo(results[0].location as LatLng);
+        navigateMapTo({
+          latitude: results[0].lat,
+          longitude: results[0].lng,
+        } as LatLng);
         mapRef.current?.fitToCoordinates(coordinates);
       }
     });
@@ -73,6 +135,8 @@ function ContributionScreen({ navigation, route }: Props) {
 
   const onSubmit = async () => {
     if (selectedStore == undefined) return;
+
+    if (auth.user == undefined) return;
 
     //Show the loading overlay
     app.patchState("isLoading", true);
@@ -83,17 +147,11 @@ function ContributionScreen({ navigation, route }: Props) {
       return;
     }
 
-    console.log(storeUpsertResult);
-
-    console.log(product);
-    console.log(selectedStore);
-
     const linkProductStoreResult = await linkProductStore(
       product.id,
-      selectedStore.id
+      selectedStore.id,
+      auth.user
     );
-
-    console.log(linkProductStoreResult);
 
     app.patchState("isLoading", false);
     navigation.goBack();
@@ -132,10 +190,24 @@ function ContributionScreen({ navigation, route }: Props) {
           {places.map((place: any, i: number) => {
             return (
               <Marker
-                coordinate={place.location}
+                coordinate={{ latitude: place.lat, longitude: place.lng }}
                 title={place.name}
                 key={place.id}
                 onPress={() => storeSelected(place)}
+              />
+            );
+          })}
+          {myContributions.map((place: any, i: number) => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(place.lat),
+                  longitude: parseFloat(place.lng),
+                }}
+                title={place.name}
+                key={place.id}
+                pinColor={colors.primary}
+                onPress={() => deleteMarker(place)}
               />
             );
           })}
