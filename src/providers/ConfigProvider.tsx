@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer, useState } from "react";
 import storage from "../lib/storage";
 
 export class Config {
-  language_code?: String = "en";
+  language_code: string = "en";
   isAppFirstLauched?: Boolean = false;
   country: any;
   categories: any[] = [];

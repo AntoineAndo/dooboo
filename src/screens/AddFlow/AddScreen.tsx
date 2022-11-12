@@ -40,6 +40,8 @@ function AddScreen({ navigation }: Props) {
     errors: [],
   });
 
+  //Create a back button press event listener
+  // to prevent instant go back if the form has been changed
   React.useEffect(() => {
     const backAction = () => {
       if (!formTouched) {
@@ -57,11 +59,13 @@ function AddScreen({ navigation }: Props) {
       return true;
     };
 
+    //Mount event listener
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       backAction
     );
 
+    //Unmount event listener
     return () => backHandler.remove();
   }, []);
 

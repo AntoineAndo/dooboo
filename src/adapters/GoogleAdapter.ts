@@ -24,7 +24,7 @@ class GoogleAdapter implements IPlaceFinder {
   exclude(results: Store[], excludePlacesId: string[]): Store[] {
     //Keep only the results that are not already present
     return results.filter(
-      (result: Store) => excludePlacesId.indexOf(result.technical_id) == -1
+      (result: Store) => excludePlacesId.indexOf(result.id) == -1
     );
   }
 

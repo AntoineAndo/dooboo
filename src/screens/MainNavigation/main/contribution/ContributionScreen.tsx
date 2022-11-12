@@ -24,6 +24,7 @@ import { Button } from "react-native-paper";
 import { useAuth } from "../../../../providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import colors from "../../../../config/colors";
+import { useConfig } from "../../../../providers/ConfigProvider";
 
 type Props = {
   navigation: any;
@@ -32,6 +33,7 @@ type Props = {
 
 function ContributionScreen({ navigation, route }: Props) {
   const mapRef = React.useRef<MapView>(null);
+  const { config } = useConfig();
   const [places, setPlaces] = React.useState<any[]>([]);
   const [selectedStore, setSelectedStore] = React.useState<Store | undefined>(
     undefined
@@ -99,8 +101,8 @@ function ContributionScreen({ navigation, route }: Props) {
     const region = {
       latitude,
       longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
     };
     mapRef.current?.animateToRegion(region);
   };
@@ -111,15 +113,18 @@ function ContributionScreen({ navigation, route }: Props) {
     }
 
     const options = {
-      country: "en",
-      language: "en",
+      country: config.country,
+      language: config.language_code,
       searchQuery: searchQuery,
       excludePlacesId: myContributions.map((p: Store) => {
-        return p.id;
+        return p.technical_id;
       }),
     };
 
+    console.log(options);
+
     searchPlaces(options).then((results: Store[]) => {
+      console.log(results);
       setPlaces(results);
 
       //Center map on the first marker
@@ -200,6 +205,7 @@ function ContributionScreen({ navigation, route }: Props) {
               />
             );
           })}
+          {/* My contributions */}
           {myContributions.map((place: any, i: number) => {
             return (
               <Marker
@@ -210,7 +216,7 @@ function ContributionScreen({ navigation, route }: Props) {
                 title={place.name}
                 key={place.id}
                 pinColor={colors.primary}
-                onPress={() => deleteMarker(place)}
+                onPress={() => null}
               />
             );
           })}
