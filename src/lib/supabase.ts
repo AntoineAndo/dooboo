@@ -7,6 +7,7 @@ import { REACT_APP_API_URL, REACT_APP_API_ANON_KEY } from "@env";
 import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
 import SecureStorage from "./SecureStorage";
+import Store from "../types/Store";
 
 const supabaseUrl = REACT_APP_API_URL as string;
 const supabaseAnonKey = REACT_APP_API_ANON_KEY as string;
@@ -134,7 +135,7 @@ export async function getDefaultCountry() {
   return await supabase.from("country").select(`*`).eq("default", true);
 }
 
-export async function upsertStore(store: any) {
+export async function upsertStore(store: Store) {
   return await supabase
     .from("store")
     .upsert(
@@ -142,8 +143,8 @@ export async function upsertStore(store: any) {
         technical_id: store.id,
         name: store.name,
         source: store.source,
-        lat: store.location.latitude,
-        lng: store.location.longitude,
+        lat: store.lat,
+        lng: store.lng,
       },
       { onConflict: "technical_id" }
     )

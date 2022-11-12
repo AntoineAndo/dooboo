@@ -83,7 +83,11 @@ function AddScreen2({ route, navigation }: Props) {
 
   const placeSelected = (place: Store) => {
     // google.map.setCenter(place.location);
-    navigateMapTo(place.location);
+    const placeLocation = {
+      latitude: place.lat,
+      longitude: place.lng,
+    };
+    navigateMapTo(placeLocation);
     patchForm("store", place);
   };
 
@@ -112,9 +116,16 @@ function AddScreen2({ route, navigation }: Props) {
       //Center map on the first marker
       if (results[0] != undefined) {
         let coordinates = results.map((result: Store) => {
-          return result.location;
+          let coordinate: LatLng = {
+            latitude: result.lat,
+            longitude: result.lng,
+          };
+          return coordinate;
         });
-        navigateMapTo(results[0].location as LatLng);
+        navigateMapTo({
+          latitude: results[0].lat,
+          longitude: results[0].lng,
+        } as LatLng);
         mapRef.current?.fitToCoordinates(coordinates);
       }
     });
@@ -124,8 +135,8 @@ function AddScreen2({ route, navigation }: Props) {
     const region = {
       latitude,
       longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421,
     };
     mapRef.current?.animateToRegion(region);
   };
@@ -161,10 +172,13 @@ function AddScreen2({ route, navigation }: Props) {
           toolbarEnabled={false}
           ref={mapRef}
         >
-          {places.map((place: any, i: number) => {
+          {places.map((place: Store, i: number) => {
             return (
               <Marker
-                coordinate={place.location}
+                coordinate={{
+                  latitude: place.lat,
+                  longitude: place.lng,
+                }}
                 title={place.name}
                 key={place.id}
                 onPress={() => placeSelected(place)}

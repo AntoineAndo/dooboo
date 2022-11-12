@@ -77,6 +77,8 @@ function AddScreen3({ route, navigation }: Props) {
         upsertStore(form.store),
       ]);
 
+    console.log([imageInsertResult, productInsertResult, storeUpsertResult]);
+
     //If at least one result is an error
     // then rollback all
     if (
@@ -111,6 +113,12 @@ function AddScreen3({ route, navigation }: Props) {
       linkProductStore(insertedProduct.id, form.store.id, auth.user),
       linkProductCategories(categoriesToInsert),
       linkProductImage(insertedProduct.id, imageInsertResult.data.path),
+    ]);
+
+    console.log([
+      linkProductStoreResult,
+      linkProductCategoriesResult,
+      linkProductImageResult,
     ]);
 
     //If at least one of the record is in error

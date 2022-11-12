@@ -114,6 +114,9 @@ function ContributionScreen({ navigation, route }: Props) {
       country: "en",
       language: "en",
       searchQuery: searchQuery,
+      excludePlacesId: myContributions.map((p: Store) => {
+        return p.id;
+      }),
     };
 
     searchPlaces(options).then((results: Store[]) => {

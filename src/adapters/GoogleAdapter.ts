@@ -21,7 +21,19 @@ class GoogleAdapter implements IPlaceFinder {
     });
   }
 
-  search(searchQuery: string, language: string, country: string): Promise<any> {
+  exclude(results: Store[], excludePlacesId: string[]): Store[] {
+    //Keep only the results that are not already present
+    return results.filter(
+      (result: Store) => excludePlacesId.indexOf(result.technical_id) == -1
+    );
+  }
+
+  search(
+    searchQuery: string,
+    language: string,
+    country: string,
+    excludePlacesId: string[]
+  ): Promise<any> {
     const endpoint =
       "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
@@ -40,8 +52,12 @@ class GoogleAdapter implements IPlaceFinder {
       axios
         .get(url)
         .then((response) => {
+          const transformedData = this.transform(
+            response.data.results.slice(0, 5)
+          );
+
           // handle success
-          res(this.transform(response.data.results.slice(0, 5)));
+          res(this.exclude(transformedData, excludePlacesId));
         })
         .catch((error) => {
           // handle error
