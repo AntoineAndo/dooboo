@@ -31,6 +31,8 @@ type Props = {
   route: any;
 };
 
+const markerLimit = 5;
+
 function ContributionScreen({ navigation, route }: Props) {
   const mapRef = React.useRef<MapView>(null);
   const { config } = useConfig();
@@ -40,7 +42,6 @@ function ContributionScreen({ navigation, route }: Props) {
   );
   const app = useAppState();
   const { auth } = useAuth();
-  let myC = [];
   const {
     isLoading,
     isError,
@@ -55,12 +56,11 @@ function ContributionScreen({ navigation, route }: Props) {
     },
     select: (data: any) => {
       if (data.length != 0) {
-        myC = data;
+        //Get only the store list out of the product_store list result
         let storeList = data.map((p_s: any) => {
           return p_s.store;
         });
-        //memoize value
-        myC = storeList;
+
         return storeList;
       }
       return [];
@@ -76,25 +76,27 @@ function ContributionScreen({ navigation, route }: Props) {
   };
 
   const deleteMarker = (store: Store) => {
-    Alert.alert("Confirm", "Are you sure you want to delete this marker?", [
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel",
-      },
-      {
-        text: "Yes",
-        onPress: () => {
-          if (auth.user == undefined) return;
+    setSelectedStore(undefined);
 
-          deleteContribution(product.id, store.technical_id, auth.user).then(
-            () => {
-              refetch();
-            }
-          );
-        },
-      },
-    ]);
+    // Alert.alert("Confirm", "Are you sure you want to delete this marker?", [
+    //   {
+    //     text: "Cancel",
+    //     onPress: () => null,
+    //     style: "cancel",
+    //   },
+    //   {
+    //     text: "Yes",
+    //     onPress: () => {
+    //       if (auth.user == undefined) return;
+
+    //       deleteContribution(product.id, store.technical_id, auth.user).then(
+    //         () => {
+    //           refetch();
+    //         }
+    //       );
+    //     },
+    //   },
+    // ]);
   };
 
   const navigateMapTo = ({ latitude, longitude }: LatLng) => {
@@ -116,25 +118,31 @@ function ContributionScreen({ navigation, route }: Props) {
       country: config.country,
       language: config.language_code,
       searchQuery: searchQuery,
-      excludePlacesId: myContributions.map((p: Store) => {
-        return p.technical_id;
-      }),
     };
 
-    console.log(options);
-
     searchPlaces(options).then((results: Store[]) => {
-      console.log(results);
-      setPlaces(results);
+      let storeList = results;
+
+      //Get list of the stores where the user already contributed
+      const excludePlacesId = myContributions.map((p: Store) => {
+        return p.technical_id;
+      });
+
+      //Filter out already contributed stores
+      storeList = storeList.filter(
+        (store: any) => excludePlacesId.indexOf(store.technical_id) == -1
+      );
+
+      setPlaces(storeList);
 
       //Center map on the first marker
-      if (results[0] != undefined) {
-        let coordinates = results.map((result: Store) => {
+      if (storeList[0] != undefined) {
+        let coordinates = storeList.map((result: Store) => {
           return { latitude: result.lat, longitude: result.lng } as LatLng;
         });
         navigateMapTo({
-          latitude: results[0].lat,
-          longitude: results[0].lng,
+          latitude: storeList[0].lat,
+          longitude: storeList[0].lng,
         } as LatLng);
         mapRef.current?.fitToCoordinates(coordinates);
       }
@@ -157,7 +165,7 @@ function ContributionScreen({ navigation, route }: Props) {
 
     const linkProductStoreResult = await linkProductStore(
       product.id,
-      selectedStore.id,
+      selectedStore.technical_id,
       auth.user
     );
 
@@ -196,14 +204,16 @@ function ContributionScreen({ navigation, route }: Props) {
           ref={mapRef}
         >
           {places.map((place: any, i: number) => {
-            return (
-              <Marker
-                coordinate={{ latitude: place.lat, longitude: place.lng }}
-                title={place.name}
-                key={place.id}
-                onPress={() => storeSelected(place)}
-              />
-            );
+            if (i < markerLimit) {
+              return (
+                <Marker
+                  coordinate={{ latitude: place.lat, longitude: place.lng }}
+                  title={place.name}
+                  key={place.technical_id}
+                  onPress={() => storeSelected(place)}
+                />
+              );
+            }
           })}
           {/* My contributions */}
           {myContributions.map((place: any, i: number) => {
@@ -214,9 +224,9 @@ function ContributionScreen({ navigation, route }: Props) {
                   longitude: parseFloat(place.lng),
                 }}
                 title={place.name}
-                key={place.id}
+                key={place.technical_id}
                 pinColor={colors.primary}
-                onPress={() => null}
+                onPress={() => deleteMarker(place)}
               />
             );
           })}
@@ -228,21 +238,23 @@ function ContributionScreen({ navigation, route }: Props) {
             style={styles.contentView}
             keyboardShouldPersistTaps={"handled"}
           >
-            {places.map((place: any) => {
-              return (
-                <Text
-                  key={place.id}
-                  onPress={() => storeSelected(place)}
-                  style={[
-                    styles.storeListItem,
-                    selectedStore?.id == place.id //Add the selected style if the place is the one selected
-                      ? styles.storeListItemSelected
-                      : undefined,
-                  ]}
-                >
-                  {place.name}
-                </Text>
-              );
+            {places.map((place: any, i: number) => {
+              if (i < markerLimit) {
+                return (
+                  <Text
+                    key={place.technical_id}
+                    onPress={() => storeSelected(place)}
+                    style={[
+                      styles.storeListItem,
+                      selectedStore?.technical_id == place.technical_id //Add the selected style if the place is the one selected
+                        ? styles.storeListItemSelected
+                        : undefined,
+                    ]}
+                  >
+                    {place.name}
+                  </Text>
+                );
+              }
             })}
           </ScrollView>
         </>

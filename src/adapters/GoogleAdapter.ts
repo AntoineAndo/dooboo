@@ -11,8 +11,7 @@ class GoogleAdapter implements IPlaceFinder {
   transform(results: Store[]): Store[] {
     return results.map((result: any) => {
       return {
-        id: result.place_id,
-        technical_id: result.technical_id,
+        technical_id: result.place_id,
         name: result.name,
         lat: result.geometry.location.lat,
         lng: result.geometry.location.lng,
@@ -21,19 +20,7 @@ class GoogleAdapter implements IPlaceFinder {
     });
   }
 
-  exclude(results: Store[], excludePlacesId: string[]): Store[] {
-    //Keep only the results that are not already present
-    return results.filter(
-      (result: Store) => excludePlacesId.indexOf(result.id) == -1
-    );
-  }
-
-  search(
-    searchQuery: string,
-    language: string,
-    country: string,
-    excludePlacesId: string[]
-  ): Promise<any> {
+  search(searchQuery: string, language: string, country: string): Promise<any> {
     const endpoint =
       "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
@@ -52,12 +39,13 @@ class GoogleAdapter implements IPlaceFinder {
       axios
         .get(url)
         .then((response) => {
-          const transformedData = this.transform(
-            response.data.results.slice(0, 5)
-          );
+          let results = response.data.results;
+
+          //Transform from Google type result to generic Store type
+          results = this.transform(results);
 
           // handle success
-          res(this.exclude(transformedData, excludePlacesId));
+          res(results);
         })
         .catch((error) => {
           // handle error

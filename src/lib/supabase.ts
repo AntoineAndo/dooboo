@@ -140,7 +140,7 @@ export async function upsertStore(store: Store) {
     .from("store")
     .upsert(
       {
-        technical_id: store.id,
+        technical_id: store.technical_id,
         name: store.name,
         source: store.source,
         lat: store.lat,
@@ -185,8 +185,6 @@ export async function deleteContribution(
   storeId: string,
   user: User
 ) {
-  console.log([productId, storeId, user.id]);
-
   const { data, error } = await supabase
     .from("product_store")
     .delete()
