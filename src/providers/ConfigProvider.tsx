@@ -2,10 +2,18 @@ import React, { createContext, useContext, useReducer, useState } from "react";
 import storage from "../lib/storage";
 
 export class Config {
-  language_code: string = "en";
+  language_code: string = "";
   isAppFirstLauched?: Boolean = false;
-  country: any;
-  categories: any[] = [];
+  countryId: number = 0;
+  dropdownValues: {
+    categories: any[];
+    languages: any[];
+    countries: any[];
+  } = {
+    categories: [],
+    languages: [],
+    countries: [],
+  };
 }
 
 //Creation of the Context

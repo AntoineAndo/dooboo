@@ -15,6 +15,7 @@
     "@googlemaps/react-wrapper": "^1.1.35",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/hooks": "^2.8.1",
+    "@react-native-picker/picker": "^2.4.8",
     "@react-navigation/bottom-tabs": "6.3.1",
     "@react-navigation/material-bottom-tabs": "6.2.1",
     "@react-navigation/native": "6.0.10",
@@ -32,6 +33,7 @@
     "expo-localization": "^13.1.0",
     "expo-location": "^14.3.0",
     "expo-random": "^12.3.0",
+    "expo-secure-store": "~11.3.0",
     "expo-splash-screen": "^0.16.2",
     "expo-status-bar": "~1.4.0",
     "expo-web-browser": "^11.0.0",
@@ -52,8 +54,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
     "react-phone-number-input": "^3.2.12",
-    "uuid": "^9.0.0",
-    "expo-secure-store": "~11.3.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

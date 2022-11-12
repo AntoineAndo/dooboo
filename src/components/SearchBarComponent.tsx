@@ -15,6 +15,9 @@ type Props = {
 function SearchBarComponent({ onTouch }: Props) {
   const navigation = useNavigation<any>();
   const translation = useTranslation();
+  if (translation == undefined) {
+    return <></>;
+  }
   return (
     <TouchableOpacity
       style={styles.searchBar}

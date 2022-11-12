@@ -1,7 +1,7 @@
 import { LatLng } from "react-native-maps";
 
 type Store = {
-  id: string;
+  id?: string;
   technical_id: string;
   name: string;
   lat: number;

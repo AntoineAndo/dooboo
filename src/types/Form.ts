@@ -4,7 +4,7 @@ type Form = {
   name: string;
   categories: any[];
   store?: Store;
-  countryId: string;
+  countryId: number;
   errors: {
     [key: string]: any;
   };

@@ -45,7 +45,7 @@ function SearchCategoriesScreen({ navigation }: any) {
     <View>
       <HeaderComponent title="Categories" showBackButton={true} subtitle="" />
       <View>
-        {config.categories.map((category: any) => {
+        {config.dropdownValues.categories.map((category: any) => {
           return (
             <View key={category.id}>
               <Checkbox

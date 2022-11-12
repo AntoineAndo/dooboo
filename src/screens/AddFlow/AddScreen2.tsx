@@ -12,6 +12,7 @@ import SearchInput from "../../components/SearchInput";
 import { searchPlaces } from "../../lib/PlacesFinder";
 import Store from "../../types/Store";
 import Form from "../../types/Form";
+import { useConfig } from "../../providers/ConfigProvider";
 
 type Props = {
   route: any;
@@ -26,6 +27,7 @@ function AddScreen2({ route, navigation }: Props) {
   const [places, setPlaces] = React.useState<any[]>([]);
   const [location, setLocation] = React.useState<any>(undefined);
   const [errorMsg, setErrorMsg] = React.useState("");
+  const { config } = useConfig();
 
   const mapRef = React.useRef<MapView>(null);
 
@@ -105,7 +107,9 @@ function AddScreen2({ route, navigation }: Props) {
     }
 
     const options = {
-      country: "en",
+      country: config.dropdownValues.countries.find(
+        (country: any) => country.id == config.countryId
+      ),
       language: "en",
       searchQuery: searchQuery,
     };

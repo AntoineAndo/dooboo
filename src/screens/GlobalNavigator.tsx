@@ -8,7 +8,13 @@ import * as SplashScreen from "expo-splash-screen";
 import Storage from "../lib/storage";
 import { initializeTranslations } from "../hooks/translation";
 import storage from "../lib/storage";
-import { getCategories, getDefaultCountry, supabase } from "../lib/supabase";
+import {
+  getCategories,
+  getCountries,
+  getDefaultCountry,
+  getLanguages,
+  supabase,
+} from "../lib/supabase";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
 import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
@@ -36,9 +42,25 @@ function GlobalNavigator({}: Props): any {
         const configuration = Storage.getData("config");
         const defaultCountry = getDefaultCountry();
         const categories = getCategories("");
+        const countries = getCountries();
+        const languages = getLanguages();
         const session = supabase.auth.getSession();
-        Promise.all([configuration, defaultCountry, categories, session]).then(
-          ([configuration, defaultCountryResult, categories, session]) => {
+        Promise.all([
+          configuration,
+          defaultCountry,
+          categories,
+          session,
+          countries,
+          languages,
+        ]).then(
+          ([
+            configuration,
+            defaultCountryResult,
+            categories,
+            session,
+            countries,
+            languages,
+          ]) => {
             let configurationObject: Config;
 
             if (defaultCountryResult.data == null) {
@@ -83,35 +105,44 @@ function GlobalNavigator({}: Props): any {
                 country: defaultCountry,
                 language_code: "en",
                 isAppFirstLauched: false,
-                categories: categories.data,
+                dropdownValues: {
+                  categories: categories.data,
+                  languages: languages.data,
+                  countries: countries.data,
+                },
               };
 
               storage.storeData("config", JSON.stringify(configurationObject));
             } else {
+              //duplicate stored existing conf
               configurationObject = configuration;
-              configurationObject.categories = categories.data;
+              //Patch dropdown configuration values
+              configurationObject.dropdownValues = {
+                categories: categories.data,
+                languages: languages.data,
+                countries: countries.data,
+              };
             }
+
+            console.log(configurationObject);
 
             //Set the configuration object as the context value
             // so that it can be accessed everywhere in the app
             setConfig(configurationObject);
-            cb();
+            cb(configurationObject);
           }
         );
       } catch (e) {
         //@@ You might want to provide this error information to an error reporting service
         console.warn(e);
-      } finally {
-        setAppIsReady(true);
-        SplashScreen.hideAsync();
       }
     }
 
-    loadResourcesAndDataAsync(() => {
-      console.log("config", config);
+    loadResourcesAndDataAsync((configuration: any) => {
+      console.log("configuration", configuration);
 
       // Translation init
-      initializeTranslations(config.language_code as string);
+      initializeTranslations(configuration.language_code as string);
 
       setAppIsReady(true);
 

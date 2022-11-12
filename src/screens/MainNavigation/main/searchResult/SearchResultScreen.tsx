@@ -36,7 +36,7 @@ function SearchResultScreen({ route, navigation }: Props) {
     });
 
     const searchQuery = {
-      country: config.country.id,
+      country: config.countryId,
       categoriesId,
     };
     return getProducts(searchQuery);

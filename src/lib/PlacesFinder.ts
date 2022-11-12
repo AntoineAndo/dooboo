@@ -3,7 +3,7 @@ import { useGoogle, useNaver } from "../hooks/apiAdapters";
 
 type queryOptions = {
   searchQuery: string;
-  country: string;
+  country: any;
   language: string;
   excludePlacesId?: string[];
 };
@@ -12,12 +12,8 @@ export function searchPlaces({
   searchQuery,
   country,
   language,
-  excludePlacesId,
 }: queryOptions): Promise<any> {
   let api: IPlaceFinder;
-  if (excludePlacesId == undefined) {
-    excludePlacesId = [];
-  }
   switch (country) {
     case "kr":
       api = useNaver();
@@ -26,5 +22,5 @@ export function searchPlaces({
       api = useGoogle();
   }
 
-  return api.search(searchQuery, country, language, excludePlacesId);
+  return api.search(searchQuery, country, language);
 }

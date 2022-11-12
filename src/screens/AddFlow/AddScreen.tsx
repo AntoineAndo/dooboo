@@ -27,8 +27,8 @@ function AddScreen({ navigation }: Props) {
   const { config } = useConfig();
   let [formTouched, setFormTouched] = React.useState(false);
   const { isLoading, isError, data, error } = useQuery(
-    ["categories_" + config.country.code],
-    () => getCategories(config.country.id)
+    ["categories_" + config.countryId],
+    () => getCategories(config.countryId)
   );
   const maxCategoryChoices = 3;
 
@@ -36,7 +36,7 @@ function AddScreen({ navigation }: Props) {
     name: "",
     categories: [],
     store: undefined,
-    countryId: config.country.id,
+    countryId: config.countryId,
     errors: [],
   });
 

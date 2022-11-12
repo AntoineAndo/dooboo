@@ -35,6 +35,7 @@ type Props = {
 
 function HomeScreen({ navigation }: Props) {
   const { config } = useConfig();
+  console.log(config);
 
   const translation = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
@@ -46,7 +47,7 @@ function HomeScreen({ navigation }: Props) {
     refetch,
   } = useQuery(["products"], () => {
     const searchQuery = {
-      fk_country_id: config.country.id,
+      fk_country_id: config.countryId,
     };
     return getProducts(searchQuery);
   });
