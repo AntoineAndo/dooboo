@@ -49,9 +49,6 @@ function IntroScreen({}: Props) {
     );
   };
 
-  console.log(selectedCountry);
-  console.log(selectedLanguage);
-
   return (
     <View>
       <Text>IntroScreen</Text>

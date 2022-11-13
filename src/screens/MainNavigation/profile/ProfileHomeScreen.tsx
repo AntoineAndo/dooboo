@@ -37,6 +37,10 @@ function ProfileHomeScreen({ navigation }: Props) {
           ></Button>
         </View>
       )}
+      <Button
+        title="Settings"
+        onPress={() => navigation.navigate("SettingsScreen")}
+      ></Button>
     </View>
   );
 }

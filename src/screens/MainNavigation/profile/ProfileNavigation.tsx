@@ -4,6 +4,7 @@ import { useAuth } from "../../../providers/AuthProvider";
 import AuthenticationScreen from "./authentication/AuthenticationScreen";
 import MyContributionsScreen from "./MyContributionsScreen";
 import ProfileHomeScreen from "./ProfileHomeScreen";
+import SettingsScreen from "./SettingsScreen";
 
 type Props = {
   route: any;
@@ -26,6 +27,7 @@ function ProfileNavigation({ route }: Props) {
         component={ProfileHomeScreen}
         options={{}}
       />
+      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       {auth.session != undefined && (
         <Stack.Screen
           name="My Contributions"
