@@ -41,7 +41,7 @@ function GlobalNavigator({}: Props): any {
         //@@ https://docs.expo.dev/archive/classic-updates/preloading-and-caching-assets/#pre-loading-and-caching-assets
         const configuration = Storage.getData("config");
         const defaultCountry = getDefaultCountry();
-        const categories = getCategories("");
+        const categories = getCategories(0);
         const countries = getCountries();
         const languages = getLanguages();
         const session = supabase.auth.getSession();
@@ -102,8 +102,8 @@ function GlobalNavigator({}: Props): any {
             ) {
               //Initial values
               configurationObject = {
-                country: defaultCountry,
-                language_code: "en",
+                countryId: defaultCountry.id,
+                language_code: "eng",
                 isAppFirstLauched: false,
                 dropdownValues: {
                   categories: categories.data,

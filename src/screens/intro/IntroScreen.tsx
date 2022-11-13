@@ -8,6 +8,7 @@ import { getCountries, getLanguages } from "../../lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 
 import { Picker } from "@react-native-picker/picker";
+import { updateTranslation } from "../../hooks/translation";
 
 type Props = {};
 
@@ -24,18 +25,18 @@ function IntroScreen({}: Props) {
   );
 
   //Initiate State values with the default Country and Language
-  const [selectedLanguage, setSelectedLanguage] = React.useState(
-    initialCountry.code
-  );
-  const [selectedCountry, setSelectedCountry] = React.useState(
-    initialLanguage.code
-  );
+  const [selectedLanguage, setSelectedLanguage] =
+    React.useState(initialCountry);
+  const [selectedCountry, setSelectedCountry] = React.useState(initialLanguage);
 
   const finishOnBoarding = () => {
     let _conf = config;
     _conf.isAppFirstLauched = true;
-    _conf.country = selectedCountry;
+    _conf.countryId = selectedCountry.id;
     _conf.language_code = selectedLanguage;
+
+    console.log(_conf);
+    updateTranslation(selectedLanguage);
 
     setConfig(_conf);
 
@@ -71,7 +72,7 @@ function IntroScreen({}: Props) {
         onValueChange={(itemValue, itemIndex) => setSelectedCountry(itemValue)}
       >
         {config.dropdownValues.countries.map((country: any) => {
-          return <Picker.Item label={country.name} value={country.code} />;
+          return <Picker.Item label={country.name} value={country} />;
         })}
       </Picker>
       <TouchableOpacity

@@ -10,14 +10,14 @@ let i18n: I18n;
 
 export function initializeTranslations(language_code: string) {
   const translations = {
-    en: english,
-    kr: korean,
+    eng: english,
+    kor: korean,
     fr: french,
   };
 
   i18n = new I18n(translations);
   // Set the locale once at the beginning of your app.
-  i18n.defaultLocale = "en";
+  i18n.defaultLocale = "eng";
   i18n.locale = language_code;
 
   // When a value is missing from a language it'll fallback to another language with the key present.
@@ -26,6 +26,13 @@ export function initializeTranslations(language_code: string) {
   // i18n.locale = 'ja';
 }
 
+export function updateTranslation(language_code: string) {
+  i18n.locale = language_code;
+}
+
 export function useTranslation() {
+  if (i18n == undefined) {
+    initializeTranslations("eng");
+  }
   return i18n;
 }
