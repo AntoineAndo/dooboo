@@ -31,6 +31,9 @@ function AddScreen2({ route, navigation }: Props) {
 
   const mapRef = React.useRef<MapView>(null);
 
+  //Max number of markers displayed after search
+  const markerLimit = 5;
+
   //Location permission
   React.useEffect(() => {
     (async () => {
@@ -177,17 +180,19 @@ function AddScreen2({ route, navigation }: Props) {
           ref={mapRef}
         >
           {places.map((place: Store, i: number) => {
-            return (
-              <Marker
-                coordinate={{
-                  latitude: place.lat,
-                  longitude: place.lng,
-                }}
-                title={place.name}
-                key={place.id}
-                onPress={() => placeSelected(place)}
-              />
-            );
+            if (i < markerLimit) {
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: place.lat,
+                    longitude: place.lng,
+                  }}
+                  title={place.name}
+                  key={place.id}
+                  onPress={() => placeSelected(place)}
+                />
+              );
+            }
           })}
         </MapView>
       </View>
@@ -204,21 +209,23 @@ function AddScreen2({ route, navigation }: Props) {
             style={styles.contentView}
             keyboardShouldPersistTaps={"handled"}
           >
-            {places.map((place: any) => {
-              return (
-                <Text
-                  key={place.id}
-                  onPress={() => placeSelected(place)}
-                  style={[
-                    styles.storeListItem,
-                    form.store?.id == place.id //Add the selected style if the place is the one selected
-                      ? styles.storeListItemSelected
-                      : undefined,
-                  ]}
-                >
-                  {place.name}
-                </Text>
-              );
+            {places.map((place: any, i: number) => {
+              if (i < markerLimit) {
+                return (
+                  <Text
+                    key={place.id}
+                    onPress={() => placeSelected(place)}
+                    style={[
+                      styles.storeListItem,
+                      form.store?.id == place.id //Add the selected style if the place is the one selected
+                        ? styles.storeListItemSelected
+                        : undefined,
+                    ]}
+                  >
+                    {place.name}
+                  </Text>
+                );
+              }
             })}
           </ScrollView>
         </>

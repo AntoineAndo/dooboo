@@ -10,7 +10,7 @@ import { useAuth } from "../../../providers/AuthProvider";
 type Props = {};
 
 function MyContributionsScreen({}: Props) {
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
 
   const initialData: any[] = [];
 

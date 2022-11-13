@@ -35,7 +35,6 @@ function IntroScreen({}: Props) {
     _conf.countryId = selectedCountry.id;
     _conf.language_code = selectedLanguage;
 
-    console.log(_conf);
     updateTranslation(selectedLanguage);
 
     setConfig(_conf);

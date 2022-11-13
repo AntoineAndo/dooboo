@@ -81,7 +81,13 @@ function GlobalNavigator({}: Props): any {
                   if (response.error == null && response.data != null) {
                     console.log("session refresh");
                     console.log(response);
-                    setAuth(response.data);
+                    setAuth({
+                      session: response.data.session,
+                      user: {
+                        id: response.data.user?.id,
+                        phone: response.data.user?.phone,
+                      },
+                    });
                     return;
                   }
 

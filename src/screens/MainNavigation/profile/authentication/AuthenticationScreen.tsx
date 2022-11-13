@@ -50,10 +50,17 @@ function AuthenticationScreen({ navigation }: Props) {
     if (data.session != undefined) {
       console.log(data);
       setAuth({
-        isLoggedIn: true,
-        phoneNumber: phoneNumber,
-        accessToken: data.session.access_token,
-      } as AuthState);
+        session: data.session,
+        user: {
+          id: data.user?.id,
+          phone: data.user?.phone,
+        },
+      });
+      // setAuth({
+      //   isLoggedIn: true,
+      //   phoneNumber: phoneNumber,
+      //   accessToken: data.session.access_token,
+      // } as AuthState);
       navigation.navigate("ProfileHome");
     }
   };
