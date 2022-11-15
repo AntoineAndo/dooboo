@@ -174,6 +174,7 @@ function AddScreen2({ route, navigation }: Props) {
             longitudeDelta: 0.1,
           }}
           pitchEnabled={false}
+          rotateEnabled={false}
           showsUserLocation={true}
           showsMyLocationButton={true}
           toolbarEnabled={false}

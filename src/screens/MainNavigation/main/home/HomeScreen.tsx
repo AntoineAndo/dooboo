@@ -35,7 +35,6 @@ type Props = {
 
 function HomeScreen({ navigation }: Props) {
   const { config } = useConfig();
-  console.log(config);
 
   const translation = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);

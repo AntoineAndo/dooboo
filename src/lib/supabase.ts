@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
 import SecureStorage from "./SecureStorage";
 import Store from "../types/Store";
+import Contribution from "../types/Contribution";
 
 const supabaseUrl = REACT_APP_API_URL as string;
 const supabaseAnonKey = REACT_APP_API_ANON_KEY as string;
@@ -140,13 +141,13 @@ export async function upsertStore(store: Store) {
     .from("store")
     .upsert(
       {
-        technical_id: store.technical_id,
+        id: store.id,
         name: store.name,
         source: store.source,
         lat: store.lat,
         lng: store.lng,
       },
-      { onConflict: "technical_id" }
+      { onConflict: "id" }
     )
     .select();
 }
@@ -181,7 +182,7 @@ export async function linkProductStore(
 }
 
 export async function deleteContribution(
-  productId: string,
+  productId: number,
   storeId: string,
   user: User
 ) {
@@ -220,7 +221,6 @@ export async function linkProductImage(productId: string, imageUrl: string) {
 }
 
 export async function uploadImage(image: File) {
-  console.log(image);
   let { data, error }: any = await supabase.storage
     .from("images")
     .upload("products/" + uuidv4() + ".jpg", image as File);
@@ -260,7 +260,7 @@ export async function deleteByTableAndId(table: string, id: number) {
   return { data, error };
 }
 
-export async function getContributions(userId: string) {
+export async function getContributions(userId: string | undefined) {
   const { data, error } = await supabase
     .from("product_store")
     .select(
@@ -291,7 +291,6 @@ export async function getCountries(): Promise<any> {
       .from("country")
       .select(`*`)
       .then((data) => {
-        console.log(data);
         res(data);
       });
   });
@@ -302,7 +301,6 @@ export async function getLanguages(): Promise<any> {
       .from("language")
       .select(`*`)
       .then((data) => {
-        console.log(data);
         res(data);
       });
   });

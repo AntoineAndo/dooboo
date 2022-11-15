@@ -75,28 +75,8 @@ function ContributionScreen({ navigation, route }: Props) {
     setSelectedStore(store);
   };
 
-  const deleteMarker = (store: Store) => {
+  const unselectStore = () => {
     setSelectedStore(undefined);
-
-    // Alert.alert("Confirm", "Are you sure you want to delete this marker?", [
-    //   {
-    //     text: "Cancel",
-    //     onPress: () => null,
-    //     style: "cancel",
-    //   },
-    //   {
-    //     text: "Yes",
-    //     onPress: () => {
-    //       if (auth.user == undefined) return;
-
-    //       deleteContribution(product.id, store.technical_id, auth.user).then(
-    //         () => {
-    //           refetch();
-    //         }
-    //       );
-    //     },
-    //   },
-    // ]);
   };
 
   const navigateMapTo = ({ latitude, longitude }: LatLng) => {
@@ -127,12 +107,12 @@ function ContributionScreen({ navigation, route }: Props) {
 
       //Get list of the stores where the user already contributed
       const excludePlacesId = myContributions.map((p: Store) => {
-        return p.technical_id;
+        return p.id;
       });
 
       //Filter out already contributed stores
       storeList = storeList.filter(
-        (store: any) => excludePlacesId.indexOf(store.technical_id) == -1
+        (store: any) => excludePlacesId.indexOf(store.id) == -1
       );
 
       setPlaces(storeList);
@@ -152,9 +132,16 @@ function ContributionScreen({ navigation, route }: Props) {
   };
 
   const onSubmit = async () => {
-    if (selectedStore == undefined) return;
+    if (selectedStore == undefined || selectedStore.id == undefined) {
+      console.error("Error with the selected store");
+      return;
+    }
 
-    if (auth.user == undefined) return;
+    if (auth.user == undefined) {
+      console.error("Not allowed to execute this operation");
+      navigation.redirect("Authentication");
+      return;
+    }
 
     //Show the loading overlay
     app.patchState("isLoading", true);
@@ -167,7 +154,7 @@ function ContributionScreen({ navigation, route }: Props) {
 
     const linkProductStoreResult = await linkProductStore(
       product.id,
-      selectedStore.technical_id,
+      selectedStore.id,
       auth.user
     );
 
@@ -211,7 +198,7 @@ function ContributionScreen({ navigation, route }: Props) {
                 <Marker
                   coordinate={{ latitude: place.lat, longitude: place.lng }}
                   title={place.name}
-                  key={place.technical_id}
+                  key={place.id}
                   onPress={() => storeSelected(place)}
                 />
               );
@@ -226,9 +213,9 @@ function ContributionScreen({ navigation, route }: Props) {
                   longitude: parseFloat(place.lng),
                 }}
                 title={place.name}
-                key={place.technical_id}
+                key={place.id}
                 pinColor={colors.primary}
-                onPress={() => deleteMarker(place)}
+                onPress={() => unselectStore()}
               />
             );
           })}
@@ -244,11 +231,11 @@ function ContributionScreen({ navigation, route }: Props) {
               if (i < markerLimit) {
                 return (
                   <Text
-                    key={place.technical_id}
+                    key={place.id}
                     onPress={() => storeSelected(place)}
                     style={[
                       styles.storeListItem,
-                      selectedStore?.technical_id == place.technical_id //Add the selected style if the place is the one selected
+                      selectedStore?.id == place.id //Add the selected style if the place is the one selected
                         ? styles.storeListItemSelected
                         : undefined,
                     ]}

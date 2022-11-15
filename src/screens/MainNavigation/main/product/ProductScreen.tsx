@@ -49,8 +49,6 @@ function ProductScreen({ route, navigation }: Props) {
     navigation.navigate("Contribution", { product: product });
   };
 
-  console.log(product);
-
   if (product == undefined) {
     return <></>;
   }

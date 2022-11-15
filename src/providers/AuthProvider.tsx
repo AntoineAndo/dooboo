@@ -24,8 +24,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         authData = JSON.parse(authDataString);
       }
 
-      console.log(authData);
-
       setAuthState(authData);
     } catch (err) {
       setAuthState({});

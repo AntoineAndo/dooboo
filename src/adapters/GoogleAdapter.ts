@@ -11,7 +11,7 @@ class GoogleAdapter implements IPlaceFinder {
   transform(results: Store[]): Store[] {
     return results.map((result: any) => {
       return {
-        technical_id: result.place_id,
+        id: result.place_id,
         name: result.name,
         lat: result.geometry.location.lat,
         lng: result.geometry.location.lng,

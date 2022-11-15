@@ -69,7 +69,6 @@ function GlobalNavigator({}: Props): any {
             }
 
             const defaultCountry = defaultCountryResult.data[0];
-            configuration = undefined;
 
             //Session ?
             if (session.data != null && session.data.session != undefined) {
@@ -102,10 +101,12 @@ function GlobalNavigator({}: Props): any {
             //Then we assume that this is the first time the app is launched
             //So we initialize the configuration values
             //Which will then lead to the opening of the Intro screen
+            // configuration=undefined
             if (
               configuration == undefined ||
               Object.keys(configuration).length == 0
             ) {
+              console.log("New configuration");
               //Initial values
               configurationObject = {
                 countryId: defaultCountry.id,

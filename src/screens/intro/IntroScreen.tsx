@@ -1,6 +1,6 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Button } from "react-native";
 import { Text } from "react-native";
 import { useConfig } from "../../providers/ConfigProvider";
 
@@ -71,14 +71,7 @@ function IntroScreen({}: Props) {
           return <Picker.Item label={country.name} value={country} />;
         })}
       </Picker>
-      <TouchableOpacity
-        style={{
-          width: 40,
-          height: 50,
-          borderWidth: 2,
-        }}
-        onPress={() => finishOnBoarding()}
-      ></TouchableOpacity>
+      <Button title="Done" onPress={() => finishOnBoarding()}></Button>
     </View>
   );
 }

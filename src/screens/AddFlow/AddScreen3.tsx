@@ -60,7 +60,9 @@ function AddScreen3({ route, navigation }: Props) {
   };
 
   const onSubmit = async () => {
-    if (form.store == undefined) return;
+    console.log(form);
+    console.log(auth);
+    if (form.store == undefined || form.store.id == undefined) return;
 
     if (auth.user == undefined) {
       //TODO redirect to auth page
@@ -110,7 +112,7 @@ function AddScreen3({ route, navigation }: Props) {
       linkProductCategoriesResult,
       linkProductImageResult,
     ] = await Promise.all([
-      linkProductStore(insertedProduct.id, form.store.id, auth.user),
+      linkProductStore(insertedProduct.id, form.store?.id, auth.user),
       linkProductCategories(categoriesToInsert),
       linkProductImage(insertedProduct.id, imageInsertResult.data.path),
     ]);

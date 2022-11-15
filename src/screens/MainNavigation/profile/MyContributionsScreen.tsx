@@ -36,8 +36,6 @@ function MyContributionsScreen({}: Props) {
       return <Text>Loading</Text>;
     }
 
-    console.log(contributions);
-
     return <ContributionList contributions={contributions} />;
   };
 

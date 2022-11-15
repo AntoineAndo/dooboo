@@ -25,13 +25,11 @@ function AuthenticationScreen({ navigation }: Props) {
     });
 
     if (error == null) {
-      console.log(data);
     }
   };
 
   //Verify Code
   const verifyCode = async () => {
-    console.log(verificationCode);
     if (verificationCode.length != 6) {
       return;
     }
@@ -48,7 +46,6 @@ function AuthenticationScreen({ navigation }: Props) {
     }
 
     if (data.session != undefined) {
-      console.log(data);
       setAuth({
         session: data.session,
         user: {
@@ -56,11 +53,7 @@ function AuthenticationScreen({ navigation }: Props) {
           phone: data.user?.phone,
         },
       });
-      // setAuth({
-      //   isLoggedIn: true,
-      //   phoneNumber: phoneNumber,
-      //   accessToken: data.session.access_token,
-      // } as AuthState);
+
       navigation.navigate("ProfileHome");
     }
   };
