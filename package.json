@@ -54,6 +54,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
     "react-phone-number-input": "^3.2.12",
+    "react-timer-hook": "^3.0.5",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

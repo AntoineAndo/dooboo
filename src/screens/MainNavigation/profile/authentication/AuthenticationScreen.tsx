@@ -2,10 +2,10 @@ import React from "react";
 import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { supabase } from "../../../../lib/supabase";
 import PhoneInput from "react-phone-number-input/react-native-input";
-import { useConfig } from "../../../../providers/ConfigProvider";
-import SecureStorage from "../../../../lib/SecureStorage";
-import { AuthState, useAuth } from "../../../../providers/AuthProvider";
-// import { isValidPhoneNumber } from "react-phone-number-input";
+import { useAuth } from "../../../../providers/AuthProvider";
+import { isValidPhoneNumber } from "react-phone-number-input";
+import { useTimer } from "react-timer-hook";
+import HeaderComponent from "../../../../components/HeaderComponent";
 type Props = {
   navigation: any;
 };
@@ -16,9 +16,26 @@ function AuthenticationScreen({ navigation }: Props) {
   const [smsSent, setSmsSent] = React.useState<boolean>(false);
   const { auth, setAuth } = useAuth();
 
+  const timerDuration = 10;
+
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + timerDuration);
+
+  const { seconds, isRunning, start, restart } = useTimer({
+    expiryTimestamp: time,
+    autoStart: false,
+    onExpire: () => {
+      let time = new Date();
+      time.setSeconds(time.getSeconds() + timerDuration);
+      restart(time, false);
+    },
+  });
+
   //SEND SMS
   const sendSms = async () => {
-    // if (!isValidPhoneNumber(phoneNumber)) return;
+    if (!isValidPhoneNumber(phoneNumber)) return;
+
+    start();
     setSmsSent(true);
     let { data, error } = await supabase.auth.signInWithOtp({
       phone: phoneNumber,
@@ -59,8 +76,10 @@ function AuthenticationScreen({ navigation }: Props) {
   };
 
   return (
-    <View>
-      <Text>Profile</Text>
+    <View style={styles.content}>
+      <HeaderComponent title={"Login"} showBackButton={true} />
+      <Text>Please type your mobile phone number below</Text>
+      <Text>We will send you a One Time code by message</Text>
       <PhoneInput
         country="KR"
         placeholder="Enter phone number"
@@ -68,16 +87,34 @@ function AuthenticationScreen({ navigation }: Props) {
         onChange={setPhoneNumber}
         style={styles.input}
       />
-      <Button
-        title="Phone Login"
-        onPress={() => {
-          sendSms();
-        }}
-        disabled={smsSent}
-      ></Button>
+      {smsSent ? (
+        <Button
+          title={
+            isRunning
+              ? "Resend verification code in " + seconds + " seconds"
+              : "Resend verification code"
+          }
+          onPress={() => {
+            sendSms();
+          }}
+          disabled={isRunning}
+        ></Button>
+      ) : (
+        <Button
+          title="Send verification code"
+          onPress={() => {
+            sendSms();
+          }}
+          disabled={isRunning}
+        ></Button>
+      )}
 
       {smsSent && (
-        <>
+        <View style={styles.verificationContainer}>
+          <Text>
+            Please type the code you received by message to complete the
+            authentication
+          </Text>
           <TextInput
             style={styles.input}
             value={verificationCode}
@@ -89,16 +126,23 @@ function AuthenticationScreen({ navigation }: Props) {
               verifyCode();
             }}
           ></Button>
-        </>
+        </View>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    paddingHorizontal: 10,
+  },
   input: {
     borderWidth: 1,
     margin: 10,
+  },
+  verificationContainer: {
+    marginTop: 20,
   },
 });
 
