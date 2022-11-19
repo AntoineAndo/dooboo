@@ -1,16 +1,20 @@
 import React from "react";
 import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { supabase } from "../../../../lib/supabase";
-import PhoneInput from "react-phone-number-input/react-native-input";
+import PhoneInput, {
+  Country,
+} from "react-phone-number-input/react-native-input";
 import { useAuth } from "../../../../providers/AuthProvider";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { useTimer } from "react-timer-hook";
 import HeaderComponent from "../../../../components/HeaderComponent";
+import CountryPicker, { CountryCode } from "react-native-country-picker-modal";
 type Props = {
   navigation: any;
 };
 
 function AuthenticationScreen({ navigation }: Props) {
+  const [countryCode, setCountryCode] = React.useState<Country>("KR");
   const [phoneNumber, setPhoneNumber] = React.useState<any>("");
   const [verificationCode, setVerificationCode] = React.useState("");
   const [smsSent, setSmsSent] = React.useState<boolean>(false);
@@ -80,8 +84,27 @@ function AuthenticationScreen({ navigation }: Props) {
       <HeaderComponent title={"Login"} showBackButton={true} />
       <Text>Please type your mobile phone number below</Text>
       <Text>We will send you a One Time code by message</Text>
+
+      <View>
+        <CountryPicker
+          withEmoji={true}
+          withFilter={true}
+          withCallingCode={true}
+          withCallingCodeButton={true}
+          withCountryNameButton={true}
+          countryCode={countryCode as CountryCode}
+          preferredCountries={["KR"]}
+          onSelect={(country: any) => {
+            //Clear field
+            setPhoneNumber("");
+            setCountryCode(country.cca2);
+          }}
+          visible
+        />
+      </View>
+
       <PhoneInput
-        country="KR"
+        country={countryCode}
         placeholder="Enter phone number"
         value={phoneNumber}
         onChange={setPhoneNumber}
