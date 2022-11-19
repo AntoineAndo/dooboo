@@ -12,17 +12,22 @@ type Props = {
 
 function HeaderComponent({ title, showBackButton = true, subtitle }: Props) {
   const navigation = useNavigation();
+
+  const goBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.header}>
+      <Text style={styles.title}>{title}</Text>
       {showBackButton && (
         <IonIcons
           name={"arrow-back-outline"}
           style={styles.backAction}
           size={40}
-          onPress={() => navigation.goBack()}
+          onPress={() => goBack()}
         />
       )}
-      <Text style={styles.title}>{title}</Text>
       {subtitle != undefined && <Text style={styles.subtitle}>{subtitle}</Text>}
     </View>
   );
