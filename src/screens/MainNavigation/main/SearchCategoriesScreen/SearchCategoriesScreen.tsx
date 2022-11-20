@@ -4,11 +4,12 @@ import { Checkbox } from "react-native-paper";
 import HeaderComponent from "../../../../components/HeaderComponent";
 import { useTranslation } from "../../../../hooks/translation";
 import { useConfig } from "../../../../providers/ConfigProvider";
+import SearchForm from "../../../../types/SearchForm";
 
 function SearchCategoriesScreen({ navigation }: any) {
   const { config } = useConfig();
   const translation = useTranslation();
-  const [searchForm, setSearchForm] = React.useState<any>({
+  const [searchForm, setSearchForm] = React.useState<SearchForm>({
     categories: [],
   });
 

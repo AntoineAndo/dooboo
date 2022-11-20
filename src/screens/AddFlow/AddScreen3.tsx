@@ -60,7 +60,9 @@ function AddScreen3({ route, navigation }: Props) {
   };
 
   const onSubmit = async () => {
+    console.log(auth);
     if (auth.user == undefined) {
+      console.log("not auth");
       //TODO redirect to auth page
       return;
     }
@@ -69,7 +71,7 @@ function AddScreen3({ route, navigation }: Props) {
     app.patchState("isLoading", true);
 
     //Submit the form
-    const submitError = submitForm(form, mainImage, auth.user);
+    const submitError = await submitForm(form, mainImage, auth.user);
 
     app.patchState("isLoading", false);
 

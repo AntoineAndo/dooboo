@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView, Modal } from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import ListComponent from "../../../../components/ListComponent";
 import Loader from "../../../../components/Loader";
@@ -9,7 +9,8 @@ import Loader from "../../../../components/Loader";
 import commonStyles from "../../../../config/stylesheet";
 import { getProducts } from "../../../../lib/supabase";
 import { useConfig } from "../../../../providers/ConfigProvider";
-import Product from "../../../../types/product";
+import SearchForm from "../../../../types/SearchForm";
+import FiltersModal from "./FiltersModal";
 
 type Props = {
   route: any;
@@ -18,7 +19,10 @@ type Props = {
 
 function SearchResultScreen({ route, navigation }: Props) {
   const { config } = useConfig();
-  const { searchParams } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [searchParams, setSearchParams] = useState<SearchForm>({
+    categories: route.params.searchParams.categories,
+  });
 
   const onProductClick = (product: any) => {
     navigation.navigate("Product", { product });
@@ -29,27 +33,48 @@ function SearchResultScreen({ route, navigation }: Props) {
     isError,
     data: products,
     error,
-  } = useQuery(["products_categories"], () => {
-    let categoriesId: any[] = [];
-    searchParams.categories.forEach((category: any) => {
-      categoriesId.push(category.id);
-    });
+    refetch,
+  } = useQuery(
+    [
+      "search_result_" +
+        searchParams.categories.reduce((a, b) => a.concat(b.id), ""),
+    ],
+    () => {
+      console.log("QUERY");
+      console.log(searchParams.categories);
+      let categoriesId: any[] = [];
+      searchParams.categories.forEach((category: any) => {
+        categoriesId.push(category.id);
+      });
 
-    const searchQuery = {
-      country: config.countryId,
-      categoriesId,
-    };
-    return getProducts(searchQuery);
-  });
+      const searchQuery = {
+        country: config.countryId,
+        categoriesId,
+      };
+      return getProducts(searchQuery);
+    }
+  );
 
   if (isError || products == null || products == undefined) {
     return <></>;
   }
 
-  console.log(products.length + " result(s)");
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = (params: any) => {
+    setModalVisible(false);
+    console.log(params);
+    setSearchParams(params);
+    refetch();
+  };
 
   return (
     <View style={styles.page}>
+      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <FiltersModal config={config} onClose={closeModal} />
+      </Modal>
       <View style={[styles.header, commonStyles.bottomShadow]}>
         <View style={styles.container}>
           <IonIcons
@@ -59,12 +84,12 @@ function SearchResultScreen({ route, navigation }: Props) {
             onPress={() => navigation.goBack()}
           />
           <Text style={styles.headerText}>Search result</Text>
-          <View style={styles.headerAction}>
-            <Image
-              style={styles.actionImage}
-              source={require("../../../../assets/icons/filter.svg")}
-            ></Image>
-          </View>
+          <IonIcons
+            name={"funnel-outline"}
+            style={styles.headerAction}
+            size={40}
+            onPress={() => openModal()}
+          />
         </View>
       </View>
       <ScrollView>
