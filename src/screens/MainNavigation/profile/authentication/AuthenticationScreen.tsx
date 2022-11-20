@@ -5,60 +5,120 @@ import PhoneInput, {
   Country,
 } from "react-phone-number-input/react-native-input";
 import { useAuth } from "../../../../providers/AuthProvider";
-import { isValidPhoneNumber } from "react-phone-number-input";
+import { getCountries, isValidPhoneNumber } from "react-phone-number-input";
 import { useTimer } from "react-timer-hook";
 import HeaderComponent from "../../../../components/HeaderComponent";
-import CountryPicker, { CountryCode } from "react-native-country-picker-modal";
+import CountryPicker, {
+  CountryCode,
+  getAllCountries,
+} from "react-native-country-picker-modal";
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from "react-native-confirmation-code-field";
 type Props = {
   navigation: any;
 };
+
+const TIMER_DURATION = 10;
+const VERIFICATION_CODE_LENGTH = 6;
 
 function AuthenticationScreen({ navigation }: Props) {
   const [countryCode, setCountryCode] = React.useState<Country>("KR");
   const [phoneNumber, setPhoneNumber] = React.useState<any>("");
   const [verificationCode, setVerificationCode] = React.useState("");
   const [smsSent, setSmsSent] = React.useState<boolean>(false);
+
+  const [errorPhoneNumber, setErrorPhoneNumber] = React.useState<string>("");
+  const [errorVerificationCode, setErrorVerificationCode] =
+    React.useState<string>("");
+
   const { auth, setAuth } = useAuth();
 
-  const timerDuration = 10;
+  const ref = useBlurOnFulfill({
+    value: verificationCode,
+    cellCount: VERIFICATION_CODE_LENGTH,
+  });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: verificationCode,
+    setValue: setVerificationCode,
+  });
+
+  const handleChangeVerificationCode = (value: any) => {
+    //Clear error
+    if (errorVerificationCode != "") {
+      setErrorVerificationCode("");
+    }
+
+    //Update state
+    setVerificationCode(value);
+
+    //If the code is complete, then auto verify
+    if (value.length == VERIFICATION_CODE_LENGTH) {
+      verifyCode(value);
+    }
+  };
 
   const time = new Date();
-  time.setSeconds(time.getSeconds() + timerDuration);
+  time.setSeconds(time.getSeconds() + TIMER_DURATION);
 
   const { seconds, isRunning, start, restart } = useTimer({
     expiryTimestamp: time,
     autoStart: false,
     onExpire: () => {
       let time = new Date();
-      time.setSeconds(time.getSeconds() + timerDuration);
+      time.setSeconds(time.getSeconds() + TIMER_DURATION);
       restart(time, false);
     },
   });
 
   //SEND SMS
   const sendSms = async () => {
-    if (!isValidPhoneNumber(phoneNumber)) return;
+    if (!isValidPhoneNumber(phoneNumber)) {
+      setErrorPhoneNumber("Please enter a valid phone number");
+      return;
+    }
 
-    start();
-    setSmsSent(true);
+    //Clear error
+    setErrorPhoneNumber("");
+
+    //Send OTP
     let { data, error } = await supabase.auth.signInWithOtp({
       phone: phoneNumber,
     });
 
-    if (error == null) {
+    if (error != null) {
+      console.log(error);
+      setErrorPhoneNumber("Please enter a valid phone number");
+      return;
     }
+    //Start timer
+    start();
+
+    //Show verification code field
+    setSmsSent(true);
   };
 
-  //Verify Code
-  const verifyCode = async () => {
-    if (verificationCode.length != 6) {
+  /**
+   * Function called to verify if the OTP entered is correct and authentify the user
+   * @params Code - Passed by the auto verification, without it the verification will fail
+   *                due to the async state update
+   */
+  const verifyCode = async (code: string | undefined = undefined) => {
+    if (verificationCode.length != 6 && code == undefined) {
+      setErrorVerificationCode("Invalid code");
       return;
     }
 
+    //Verify the OTP
+    //If a code was passed then verify this one as it is synced with the input field
+    // else use the state
     let { data, error } = await supabase.auth.verifyOtp({
       type: "sms",
       phone: phoneNumber,
-      token: verificationCode,
+      token: code != undefined ? code : verificationCode,
     });
 
     if (error != null || data == null) {
@@ -67,6 +127,7 @@ function AuthenticationScreen({ navigation }: Props) {
     }
 
     if (data.session != undefined) {
+      console.log(data);
       setAuth({
         session: data.session,
         user: {
@@ -97,6 +158,7 @@ function AuthenticationScreen({ navigation }: Props) {
           onSelect={(country: any) => {
             //Clear field
             setPhoneNumber("");
+
             setCountryCode(country.cca2);
           }}
           visible
@@ -110,6 +172,9 @@ function AuthenticationScreen({ navigation }: Props) {
         onChange={setPhoneNumber}
         style={styles.input}
       />
+      {errorPhoneNumber != "" && (
+        <Text style={styles.errorMsg}>{errorPhoneNumber}</Text>
+      )}
       {smsSent ? (
         <Button
           title={
@@ -138,11 +203,35 @@ function AuthenticationScreen({ navigation }: Props) {
             Please type the code you received by message to complete the
             authentication
           </Text>
-          <TextInput
+          {/* <TextInput
             style={styles.input}
             value={verificationCode}
             onChangeText={setVerificationCode}
-          ></TextInput>
+          ></TextInput> */}
+          <CodeField
+            ref={ref}
+            {...props}
+            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+            value={verificationCode}
+            onChangeText={handleChangeVerificationCode}
+            cellCount={VERIFICATION_CODE_LENGTH}
+            rootStyle={styles.codeFieldRoot}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({ index, symbol, isFocused }) => (
+              <Text
+                key={index}
+                style={[
+                  styles.cell,
+                  isFocused && styles.focusCell,
+                  errorVerificationCode != "" && styles.errorCell,
+                ]}
+                onLayout={getCellOnLayoutHandler(index)}
+              >
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            )}
+          />
           <Button
             title="Verify"
             onPress={() => {
@@ -164,8 +253,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 10,
   },
+  errorMsg: {
+    color: "red",
+  },
   verificationContainer: {
     marginTop: 20,
+  },
+  codeFieldRoot: { marginTop: 20 },
+  cell: {
+    width: 40,
+    height: 40,
+    lineHeight: 38,
+    fontSize: 24,
+    borderWidth: 2,
+    borderColor: "#00000030",
+    textAlign: "center",
+  },
+  focusCell: {
+    borderColor: "#000",
+  },
+  errorCell: {
+    borderColor: "red",
   },
 });
 

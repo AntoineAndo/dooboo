@@ -45,6 +45,7 @@
     "react-dom": "18.0.0",
     "react-hook-form": "^7.37.0",
     "react-native": "0.69.6",
+    "react-native-confirmation-code-field": "^7.3.1",
     "react-native-country-picker-modal": "^2.0.0",
     "react-native-dotenv": "^3.3.1",
     "react-native-elements": "^3.4.2",

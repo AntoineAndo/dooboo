@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
   },
   menu: {
     flex: 1,
-    borderWidth: 1,
     justifyContent: "space-evenly",
   },
 });
