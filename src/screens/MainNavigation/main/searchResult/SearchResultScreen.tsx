@@ -40,8 +40,6 @@ function SearchResultScreen({ route, navigation }: Props) {
         searchParams.categories.reduce((a, b) => a.concat(b.id), ""),
     ],
     () => {
-      console.log("QUERY");
-      console.log(searchParams.categories);
       let categoriesId: any[] = [];
       searchParams.categories.forEach((category: any) => {
         categoriesId.push(category.id);
@@ -64,10 +62,16 @@ function SearchResultScreen({ route, navigation }: Props) {
   };
 
   const closeModal = (params: any) => {
+    //hide modal
     setModalVisible(false);
-    console.log(params);
-    setSearchParams(params);
-    refetch();
+
+    //If the result is not null, it means the user clicked on "Save and apply"
+    //so refetch the products with the new filters
+    if (params != null) {
+      setSearchParams(params);
+      refetch();
+      return;
+    }
   };
 
   return (
