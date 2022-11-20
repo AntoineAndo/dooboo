@@ -14,13 +14,14 @@ export function searchPlaces({
   language,
 }: queryOptions): Promise<any> {
   let api: IPlaceFinder;
-  switch (country) {
+  switch (country.code) {
     case "kr":
-      api = useNaver();
+      api = useGoogle();
+      // api = useNaver();
       break;
     default:
       api = useGoogle();
   }
 
-  return api.search(searchQuery, country, language);
+  return api.search(searchQuery, language, country.code);
 }
