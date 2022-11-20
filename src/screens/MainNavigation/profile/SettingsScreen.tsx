@@ -2,6 +2,7 @@ import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { View, Text } from "react-native";
 import { Button } from "react-native-elements";
+import HeaderComponent from "../../../components/HeaderComponent";
 import { updateTranslation, useTranslation } from "../../../hooks/translation";
 import { useConfig } from "../../../providers/ConfigProvider";
 
@@ -42,7 +43,7 @@ function SettingsScreen({ navigation }: Props) {
 
   return (
     <View>
-      <Text>IntroScreen</Text>
+      <HeaderComponent title="Settings" showBackButton={true} />
       <Picker
         selectedValue={selectedLanguageCode}
         onValueChange={(itemValue, itemIndex) => {
