@@ -15,7 +15,7 @@ import { IconButton } from "react-native-paper";
 import Product from "../../types/product";
 import { useAppState } from "../../providers/AppStateProvider";
 import Form from "../../types/Form";
-import { rollback } from "../../adapters/utils/FormUtils";
+import { rollback, submitForm } from "../../adapters/utils/FormUtils";
 import { useAuth } from "../../providers/AuthProvider";
 
 type Props = {
@@ -60,10 +60,6 @@ function AddScreen3({ route, navigation }: Props) {
   };
 
   const onSubmit = async () => {
-    console.log(form);
-    console.log(auth);
-    if (form.store == undefined || form.store.id == undefined) return;
-
     if (auth.user == undefined) {
       //TODO redirect to auth page
       return;
@@ -72,82 +68,14 @@ function AddScreen3({ route, navigation }: Props) {
     //Show the loading overlay
     app.patchState("isLoading", true);
 
-    const [imageInsertResult, productInsertResult, storeUpsertResult] =
-      await Promise.all([
-        uploadImage(mainImage),
-        addProduct(form, auth.user),
-        upsertStore(form.store),
-      ]);
-
-    console.log([imageInsertResult, productInsertResult, storeUpsertResult]);
-
-    //If at least one result is an error
-    // then rollback all
-    if (
-      imageInsertResult.data == null ||
-      productInsertResult.data == null ||
-      storeUpsertResult.data == null
-    ) {
-      rollback([imageInsertResult, productInsertResult, storeUpsertResult]);
-
-      app.patchState("isLoading", false);
-      return;
-    }
-
-    const insertedProduct: Product = productInsertResult.data[0];
-
-    //Build the payload for the categories insert
-    const categoriesToInsert = form.categories.map((category: any) => {
-      return {
-        fk_product_id: insertedProduct.id,
-        fk_category_id: category.id,
-      };
-    });
-
-    //link the product with the store
-    //link the product with the selected categories
-    //link the product with the image previously uploaded
-    const [
-      linkProductStoreResult,
-      linkProductCategoriesResult,
-      linkProductImageResult,
-    ] = await Promise.all([
-      linkProductStore(insertedProduct.id, form.store?.id, auth.user),
-      linkProductCategories(categoriesToInsert),
-      linkProductImage(insertedProduct.id, imageInsertResult.data.path),
-    ]);
-
-    console.log([
-      linkProductStoreResult,
-      linkProductCategoriesResult,
-      linkProductImageResult,
-    ]);
-
-    //If at least one of the record is in error
-    // then rollback them + the previous ones
-    if (
-      linkProductStoreResult.error != null ||
-      linkProductCategoriesResult.error != null ||
-      linkProductImageResult.error != null
-    ) {
-      //Rollback
-      rollback([
-        linkProductStoreResult,
-        linkProductCategoriesResult,
-        linkProductImageResult,
-        imageInsertResult,
-        productInsertResult,
-        storeUpsertResult,
-      ]);
-
-      app.patchState("isLoading", false);
-
-      return;
-    }
+    //Submit the form
+    const submitError = submitForm(form, mainImage, auth.user);
 
     app.patchState("isLoading", false);
 
-    navigation.replace("AddStep4");
+    if (!submitError) {
+      navigation.replace("AddStep4");
+    }
   };
 
   return (

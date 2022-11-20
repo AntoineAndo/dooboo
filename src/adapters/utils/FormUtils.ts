@@ -1,4 +1,84 @@
-import { deleteByTableAndId, deleteImage } from "../../lib/supabase";
+import { User } from "@supabase/supabase-js";
+import {
+  addProduct,
+  deleteByTableAndId,
+  deleteImage,
+  linkProductCategories,
+  linkProductImage,
+  linkProductStore,
+  uploadImage,
+  upsertStore,
+} from "../../lib/supabase";
+import Form from "../../types/Form";
+import Product from "../../types/product";
+
+export async function submitForm(form: Form, mainImage: any, user: User) {
+  if (form.store == undefined || form.store.id == undefined) return true;
+
+  const [imageInsertResult, productInsertResult, storeUpsertResult] =
+    await Promise.all([
+      uploadImage(mainImage),
+      addProduct(form, user),
+      upsertStore(form.store),
+    ]);
+
+  //If at least one result is an error
+  // then rollback all
+  if (
+    imageInsertResult.data == null ||
+    productInsertResult.data == null ||
+    storeUpsertResult.data == null
+  ) {
+    rollback([imageInsertResult, productInsertResult, storeUpsertResult]);
+
+    return true;
+  }
+
+  const insertedProduct: Product = productInsertResult.data[0];
+
+  //Build the payload for the categories insert
+  const categoriesToInsert = form.categories.map((category: any) => {
+    return {
+      fk_product_id: insertedProduct.id,
+      fk_category_id: category.id,
+    };
+  });
+
+  //link the product with the store
+  //link the product with the selected categories
+  //link the product with the image previously uploaded
+  const [
+    linkProductStoreResult,
+    linkProductCategoriesResult,
+    linkProductImageResult,
+  ] = await Promise.all([
+    linkProductStore(insertedProduct.id, form.store?.id, user),
+    linkProductCategories(categoriesToInsert),
+    linkProductImage(insertedProduct.id, imageInsertResult.data.path),
+  ]);
+
+  //If at least one of the record is in error
+  // then rollback them + the previous ones
+  if (
+    linkProductStoreResult.error != null ||
+    linkProductCategoriesResult.error != null ||
+    linkProductImageResult.error != null
+  ) {
+    //Rollback
+    rollback([
+      linkProductStoreResult,
+      linkProductCategoriesResult,
+      linkProductImageResult,
+      imageInsertResult,
+      productInsertResult,
+      storeUpsertResult,
+    ]);
+
+    return true;
+  }
+
+  return false;
+}
 
 /**
  * @description Delete DB entries based on ID or path
@@ -22,47 +102,4 @@ export function rollback(results: any[]) {
       return;
     }
   });
-
-  //ROLLBACK
-  //If at last one of the three inserts failed
-  // the ones who did not failed are deleted
-  // if (
-  //     imageInsertResult.error != null ||
-  //     imageInsertResult.data == null ||
-  //     productInsertResult.error != null ||
-  //     productInsertResult.data == null ||
-  //     storeUpsertResult.error != null
-  //   ) {
-  //     const errors = [];
-  //     if (imageInsertResult.error == null) {
-  //       //Delete image
-  //       if (imageInsertResult.data?.path != undefined)
-  //         deleteImage(imageInsertResult.data?.path);
-  //     } else {
-  //       errors.push(imageInsertResult.error);
-  //     }
-  //     if (productInsertResult.error == null) {
-  //       //Delete product record
-  //       if (productInsertResult.data != null)
-  //         deleteByTableAndId("product", productInsertResult.data[0].id);
-  //     } else {
-  //       errors.push(productInsertResult.error);
-  //     }
-  //     if (storeUpsertResult.error == null) {
-  //       //Store upsert not rolled back because it is still useful
-  //       // and allegedly clean data coming from an external source
-  //       //deleteByTableAndId("store", storeUpsertResult.data[0].id);
-  //     } else {
-  //       errors.push(storeUpsertResult.error);
-  //     }
-  //     //Store errors
-  //     patchForm("errors", {
-  //       form: errors,
-  //     });
-
-  //     //Remove loading screen
-  //     app.patchState("isLoading", false);
-
-  //     return;
-  //   }
 }
