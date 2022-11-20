@@ -157,6 +157,16 @@ export async function linkProductStore(
   storeId: string,
   user: User
 ) {
+  //Find the link if it already exists
+  // const selectResult = await supabase
+  //   .from("product_store")
+  //   .select(`id`)
+  //   .eq("fk_product_id", productId)
+  //   .eq("fk_store_id", storeId)
+  //   .eq("fk_profile_id", user.id);
+
+  // console.log(selectResult);
+
   const { data, error } = await supabase
     .from("product_store")
     .insert([

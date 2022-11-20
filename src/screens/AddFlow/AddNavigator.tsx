@@ -12,7 +12,6 @@ const Stack = createNativeStackNavigator();
 
 function AddNavigator({}: Props) {
   const { auth } = useAuth();
-  console.log(auth);
 
   const [shouldHide, setShouldHide] = React.useState(false);
 

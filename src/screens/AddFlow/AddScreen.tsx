@@ -8,6 +8,9 @@ import {
   ScrollView,
   BackHandler,
   Alert,
+  TouchableWithoutFeedback,
+  TouchableNativeFeedback,
+  TouchableOpacity,
 } from "react-native";
 import HeaderComponent from "../../components/HeaderComponent";
 import IonIcons from "react-native-vector-icons/Ionicons";
@@ -17,6 +20,7 @@ import { useConfig } from "../../providers/ConfigProvider";
 import Form from "../../types/Form";
 import { useQuery } from "@tanstack/react-query";
 import { getCategories } from "../../lib/supabase";
+import { useFocusEffect } from "@react-navigation/native";
 
 type Props = {
   navigation: any;
@@ -40,25 +44,24 @@ function AddScreen({ navigation }: Props) {
     errors: [],
   });
 
+  const backAction = () => {
+    if (!formTouched) {
+      navigation.goBack();
+    } else {
+      Alert.alert("Hold on!", "Are you sure you want to go back?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "YES", onPress: () => navigation.goBack() },
+      ]);
+    }
+    return true;
+  };
   //Create a back button press event listener
   // to prevent instant go back if the form has been changed
-  React.useEffect(() => {
-    const backAction = () => {
-      if (!formTouched) {
-        navigation.goBack();
-      } else {
-        Alert.alert("Hold on!", "Are you sure you want to go back?", [
-          {
-            text: "Cancel",
-            onPress: () => null,
-            style: "cancel",
-          },
-          { text: "YES", onPress: () => navigation.goBack() },
-        ]);
-      }
-      return true;
-    };
-
+  useFocusEffect(() => {
     //Mount event listener
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -66,12 +69,15 @@ function AddScreen({ navigation }: Props) {
     );
 
     //Unmount event listener
-    return () => backHandler.remove();
-  }, []);
+    return () => {
+      backHandler.remove();
+    };
+  });
 
   //Method used to update the form/state value
   const patchForm = (key: string, value: any) => {
-    formTouched = true;
+    // formTouched = true;
+    setFormTouched(true);
     setForm({
       ...form,
       [key]: value,
@@ -148,70 +154,88 @@ function AddScreen({ navigation }: Props) {
   const categoriesList = data.data as any[];
 
   return (
-    <ScrollView style={styles.page}>
-      <View style={styles.header}>
-        <HeaderComponent
-          title="Add a product"
-          showBackButton={false}
-          subtitle="Product description"
-        />
-      </View>
-
-      <View style={styles.contentView}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Product name</Text>
-          <Text style={styles.inputSubLabel}>
-            Please include the brand name
-          </Text>
-
-          <View style={styles.searchBar}>
-            <IonIcons name={"search-outline"} style={styles.image} size={40} />
-
-            <TextInput
-              style={styles.input}
-              value={form.name}
-              onChangeText={(evt) => {
-                handleChange("name", evt);
-              }}
-              onBlur={() => {
-                checkErrors(["name"]);
-              }}
-              placeholder={translation.t("search_placeholder")}
-              placeholderTextColor={"#888"}
-              returnKeyType="next"
-            ></TextInput>
-          </View>
-          {form.errors["name"] && (
-            <Text style={styles.error}>Product name is mandatory</Text>
-          )}
+    <View style={styles.page}>
+      <ScrollView>
+        <View style={styles.header}>
+          <HeaderComponent
+            title="Add a product"
+            showBackButton={true}
+            subtitle="Product description"
+          />
         </View>
 
-        <Text style={styles.inputLabel}>Product category</Text>
-        <Text style={styles.inputSubLabel}>
-          Please select from 1 to 3 categories
-        </Text>
+        <View style={styles.contentView}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Product name</Text>
+            <Text style={styles.inputSubLabel}>
+              Please include the brand name
+            </Text>
 
-        {categoriesList.map((option) => {
-          return (
-            <View key={option.id}>
-              <Checkbox
-                status={
-                  form.categories.indexOf(option) != -1
-                    ? "checked"
-                    : "unchecked"
-                }
+            <View style={styles.searchBar}>
+              <IonIcons
+                name={"search-outline"}
+                style={styles.image}
+                size={40}
+              />
+
+              <TextInput
+                style={styles.input}
+                value={form.name}
+                onChangeText={(evt) => {
+                  handleChange("name", evt);
+                }}
+                onBlur={() => {
+                  checkErrors(["name"]);
+                }}
+                placeholder={translation.t("search_placeholder")}
+                placeholderTextColor={"#888"}
+                returnKeyType="next"
+              ></TextInput>
+            </View>
+            {form.errors["name"] && (
+              <Text style={styles.error}>Product name is mandatory</Text>
+            )}
+          </View>
+
+          <Text style={styles.inputLabel}>Product category</Text>
+          <Text style={styles.inputSubLabel}>
+            Please select from 1 to 3 categories
+          </Text>
+
+          {categoriesList.map((option) => {
+            return (
+              <TouchableOpacity
+                style={styles.categoryItem}
+                key={option.id}
                 onPress={() => {
                   handleCheck(option);
                 }}
-              />
-              <Text>{translation.t("categories." + option.code)}</Text>
-            </View>
-          );
-        })}
-        {form.errors["categories"] && (
-          <Text style={styles.error}>Please select at least one category</Text>
-        )}
-
+              >
+                <Checkbox
+                  status={
+                    form.categories.indexOf(option) != -1
+                      ? "checked"
+                      : "unchecked"
+                  }
+                />
+                <Text>{translation.t("categories." + option.code)}</Text>
+              </TouchableOpacity>
+            );
+          })}
+          {form.errors["categories"] && (
+            <Text style={styles.error}>
+              Please select at least one category
+            </Text>
+          )}
+        </View>
+      </ScrollView>
+      <View style={styles.footer}>
+        <Button
+          title="Cancel"
+          onPress={() => {
+            backAction();
+          }}
+        ></Button>
         <Button
           title="Next step"
           onPress={() => {
@@ -219,21 +243,21 @@ function AddScreen({ navigation }: Props) {
           }}
         ></Button>
       </View>
-      <View style={styles.footer}></View>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    paddingBottom: 50,
+    position: "relative",
   },
   header: {
     marginTop: 10,
   },
   contentView: {
     paddingHorizontal: 26,
+    marginBottom: 80,
   },
   inputGroup: {
     marginBottom: 24,
@@ -270,8 +294,22 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
+  categoryItem: {
+    flex: 1,
+    flexDirection: "row",
+  },
   footer: {
-    height: 40,
+    position: "absolute",
+    bottom: 0,
+    height: 60,
+    zIndex: 999,
+    width: "100%",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    borderTopWidth: 1,
+    backgroundColor: "white",
   },
 });
 
