@@ -27,7 +27,7 @@ class GoogleAdapter implements IPlaceFinder {
     const params = {
       query: searchQuery,
       language,
-      components: "country:" + country,
+      region: country,
       type: "store",
       inputtype: "textquery",
       key: REACT_APP_GOOGLE_API_KEY,
