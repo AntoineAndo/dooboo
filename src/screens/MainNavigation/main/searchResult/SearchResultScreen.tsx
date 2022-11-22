@@ -77,7 +77,11 @@ function SearchResultScreen({ route, navigation }: Props) {
   return (
     <View style={styles.page}>
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <FiltersModal config={config} onClose={closeModal} />
+        <FiltersModal
+          config={config}
+          onClose={closeModal}
+          searchParams={searchParams}
+        />
       </Modal>
       <View style={[styles.header, commonStyles.bottomShadow]}>
         <View style={styles.container}>

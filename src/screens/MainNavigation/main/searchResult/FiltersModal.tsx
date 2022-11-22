@@ -3,17 +3,17 @@ import { Text, View, Modal, StyleSheet, Pressable } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { useTranslation } from "../../../../hooks/translation";
 import { Config } from "../../../../providers/ConfigProvider";
+import SearchForm from "../../../../types/SearchForm";
 
 type Props = {
   config: Config;
   onClose: Function;
+  searchParams: SearchForm;
 };
 
-function FiltersModal({ config, onClose }: Props) {
+function FiltersModal({ config, onClose, searchParams }: Props) {
   const translation = useTranslation();
-  const [searchForm, setSearchForm] = React.useState<any>({
-    categories: [],
-  });
+  const [searchForm, setSearchForm] = React.useState<SearchForm>(searchParams);
 
   const handleCheck = function (option: any) {
     let newArray = [...searchForm.categories];
