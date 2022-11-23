@@ -121,6 +121,9 @@ function AuthenticationScreen({ navigation }: Props) {
     });
 
     if (error != null || data == null) {
+      //If the code is wrong,
+      //Empty the code field
+      setVerificationCode("");
       console.error(error);
       return;
     }
