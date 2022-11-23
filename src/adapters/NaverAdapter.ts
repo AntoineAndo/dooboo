@@ -1,7 +1,6 @@
 import axios from "axios";
 import IPlaceFinder from "./interface/IPlaceFinder";
 //@ts-ignore
-import { REACT_APP_NAVER_CLIENT_ID, REACT_APP_NAVER_CLIENT_SECRET } from "@env";
 import { buildUrl } from "./utils/utils";
 
 class NaverAdapter implements IPlaceFinder {
@@ -34,8 +33,8 @@ class NaverAdapter implements IPlaceFinder {
       console.log(url);
 
       const headers = {
-        "X-Naver-Client-Id": REACT_APP_NAVER_CLIENT_ID,
-        "X-Naver-Client-Secret": REACT_APP_NAVER_CLIENT_SECRET,
+        "X-Naver-Client-Id": process.env.REACT_APP_NAVER_CLIENT_ID,
+        "X-Naver-Client-Secret": process.env.REACT_APP_NAVER_CLIENT_SECRET,
       };
 
       return new Promise((res, rej) => {

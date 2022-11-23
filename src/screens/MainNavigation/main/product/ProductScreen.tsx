@@ -1,7 +1,5 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-//@ts-ignore
-import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "@tanstack/react-query";

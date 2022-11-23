@@ -8,6 +8,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { AppStateProvider } from "./src/providers/AppStateProvider";
 import { AuthProvider } from "./src/providers/AuthProvider";
+import ErrorBoundary from "./src/components/ErrorBoundary";
 
 //Theme configuration
 const themeConfig = {
@@ -27,17 +28,19 @@ export const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <ConfigProvider>
-      <AppStateProvider>
-        <QueryClientProvider client={queryClient}>
-          <PaperProvider theme={themeConfig}>
-            <AuthProvider>
-              <GlobalNavigator />
-            </AuthProvider>
-          </PaperProvider>
-        </QueryClientProvider>
-      </AppStateProvider>
-    </ConfigProvider>
+    <ErrorBoundary>
+      <ConfigProvider>
+        <AppStateProvider>
+          <QueryClientProvider client={queryClient}>
+            <PaperProvider theme={themeConfig}>
+              <AuthProvider>
+                <GlobalNavigator />
+              </AuthProvider>
+            </PaperProvider>
+          </QueryClientProvider>
+        </AppStateProvider>
+      </ConfigProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -1,17 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-url-polyfill/auto";
 import { createClient, User } from "@supabase/supabase-js";
-//@ts-ignore
-import { REACT_APP_API_URL, REACT_APP_API_ANON_KEY } from "@env";
 
 import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
-import SecureStorage from "./SecureStorage";
 import Store from "../types/Store";
-import Contribution from "../types/Contribution";
 
-const supabaseUrl = REACT_APP_API_URL as string;
-const supabaseAnonKey = REACT_APP_API_ANON_KEY as string;
+const supabaseUrl = process.env.REACT_APP_API_URL as string;
+const supabaseAnonKey = process.env.REACT_APP_API_ANON_KEY as string;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {

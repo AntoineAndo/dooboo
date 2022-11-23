@@ -3,7 +3,7 @@
     "name": "dooboo",
     "slug": "dooboo",
     "owner": "dooboo",
-    "scheme":"dooboo",
+    "scheme": "dooboo",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./src/assets/icon.png",
@@ -23,7 +23,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package":"com.dooboo.app",
+      "package": "com.dooboo.app",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -37,6 +37,10 @@
     "web": {
       "favicon": "./src/assets/favicon.png"
     },
-    "facebookScheme":"http://test.fr"
+    "extra": {
+      "eas": {
+        "projectId": "8f55ac0e-3ad6-489d-9d3d-fc8eda940ad2"
+      }
+    }
   }
 }

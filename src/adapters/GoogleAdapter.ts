@@ -1,6 +1,4 @@
 import axios from "axios";
-//@ts-ignore
-import { REACT_APP_GOOGLE_API_KEY } from "@env";
 import IPlaceFinder from "./interface/IPlaceFinder";
 import { buildUrl } from "./utils/utils";
 import Store from "../types/Store";
@@ -30,7 +28,7 @@ class GoogleAdapter implements IPlaceFinder {
       region: country,
       type: "store",
       inputtype: "textquery",
-      key: REACT_APP_GOOGLE_API_KEY,
+      key: process.env.REACT_APP_GOOGLE_API_KEY,
     };
 
     const url = buildUrl(endpoint, params);

@@ -1,6 +1,3 @@
-//@ts-ignore
-import { REACT_APP_PROXY_URL } from "@env";
-
 //Build the url string given the endpoint
 // and the params as an object
 export function buildUrl(
@@ -10,7 +7,7 @@ export function buildUrl(
   }
 ): string {
   //TODO check for dev or prod env
-  // let url = `${REACT_APP_PROXY_URL}/${endpoint}?`;
+  // let url = `${process.env.REACT_APP_PROXY_URL}/${endpoint}?`;
   let url = `${endpoint}?`;
 
   //Loop over the param object to add to the url

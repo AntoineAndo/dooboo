@@ -8,8 +8,6 @@ import {
   ScrollView,
   BackHandler,
   Alert,
-  TouchableWithoutFeedback,
-  TouchableNativeFeedback,
   TouchableOpacity,
 } from "react-native";
 import HeaderComponent from "../../components/HeaderComponent";
