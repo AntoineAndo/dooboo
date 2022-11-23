@@ -60,7 +60,13 @@ function IntroScreen({}: Props) {
         }}
       >
         {config.dropdownValues.languages.map((language: any) => {
-          return <Picker.Item label={language.name} value={language.code} />;
+          return (
+            <Picker.Item
+              label={language.name}
+              value={language.code}
+              key={language.name}
+            />
+          );
         })}
       </Picker>
       <Picker
@@ -68,7 +74,13 @@ function IntroScreen({}: Props) {
         onValueChange={(itemValue, itemIndex) => setSelectedCountry(itemValue)}
       >
         {config.dropdownValues.countries.map((country: any) => {
-          return <Picker.Item label={country.name} value={country} />;
+          return (
+            <Picker.Item
+              label={country.name}
+              value={country}
+              key={country.name}
+            />
+          );
         })}
       </Picker>
       <Button title="Done" onPress={() => finishOnBoarding()}></Button>

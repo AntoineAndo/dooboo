@@ -255,7 +255,7 @@ function ContributionScreen({ navigation, route }: Props) {
           onSubmit();
         }}
       >
-        OK
+        Submit
       </Button>
     </View>
   );

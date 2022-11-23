@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import RNN from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IntroScreen from "./intro/IntroScreen";
 import NavbarNavigator from "./MainNavigation/NavbarNavigator";
@@ -76,7 +77,7 @@ function GlobalNavigator({}: Props): any {
                 .refreshSession({
                   refresh_token: session.data.session.refresh_token,
                 })
-                .then((response) => {
+                .then((response: any) => {
                   if (response.error == null && response.data != null) {
                     console.log("session refresh");
                     console.log(response);

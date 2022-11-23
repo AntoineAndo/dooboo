@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Text } from "react-native";
 
 type Props = {
   children: any;
@@ -28,7 +29,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
+      return <Text>Something went wrong.</Text>;
     }
 
     return this.props.children;
