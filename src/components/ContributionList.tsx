@@ -46,8 +46,6 @@ function ContributionList({ contributions }: Props) {
           onPress: () => {
             if (auth.user == undefined) return;
 
-            console.log(contribution);
-
             deleteContribution(
               contribution.fk_product_id,
               contribution.fk_store_id,

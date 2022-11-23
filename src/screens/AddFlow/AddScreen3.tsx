@@ -60,9 +60,7 @@ function AddScreen3({ route, navigation }: Props) {
   };
 
   const onSubmit = async () => {
-    console.log(auth);
     if (auth.user == undefined) {
-      console.log("not auth");
       //TODO redirect to auth page
       return;
     }

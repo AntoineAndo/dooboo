@@ -90,7 +90,6 @@ function AuthenticationScreen({ navigation }: Props) {
     });
 
     if (error != null) {
-      console.log(error);
       setErrorPhoneNumber("Please enter a valid phone number");
       return;
     }
@@ -127,7 +126,6 @@ function AuthenticationScreen({ navigation }: Props) {
     }
 
     if (data.session != undefined) {
-      console.log(data);
       setAuth({
         session: data.session,
         user: {

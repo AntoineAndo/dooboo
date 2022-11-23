@@ -79,7 +79,6 @@ function ProductScreen({ route, navigation }: Props) {
           toolbarEnabled={false}
         >
           {product.product_store.map(({ store }: any, i: number) => {
-            console.log(store);
             return (
               <Marker
                 coordinate={{

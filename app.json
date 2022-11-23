@@ -4,14 +4,14 @@
     "slug": "dooboo",
     "owner": "dooboo",
     "scheme": "dooboo",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "default",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#36D399"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,14 +24,10 @@
     },
     "android": {
       "package": "com.dooboo.app",
+      "icon": "./src/assets/icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#36D399"
-      },
-      "config": {
-        "googleMaps": {
-          "apiKey": ""
-        }
       }
     },
     "web": {

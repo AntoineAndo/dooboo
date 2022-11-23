@@ -62,9 +62,7 @@ function NavbarNavigator({ navigation }: Props) {
                 redirect: "Authentication",
               });
             }
-            return () => {
-              console.log("focus out");
-            };
+            return () => {};
           },
         }}
         children={AddNavigator}

@@ -13,8 +13,6 @@ type Props = {
 const Stack = createNativeStackNavigator();
 
 function ProfileNavigation({ route }: Props) {
-  console.log(route.params);
-
   const { auth } = useAuth();
 
   return (

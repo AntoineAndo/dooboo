@@ -38,7 +38,6 @@ const uploadFile = async (file: File) => {
     .upload("public/" + file?.name, file as File);
 
   if (data) {
-    console.log(data);
   } else if (error) {
     console.log(error);
   }

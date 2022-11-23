@@ -56,7 +56,6 @@ function IntroScreen({}: Props) {
         selectedValue={selectedLanguage}
         onValueChange={(itemValue, itemIndex) => {
           setSelectedLanguage(itemValue);
-          console.log(itemValue);
         }}
       >
         {config.dropdownValues.languages.map((language: any) => {

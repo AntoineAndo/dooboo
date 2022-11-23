@@ -78,7 +78,6 @@ function AddScreen2({ route, navigation }: Props) {
    * Check for errors and if none, navigate to the next page
    */
   const onSubmit = () => {
-    console.log(form);
     if (form.store == undefined) return;
 
     const _errors = checkErrors();

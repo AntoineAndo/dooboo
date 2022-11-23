@@ -79,8 +79,6 @@ function GlobalNavigator({}: Props): any {
                 })
                 .then((response: any) => {
                   if (response.error == null && response.data != null) {
-                    console.log("session refresh");
-                    console.log(response);
                     setAuth({
                       session: response.data.session,
                       user: {
@@ -107,7 +105,6 @@ function GlobalNavigator({}: Props): any {
               configuration == undefined ||
               Object.keys(configuration).length == 0
             ) {
-              console.log("New configuration");
               //Initial values
               configurationObject = {
                 countryId: defaultCountry.id,
@@ -132,8 +129,6 @@ function GlobalNavigator({}: Props): any {
               };
             }
 
-            console.log(configurationObject);
-
             //Set the configuration object as the context value
             // so that it can be accessed everywhere in the app
             setConfig(configurationObject);
@@ -147,8 +142,6 @@ function GlobalNavigator({}: Props): any {
     }
 
     loadResourcesAndDataAsync((configuration: any) => {
-      console.log("configuration", configuration);
-
       // Translation init
       initializeTranslations(configuration.language_code as string);
 
