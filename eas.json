@@ -4,13 +4,16 @@
   },
   "build": {
     "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+      "android": {
+        "buildType": "apk"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "extends": "production"
     },
-    "production": { }
+    "production": {
+      "node": "16.14.0"
+    }
   },
   "submit": {
     "production": {

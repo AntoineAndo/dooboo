@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
 import Store from "../types/Store";
 
-const supabaseUrl = process.env.REACT_APP_API_URL as string;
+// const supabaseUrl = process.env.REACT_APP_API_URL ;
+const supabaseUrl = "https://esgxcigylooqbugecbjt.supabase.co";
 const supabaseAnonKey = process.env.REACT_APP_API_ANON_KEY as string;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
