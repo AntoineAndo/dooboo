@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,8 +14,8 @@ import Store from "../../../../types/Store";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useAppState } from "../../../../providers/AppStateProvider";
 import {
-  deleteContribution,
   getContributions,
+  getPersonnalContributionsForProduct,
   linkProductStore,
   upsertStore,
 } from "../../../../lib/supabase";
@@ -34,6 +33,7 @@ type Props = {
 const markerLimit = 5;
 
 function ContributionScreen({ navigation, route }: Props) {
+  const product: Product = route.params.product;
   const mapRef = React.useRef<MapView>(null);
   const { config } = useConfig();
   const [places, setPlaces] = React.useState<any[]>([]);
@@ -51,7 +51,7 @@ function ContributionScreen({ navigation, route }: Props) {
     queryKey: ["contributions_" + auth.user?.id],
     queryFn: () => {
       if (auth.user != undefined) {
-        return getContributions(auth.user.id);
+        return getPersonnalContributionsForProduct(auth.user.id, product.id);
       }
     },
     select: (data: any) => {
@@ -67,8 +67,6 @@ function ContributionScreen({ navigation, route }: Props) {
     },
     initialData: [],
   });
-
-  const product: Product = route.params.product;
 
   const storeSelected = (store: Store) => {
     navigateMapTo({ latitude: store.lat, longitude: store.lng } as LatLng);

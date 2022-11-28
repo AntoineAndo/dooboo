@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
+    "no-dev":"expo start --no-dev --minify",
     "android": "expo run:android",
     "build-dev": "eas build -p android --profile development"
   },

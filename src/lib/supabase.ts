@@ -307,6 +307,35 @@ export async function getContributions(userId: string | undefined) {
   return data;
 }
 
+export async function getPersonnalContributionsForProduct(
+  userId: string,
+  productId: string
+) {
+  const { data, error } = await supabase
+    .from("product_store")
+    .select(
+      `
+        id,
+        fk_store_id,
+        store!inner(
+          *
+        ),
+        fk_profile_id,
+        fk_product_id,
+        product!inner(
+          *,
+          product_image!inner(
+            image_url
+          )
+        )
+      `
+    )
+    .eq("fk_profile_id", userId)
+    .eq("fk_product_id", productId);
+
+  return data;
+}
+
 export async function getCountries(): Promise<any> {
   return new Promise((res, rej) => {
     supabase
