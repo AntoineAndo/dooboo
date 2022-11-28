@@ -17,6 +17,7 @@ export async function submitForm(
   mainImage: any,
   user: User
 ): Promise<Boolean> {
+  console.log("SUBMIT");
   if (form.store == undefined || form.store.id == undefined) return true;
 
   const [imageInsertResult, productInsertResult, storeUpsertResult] =
@@ -26,7 +27,7 @@ export async function submitForm(
       upsertStore(form.store),
     ]);
 
-  console.debug([imageInsertResult, productInsertResult, storeUpsertResult]);
+  console.log([imageInsertResult, productInsertResult, storeUpsertResult]);
 
   //If at least one result is an error
   // then rollback all
@@ -64,7 +65,7 @@ export async function submitForm(
     linkProductImage(insertedProduct.id, imageInsertResult.data.path),
   ]);
 
-  console.debug([
+  console.log([
     linkProductStoreResult,
     linkProductCategoriesResult,
     linkProductImageResult,

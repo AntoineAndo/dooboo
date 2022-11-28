@@ -103,12 +103,12 @@ function HomeScreen({ navigation }: Props) {
       <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
         <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
-      <Button
+      {/* <Button
         title="Crash test"
         onPress={() => {
           throw new Error("AZDAZ");
         }}
-      ></Button>
+      ></Button> */}
       <ScrollView
         style={styles.content}
         refreshControl={

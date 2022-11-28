@@ -39,6 +39,8 @@ function AddScreen3({ route, navigation }: Props) {
     } else {
       patchForm("errors", {});
 
+      console.log(result);
+
       setMainImage(result);
     }
   };

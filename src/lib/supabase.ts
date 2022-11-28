@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-url-polyfill/auto";
 import { createClient, User } from "@supabase/supabase-js";
 
+import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import Form from "../types/Form";
 import Store from "../types/Store";
@@ -231,21 +232,32 @@ export async function linkProductImage(productId: string, imageUrl: string) {
 }
 
 export async function uploadImage(image: File) {
-  let { data, error }: any = await supabase.storage
-    .from("images")
-    .upload("products/" + uuidv4() + ".jpg", image as File);
+  console.log("image");
+  console.log(image);
 
-  //Define rollback infos
-  // to allow for generic rollback
-  let rollbackInfos;
-  if (data != null) {
-    rollbackInfos = {
-      type: "file",
-      path: data.path,
-    };
+  try {
+    let { data, error }: any = await supabase.storage
+      .from("images")
+      .upload("products/" + uuidv4() + ".jpg", image as File);
+
+    console.log(data);
+    console.log(error);
+
+    //Define rollback infos
+    // to allow for generic rollback
+    let rollbackInfos;
+    if (data != null) {
+      rollbackInfos = {
+        type: "file",
+        path: data.path,
+      };
+    }
+
+    return { data, error, rollbackInfos };
+  } catch (e) {
+    console.error("Error", e);
+    console.error("=====");
   }
-
-  return { data, error, rollbackInfos };
 }
 
 export async function downloadImage(imageUrl: string) {

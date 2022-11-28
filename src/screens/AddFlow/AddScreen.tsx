@@ -41,6 +41,7 @@ function AddScreen({ navigation }: Props) {
     countryId: config.countryId,
     errors: [],
   });
+  console.log(form);
 
   const backAction = () => {
     if (!formTouched) {
