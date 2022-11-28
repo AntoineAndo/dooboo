@@ -11,18 +11,18 @@ import ListComponent from "../../../../components/ListComponent";
 import SearchBarComponent from "../../../../components/SearchBarComponent";
 import { getProducts, supabase } from "../../../../lib/supabase";
 
-import { useQuery } from "@tanstack/react-query";
-
 //Style import
 import commonStyles from "../../../../config/stylesheet";
 
-//Types import
+import * as Sentry from "@sentry/react-native";
+
+//Hooks
 import { useTranslation } from "../../../../hooks/translation";
 import { useConfig } from "../../../../providers/ConfigProvider";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { useQuery } from "@tanstack/react-query";
 
 import { Dimensions, StatusBar } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import SecureStorage from "../../../../lib/SecureStorage";
 
 const screenHeight = Dimensions.get("screen").height;
 const windowHeight = Dimensions.get("window").height;
@@ -39,6 +39,7 @@ function HomeScreen({ navigation }: Props) {
 
   const translation = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
+  const netInfo = useNetInfo();
 
   const {
     isLoading,
@@ -60,7 +61,10 @@ function HomeScreen({ navigation }: Props) {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
-    refetch().then(() => setRefreshing(false));
+    if (netInfo.isConnected) {
+      refetch().then(() => setRefreshing(false));
+    } else {
+    }
   }, []);
 
   const displayContent = () => {
@@ -99,6 +103,12 @@ function HomeScreen({ navigation }: Props) {
       <View style={[styles.searchBarContainer, commonStyles.bottomShadow]}>
         <SearchBarComponent onTouch={() => startSearch(navigation)} />
       </View>
+      <Button
+        title="Crash test"
+        onPress={() => {
+          throw new Error("AZDAZ");
+        }}
+      ></Button>
       <ScrollView
         style={styles.content}
         refreshControl={

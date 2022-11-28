@@ -27,10 +27,10 @@ function s2() {
 function HomeNavigation({ navigation }: Props) {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeScreen"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{}} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{}} />
       <Stack.Screen name="Search" component={SearchScreen} />
       <Stack.Screen name="Search result" component={SearchResultScreen} />
       <Stack.Screen

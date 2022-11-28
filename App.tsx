@@ -10,6 +10,8 @@ import { AppStateProvider } from "./src/providers/AppStateProvider";
 import { AuthProvider } from "./src/providers/AuthProvider";
 import ErrorBoundary from "./src/components/ErrorBoundary";
 
+import * as Sentry from "@sentry/react-native";
+
 //Theme configuration
 const themeConfig = {
   ...DefaultTheme,
@@ -26,7 +28,16 @@ const themeConfig = {
 // Create a client
 export const queryClient = new QueryClient();
 
-export default function App() {
+//Init Sentry
+Sentry.init({
+  dsn: "https://88b7032c0bd24d4ba9cb334de5920fd2@o4504234172350464.ingest.sentry.io/4504234175102976",
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+  enableNative: false,
+});
+
+export default Sentry.wrap(function App() {
   return (
     <ErrorBoundary>
       <ConfigProvider>
@@ -42,7 +53,7 @@ export default function App() {
       </ConfigProvider>
     </ErrorBoundary>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

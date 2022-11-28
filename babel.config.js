@@ -5,14 +5,7 @@ module.exports = function (api) {
     plugins: [
       "react-native-paper/babel",
       "transform-inline-environment-variables",
-      // [
-      //   "module:react-native-dotenv",
-      //   {
-      //     envName: "REACT_APP",
-      //     moduleName: "@env",
-      //     path: ".env"
-      //   }
-      // ]
+      ["module:react-native-dotenv"],
     ],
   };
 };

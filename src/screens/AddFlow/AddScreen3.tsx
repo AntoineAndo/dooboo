@@ -2,20 +2,11 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { getDocumentAsync } from "expo-document-picker";
 import { Image, Button } from "react-native";
-import {
-  addProduct,
-  linkProductCategories,
-  linkProductImage,
-  linkProductStore,
-  uploadImage,
-  upsertStore,
-} from "../../lib/supabase";
 import HeaderComponent from "../../components/HeaderComponent";
 import { IconButton } from "react-native-paper";
-import Product from "../../types/product";
 import { useAppState } from "../../providers/AppStateProvider";
 import Form from "../../types/Form";
-import { rollback, submitForm } from "../../adapters/utils/FormUtils";
+import { submitForm } from "../../adapters/utils/FormUtils";
 import { useAuth } from "../../providers/AuthProvider";
 
 type Props = {
@@ -28,7 +19,8 @@ function AddScreen3({ route, navigation }: Props) {
   initialState.errors = {};
 
   //Hooks initialization
-  const [form, setForm] = React.useState(initialState);
+  const [form, setForm] = React.useState<Form>(initialState);
+  const [error, setError] = React.useState("");
   const [mainImage, setMainImage] = useState<any>({});
   const app = useAppState();
   const { auth } = useAuth();
@@ -69,17 +61,19 @@ function AddScreen3({ route, navigation }: Props) {
     app.patchState("isLoading", true);
 
     //Submit the form
-    const submitError = await submitForm(form, mainImage, auth.user);
+    submitForm(form, mainImage, auth.user).then((submitError) => {
+      app.patchState("isLoading", false);
 
-    app.patchState("isLoading", false);
-
-    if (!submitError) {
-      navigation.replace("AddStep4");
-    }
+      if (submitError) {
+        setError("Error submitting your product, please try again later");
+      } else {
+        navigation.replace("AddStep4");
+      }
+    });
   };
 
   return (
-    <View>
+    <View style={styles.page}>
       <View style={styles.header}>
         <HeaderComponent
           title="Add a product"
@@ -116,45 +110,27 @@ function AddScreen3({ route, navigation }: Props) {
             onSubmit();
           }}
         ></Button>
+        {error != "" && <Text style={styles.error}>{error}</Text>}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  page: {
+    flex: 1,
+    paddingBottom: 50,
+  },
   header: {
     marginTop: 10,
   },
   contentView: {
     paddingHorizontal: 26,
+    flex: 1,
+    alignItems: "center",
   },
   error: {
     color: "red",
-  },
-  inputGroup: {
-    marginBottom: 24,
-  },
-  inputLabel: {
-    fontWeight: "bold",
-    fontSize: 22,
-  },
-  inputSubLabel: {
-    fontSize: 18,
-  },
-  input: {
-    //@ts-ignore
-    outlineStyle: "none",
-    marginLeft: 10,
-    fontSize: 20,
-  },
-  searchBar: {
-    marginVertical: 16,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderRadius: 100,
-    padding: 3,
-    flexDirection: "row",
   },
   imageContainer: {
     borderRadius: 10,

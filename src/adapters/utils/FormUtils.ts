@@ -12,7 +12,11 @@ import {
 import Form from "../../types/Form";
 import Product from "../../types/product";
 
-export async function submitForm(form: Form, mainImage: any, user: User) {
+export async function submitForm(
+  form: Form,
+  mainImage: any,
+  user: User
+): Promise<Boolean> {
   if (form.store == undefined || form.store.id == undefined) return true;
 
   const [imageInsertResult, productInsertResult, storeUpsertResult] =
@@ -22,6 +26,8 @@ export async function submitForm(form: Form, mainImage: any, user: User) {
       upsertStore(form.store),
     ]);
 
+  console.debug([imageInsertResult, productInsertResult, storeUpsertResult]);
+
   //If at least one result is an error
   // then rollback all
   if (
@@ -29,7 +35,8 @@ export async function submitForm(form: Form, mainImage: any, user: User) {
     productInsertResult.data == null ||
     storeUpsertResult.data == null
   ) {
-    rollback([imageInsertResult, productInsertResult, storeUpsertResult]);
+    //Store upsert is not rolledback because not needed
+    rollback([imageInsertResult, productInsertResult]);
 
     return true;
   }
@@ -55,6 +62,12 @@ export async function submitForm(form: Form, mainImage: any, user: User) {
     linkProductStore(insertedProduct.id, form.store?.id, user),
     linkProductCategories(categoriesToInsert),
     linkProductImage(insertedProduct.id, imageInsertResult.data.path),
+  ]);
+
+  console.debug([
+    linkProductStoreResult,
+    linkProductCategoriesResult,
+    linkProductImageResult,
   ]);
 
   //If at least one of the record is in error
@@ -88,11 +101,13 @@ export function rollback(results: any[]) {
   results.forEach((result) => {
     //If a given query result has an error, it means the entry was not inserted
     // so we don't need to delete
-    if (result.error != null) return;
+    if (result.rollbackInfos == undefined) return;
+
+    console.log("Rolling back ", result.rollbackInfos);
 
     //File rollback
     if (result.rollbackInfos.type == "file") {
-      deleteImage(result.rollback.path);
+      deleteImage(result.rollbackInfos.path);
       return;
     }
 

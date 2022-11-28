@@ -42,7 +42,7 @@ function NavbarNavigator({ navigation }: Props) {
       }}
     >
       <Tab.Screen
-        name="HomeNavigation"
+        name="Home"
         component={HomeNavigation}
         options={{
           tabBarIcon: ({ color }) => {
