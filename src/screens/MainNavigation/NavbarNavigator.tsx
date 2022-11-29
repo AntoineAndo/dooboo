@@ -55,11 +55,13 @@ function NavbarNavigator({ navigation }: Props) {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
+            //If the user is not connected
+            // redirects to the login page
             if (auth.session != undefined) {
               navigation.navigate("AddNavigation");
             } else {
               navigation.navigate("Profile", {
-                redirect: "Authentication",
+                screen: "AuthenticationPop",
               });
             }
             return () => {};

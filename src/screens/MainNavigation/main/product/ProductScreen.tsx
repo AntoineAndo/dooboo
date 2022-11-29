@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../../../lib/supabase";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
+import { useAuth } from "../../../../providers/AuthProvider";
 
 type Props = {
   route: any;
@@ -13,7 +14,7 @@ type Props = {
 };
 
 function ProductScreen({ route, navigation }: Props) {
-  const [places, setPlaces] = React.useState<any[]>([]);
+  const { auth } = useAuth();
 
   useFocusEffect(() => {
     refetch();
@@ -44,6 +45,14 @@ function ProductScreen({ route, navigation }: Props) {
   });
 
   const openContribution = () => {
+    //if the user is not authentified
+    // then redirect to the login page
+    if (auth.user == undefined) {
+      navigation.navigate("Profile", {
+        screen: "AuthenticationPop",
+      });
+      return;
+    }
     navigation.navigate("Contribution", { product: product });
   };
 

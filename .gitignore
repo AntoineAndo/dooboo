@@ -10,7 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 
-Journal.md
+Journal.txt
 
 # macOS
 .DS_Store

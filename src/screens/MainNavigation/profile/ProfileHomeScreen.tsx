@@ -14,6 +14,7 @@ import { useAuth } from "../../../providers/AuthProvider";
 
 type Props = {
   navigation: any;
+  route: any;
 };
 
 const screenHeight = Dimensions.get("screen").height;
@@ -22,7 +23,7 @@ const statusBarHeight =
   StatusBar.currentHeight != undefined ? StatusBar.currentHeight : 0;
 const navbarHeight = screenHeight - windowHeight + statusBarHeight;
 
-function ProfileHomeScreen({ navigation }: Props) {
+function ProfileHomeScreen({ navigation, route }: Props) {
   const { auth, setAuth } = useAuth();
 
   const logout = async () => {

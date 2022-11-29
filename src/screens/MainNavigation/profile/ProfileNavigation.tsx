@@ -1,18 +1,17 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { useAuth } from "../../../providers/AuthProvider";
+import AuthenticationPopScreen from "./authentication/AuthenticationPopScreen";
 import AuthenticationScreen from "./authentication/AuthenticationScreen";
 import MyContributionsScreen from "./MyContributionsScreen";
 import ProfileHomeScreen from "./ProfileHomeScreen";
 import SettingsScreen from "./SettingsScreen";
 
-type Props = {
-  route: any;
-};
+type Props = {};
 
 const Stack = createNativeStackNavigator();
 
-function ProfileNavigation({ route }: Props) {
+function ProfileNavigation({}: Props) {
   const { auth } = useAuth();
 
   return (
@@ -34,11 +33,18 @@ function ProfileNavigation({ route }: Props) {
         />
       )}
       {auth.session == undefined && (
-        <Stack.Screen
-          name="Authentication"
-          component={AuthenticationScreen}
-          options={{}}
-        />
+        <>
+          <Stack.Screen
+            name="AuthenticationPop"
+            component={AuthenticationPopScreen}
+            options={{}}
+          />
+          <Stack.Screen
+            name="Authentication"
+            component={AuthenticationScreen}
+            options={{}}
+          />
+        </>
       )}
     </Stack.Navigator>
   );
