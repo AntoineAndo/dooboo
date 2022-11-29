@@ -14,6 +14,7 @@ import { getProducts } from "../../../../lib/supabase";
 import { Button } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAuth } from "../../../../providers/AuthProvider";
+import { useTranslation } from "../../../../hooks/translation";
 
 type Props = {
   route: any;
@@ -22,6 +23,7 @@ type Props = {
 
 function ProductScreen({ route, navigation }: Props) {
   const { auth } = useAuth();
+  const t = useTranslation();
 
   useFocusEffect(() => {
     refetch();
@@ -82,6 +84,9 @@ function ProductScreen({ route, navigation }: Props) {
       <Image source={{ uri: imageUrl }} style={styles.mainImage} />
       <View style={styles.content}>
         <Text style={styles.title}>{product.name}</Text>
+        {product.product_category.map((p_c: any) => {
+          return <Text>{t.t("categories." + p_c.category.code)}</Text>;
+        })}
       </View>
       <Button onPress={() => openContribution()}>I found this product</Button>
       <Button onPress={() => reportProduct()}>Report this product</Button>
