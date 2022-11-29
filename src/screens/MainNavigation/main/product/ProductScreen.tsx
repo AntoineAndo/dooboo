@@ -1,5 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "@tanstack/react-query";
@@ -56,12 +63,16 @@ function ProductScreen({ route, navigation }: Props) {
     navigation.navigate("Contribution", { product: product });
   };
 
+  const reportProduct = () => {
+    navigation.navigate("Report", { product: product });
+  };
+
   if (product == undefined) {
     return <></>;
   }
 
   return (
-    <View>
+    <ScrollView>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.backButton}
@@ -69,8 +80,11 @@ function ProductScreen({ route, navigation }: Props) {
         <IonIcons name={"arrow-back-outline"} size={40} />
       </TouchableOpacity>
       <Image source={{ uri: imageUrl }} style={styles.mainImage} />
-      <Text style={styles.title}>{product.name}</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>{product.name}</Text>
+      </View>
       <Button onPress={() => openContribution()}>I found this product</Button>
+      <Button onPress={() => reportProduct()}>Report this product</Button>
 
       <View style={styles.mapContainer}>
         <MapView //https://github.com/react-native-maps/react-native-maps/blob/master/docs/mapview.md
@@ -85,6 +99,7 @@ function ProductScreen({ route, navigation }: Props) {
           rotateEnabled={false}
           showsUserLocation={true}
           showsMyLocationButton={true}
+          showsPointsOfInterest={false}
           toolbarEnabled={false}
         >
           {product.product_store.map(({ store }: any, i: number) => {
@@ -101,7 +116,7 @@ function ProductScreen({ route, navigation }: Props) {
           })}
         </MapView>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -113,6 +128,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  content: {
+    height: 300,
+    padding: 20,
   },
   mapContainer: {
     height: 300,

@@ -2,11 +2,8 @@ import React from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 import { useAuth } from "../../../../providers/AuthProvider";
 import HeaderComponent from "../../../../components/HeaderComponent";
-type Props = {
-  navigation: any;
-};
 
-function AuthenticationPopScreen({ navigation }: Props) {
+function AuthenticationPopScreen({ navigation }: any) {
   const { auth } = useAuth();
 
   if (auth.user != undefined) {

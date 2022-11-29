@@ -21,6 +21,7 @@ import OverlayComponent from "../components/OverlayComponent";
 import { Platform, StatusBar, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../providers/AuthProvider";
 import AddNavigator from "./AddFlow/AddNavigator";
+import ReportNavigation from "./MainNavigation/report/ReportScreen1";
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +73,8 @@ function GlobalNavigator({}: Props): any {
             const defaultCountry = defaultCountryResult.data[0];
 
             //Session ?
+            //If a session data is present in the stored config
+            // then the session is refreshed so that the user remains logged in
             if (session.data != null && session.data.session != undefined) {
               supabase.auth
                 .refreshSession({
@@ -183,6 +186,7 @@ function GlobalNavigator({}: Props): any {
             {auth.session != undefined && (
               <Stack.Screen name="AddNavigation" component={AddNavigator} />
             )}
+            <Stack.Screen name="Report" component={ReportNavigation} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

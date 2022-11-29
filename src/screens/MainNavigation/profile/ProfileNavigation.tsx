@@ -36,13 +36,12 @@ function ProfileNavigation({}: Props) {
         <>
           <Stack.Screen
             name="AuthenticationPop"
+            //@ts-ignore
             component={AuthenticationPopScreen}
-            options={{}}
           />
           <Stack.Screen
             name="Authentication"
             component={AuthenticationScreen}
-            options={{}}
           />
         </>
       )}
