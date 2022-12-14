@@ -105,17 +105,25 @@ function AddScreen2({ route, navigation }: Props) {
   };
 
   const onPlaceSeach = (searchQuery: string) => {
-    if (searchQuery == undefined || searchQuery.length < 3) {
+    if (searchQuery == undefined || searchQuery.length < 2) {
       return;
     }
 
-    const options = {
+    const options: any = {
       country: config.dropdownValues.countries.find(
         (country: any) => country.id == config.countryId
       ),
       language: "en",
       searchQuery: searchQuery,
+      location: undefined,
     };
+
+    if (location != undefined) {
+      options.location = {
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
+      };
+    }
 
     searchPlaces(options).then((results: Store[]) => {
       setPlaces(results);

@@ -6,12 +6,17 @@ type queryOptions = {
   country: any;
   language: string;
   excludePlacesId?: string[];
+  location?: {
+    lat: string;
+    lng: string;
+  };
 };
 
 export function searchPlaces({
   searchQuery,
   country,
   language,
+  location,
 }: queryOptions): Promise<any> {
   let api: IPlaceFinder;
   switch (country.code) {
@@ -23,5 +28,10 @@ export function searchPlaces({
       api = useGoogle();
   }
 
-  return api.search(searchQuery, language, country.code);
+  return api.search({
+    searchQuery: searchQuery,
+    languageId: language,
+    countryCode: country.code,
+    location: location,
+  });
 }

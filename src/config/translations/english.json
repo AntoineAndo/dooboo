@@ -12,5 +12,9 @@
         "cat_meat_alt":"Meat alternatives",
         "cat_dairy_alt":"Dairy alternatives",
         "cat_snacks": "Snacks"
+    },
+    "report_categories": {
+        "rep_inappropriate": "Contenu inapproprié",
+        "rep_not_vegan": "This product is not vegan / not vegan anymore"
     }
 }

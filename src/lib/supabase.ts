@@ -232,32 +232,24 @@ export async function linkProductImage(productId: string, imageUrl: string) {
 }
 
 export async function uploadImage(image: File) {
-  console.log("image");
-  console.log(image);
+  let { data, error }: any = await supabase.storage
+    .from("images")
+    .upload("products/" + uuidv4() + ".jpg", image as File);
 
-  try {
-    let { data, error }: any = await supabase.storage
-      .from("images")
-      .upload("products/" + uuidv4() + ".jpg", image as File);
+  console.log("image upload");
+  console.log(error);
 
-    console.log(data);
-    console.log(error);
-
-    //Define rollback infos
-    // to allow for generic rollback
-    let rollbackInfos;
-    if (data != null) {
-      rollbackInfos = {
-        type: "file",
-        path: data.path,
-      };
-    }
-
-    return { data, error, rollbackInfos };
-  } catch (e) {
-    console.error("Error", e);
-    console.error("=====");
+  //Define rollback infos
+  // to allow for generic rollback
+  let rollbackInfos;
+  if (data != null) {
+    rollbackInfos = {
+      type: "file",
+      path: data.path,
+    };
   }
+
+  return { data, error, rollbackInfos };
 }
 
 export async function downloadImage(imageUrl: string) {
@@ -352,6 +344,18 @@ export async function getLanguages(): Promise<any> {
       .from("language")
       .select(`*`)
       .then((data) => {
+        res(data);
+      });
+  });
+}
+
+export async function getReportCategories(): Promise<any> {
+  return new Promise((res, rej) => {
+    supabase
+      .from("report_category")
+      .select(`*`)
+      .then((data) => {
+        console.log(data);
         res(data);
       });
   });

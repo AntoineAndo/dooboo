@@ -12,6 +12,7 @@ export function buildUrl(
 
   //Loop over the param object to add to the url
   Object.keys(params).forEach((key: string) => {
+    if (params[key] == undefined) return;
     url += `${key}=${encodeURIComponent(params[key])}&`;
   });
 

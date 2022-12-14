@@ -76,12 +76,14 @@ function GlobalNavigator({}: Props): any {
             //If a session data is present in the stored config
             // then the session is refreshed so that the user remains logged in
             if (session.data != null && session.data.session != undefined) {
+              console.log("Refreshing session");
               supabase.auth
                 .refreshSession({
                   refresh_token: session.data.session.refresh_token,
                 })
                 .then((response: any) => {
                   if (response.error == null && response.data != null) {
+                    console.log("Session refreshed");
                     setAuth({
                       session: response.data.session,
                       user: {
@@ -91,6 +93,9 @@ function GlobalNavigator({}: Props): any {
                     });
                     return;
                   }
+
+                  console.log("Error refreshing the session");
+                  console.log("signing out");
 
                   //If there is an error during the session refresh
                   // then the user is signed out

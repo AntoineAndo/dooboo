@@ -18,13 +18,18 @@ class GoogleAdapter implements IPlaceFinder {
     });
   }
 
-  search(searchQuery: string, language: string, country: string): Promise<any> {
+  search({ searchQuery, languageId, country, location }: any): Promise<any> {
     const endpoint =
       "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
+    let loc =
+      location != undefined ? location.lat + "," + location.lng : undefined;
+
     const params = {
       query: searchQuery,
-      language,
+      location: loc,
+      radius: 1000,
+      languageId,
       region: country,
       type: "store",
       inputtype: "textquery",

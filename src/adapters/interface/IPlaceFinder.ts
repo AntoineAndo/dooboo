@@ -1,5 +1,13 @@
 interface IPlaceFinder {
-  search(searchQuery: string, languageId: string, country: any): Promise<any>;
+  search(options: {
+    searchQuery: string;
+    languageId: string;
+    countryCode: any;
+    location?: {
+      lat: string;
+      lng: string;
+    };
+  }): Promise<any>;
   transform(results: any[]): any[];
 }
 
