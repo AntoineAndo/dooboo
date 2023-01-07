@@ -8,6 +8,7 @@ import { useAppState } from "../../providers/AppStateProvider";
 import Form from "../../types/Form";
 import { submitForm } from "../../adapters/utils/FormUtils";
 import { useAuth } from "../../providers/AuthProvider";
+import * as ImageManipulator from "expo-image-manipulator";
 
 type Props = {
   route: any;
@@ -58,20 +59,30 @@ function AddScreen3({ route, navigation }: Props) {
       //TODO redirect to auth page
       return;
     }
-
     //Show the loading overlay
     app.patchState("isLoading", true);
 
-    //Submit the form
-    submitForm(form, mainImage, auth.user).then((submitError) => {
-      app.patchState("isLoading", false);
+    //Reduce image size
+    try {
+      const manipResult = await ImageManipulator.manipulateAsync(
+        mainImage.uri,
+        [{ resize: { width: 500 } }],
+        { format: ImageManipulator.SaveFormat.JPEG, compress: 0.7 }
+      );
 
-      if (submitError) {
-        setError("Error submitting your product, please try again later");
-      } else {
-        navigation.replace("AddStep4");
-      }
-    });
+      //Submit the form
+      submitForm(form, manipResult, auth.user).then((submitError) => {
+        app.patchState("isLoading", false);
+
+        if (submitError) {
+          setError("Error submitting your product, please try again later");
+        } else {
+          navigation.replace("AddStep4");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

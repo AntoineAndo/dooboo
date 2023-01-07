@@ -28,7 +28,8 @@ class GoogleAdapter implements IPlaceFinder {
     const params = {
       query: searchQuery,
       location: loc,
-      radius: 1000,
+      // radius: 1000,
+      rankby: "distance",
       languageId,
       region: country,
       type: "store",
