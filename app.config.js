@@ -1,5 +1,5 @@
-// import * as dotenv from "dotenv";
-// dotenv.config();
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const isDev = process.env.DEV_CLIENT == "true";
 
@@ -46,16 +46,14 @@ module.exports = {
       IS_DEV_CLIENT: isDev,
       SUPABASE_URL: isDev
         ? process.env.REACT_SUPABASE_DEV_URL
-        : process.env.REACT_SUPABASE_URL,
+        : process.env.REACT_SUPABASE_PROD_URL,
       SUPABASE_KEY: isDev
         ? process.env.REACT_SUPABASE_DEV_KEY
-        : process.env.REACT_SUPABASE_KEY,
+        : process.env.REACT_SUPABASE_PROD_KEY,
       SUPABASE_SERVICE_ROLE: isDev
         ? process.env.REACT_SUPABASE_DEV_SERVICE_ROLE
-        : process.env.REACT_SUPABASE_SERVICE_ROLE,
+        : process.env.REACT_SUPABASE_PROD_SERVICE_ROLE,
       REACT_APP_GOOGLE_API_KEY: process.env.REACT_APP_GOOGLE_API_KEY,
-      REACT_APP_NAVER_CLIENT_ID: process.env.REACT_APP_NAVER_CLIENT_ID,
-      REACT_APP_NAVER_CLIENT_SECRET: process.env.REACT_APP_NAVER_CLIENT_SECRET,
       REACT_KAKAO_REST_API_KEY: process.env.REACT_KAKAO_REST_API_KEY,
       eas: {
         projectId: "8f55ac0e-3ad6-489d-9d3d-fc8eda940ad2",

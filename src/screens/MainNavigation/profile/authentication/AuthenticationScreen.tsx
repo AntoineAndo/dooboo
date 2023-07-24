@@ -106,6 +106,7 @@ function AuthenticationScreen({ navigation }: Props) {
     });
 
     if (error != null) {
+      console.log(error);
       setErrorPhoneNumber("Please enter a valid phone number");
       setSmsSent(false);
       return;

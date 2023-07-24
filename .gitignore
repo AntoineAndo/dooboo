@@ -1,6 +1,7 @@
 Journal.txt
 
 .env
+*.env
 
 node_modules/
 .expo/
