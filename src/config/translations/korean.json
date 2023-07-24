@@ -1,0 +1,28 @@
+{
+    "home":"홈",
+    "contribute":"기여하다",
+    "profile":"고객",
+    "welcome": "환영",
+    "latest_product": "신규 품목",
+    "search": "Search",
+    "search_subtitle": "Product name, brand, etc",
+    "search_placeholder": "Type text here",
+    "categories": {
+        "cat_biscuits_cakes_candies":"Biscuits, cakes and candies",
+        "cat_frozen_food":"Frozen food",
+        "cat_ready_meals_noodles":"Ready meals and Noodles",
+        "cat_drinks_coffee":"Drinks and coffee",
+        "cat_meat_alt":"Meat alternatives",
+        "cat_dairy_alt":"Dairy alternatives",
+        "cat_snacks": "Snacks"
+    },
+    "report_categories": {
+        "rep_inappropriate": "Contenu inapproprié",
+        "rep_not_vegan": "This product is not vegan / not vegan anymore"
+    },
+    "language":"언어",
+    "country":"나라",
+    "settings":"조절",
+    "logout":"로그아웃",
+    "save_changes":"저장"
+}

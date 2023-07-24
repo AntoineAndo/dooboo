@@ -1,0 +1,49 @@
+{
+  "cli": {
+    "version": ">= 3.15.1"
+  },
+  "build": {
+    "development": {
+      "android": {
+        "buildType": "apk",
+        "env": {
+          "DEV_CLIENT": "true"
+        }
+      }
+    },
+    "preview": {
+      "extends": "development",
+      "channel": "preview",
+      "android": {
+        "buildType": "app-bundle",
+        "env": {
+          "DEV_CLIENT": "true"
+        }
+      }
+    },
+    "production": {
+      "extends": "preview",
+      "channel": "production",
+      "android": {
+        "buildType": "app-bundle",
+        "env": {
+          "DEV_CLIENT": "false"
+        }
+      }
+    }
+  },
+  "submit": {
+    "development": {
+      "android": {
+        "serviceAccountKeyPath": "./robust-index-122615-5c80ac44cce2.json",
+        "track": "internal"
+      }
+    },
+    "beta": {
+      "android": {
+        "serviceAccountKeyPath": "./robust-index-122615-5c80ac44cce2.json",
+        "track": "beta"
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+26/11
+Command "eas build -p android --profile development" is working and generates an apk that can be installed and launched
+Command "adb logcat *:S ReactNative:V ReactNativeJS:V" good for logs
+
+    App crashes on startup with error
+        11-27 00:24:40.321  9673  9735 E ReactNativeJS: Error: supabaseUrl is required.
+        11-27 00:24:40.323  9673  9735 I ReactNativeJS: Running "main
+        11-27 00:24:40.323  9673  9735 E ReactNativeJS: Invariant Violation: "main" has not been registered. This can happen if:
+        11-27 00:24:40.323  9673  9735 E ReactNativeJS: * Metro (the local dev server) is run from the wrong folder. Check if Metro is running, stop it and restart it in the current project.
+        11-27 00:24:40.323  9673  9735 E ReactNativeJS: * A module failed to load due to an error and `AppRegistry.registerComponent` wasn't called.
+
+27/11  
+ Package "transform-inline-environment-variables" added
+Dev build ok with "eas build -p android --profile development"
+TO FIX - FIXED - But problem during add flow, submission cant complete and stays stuck on the loading screen
+TO FIX - Local start with Expo Go not working because env variables are undefined
+
+28/11
+Added library "react-native-dotenv" to fix env variables issues
+Environment variables are ok in dev run and dev build
+NOT - FIXED - Fixed add flow
+LIbrary import 'react-native-get-random-values'; added to work with the uuid generator on imageupload
+
+    Crash during introscreen if english is selected
+        error: Error: Expected newLocale to be a string; got object
+
+
+
+
+echo 71:3F:82:4D:B8:35:88:ED:C6:17:3C:9C:50:56:26:00:DA:47:6A:B8 | xxd -r -p | openssl base64
+cT+CTbg1iO3GFzycUFYmANpHarg=
+
+
+
+10/04
+ java.lang.UnsatisfiedLinkError: couldn't find DSO to load: libhermes.so
+
+
+
+
+ 11/07
+ Android Bundling failed 53ms
+Unable to resolve "expo" from "index.js"
+
+After upgrading from expo 47 to 49, also fails with 48
+ -> Supprimer metro.config.js
+
+
+15/07
+    After build, crash instantly on launch
+    "The embedded manifest is invalid or could not be read. Make sure you have configured expo-updates correctly in android/app/build.gradle"
+
+
+?????
+Expected package @expo/config-plugins@~7.2.2
+Found invalid:
+  @expo/config-plugins@5.0.4
+  @expo/config-plugins@5.0.4

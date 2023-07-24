@@ -1,0 +1,660 @@
+[
+  {
+    "name": "home",
+    "value": "Home"
+  },
+  {
+    "name": "contribute",
+    "value": "Contribute"
+  },
+  {
+    "name": "profile",
+    "value": "Profile"
+  },
+  {
+    "name": "welcome",
+    "value": "Welcome"
+  },
+  {
+    "name": "latest_product",
+    "value": "Latest products"
+  },
+  {
+    "name": "search",
+    "value": "Search"
+  },
+  {
+    "name": "search_here",
+    "value": "Search here"
+  },
+  {
+    "name": "product_name_label",
+    "value": "Product name"
+  },
+  {
+    "name": "product_name_tip",
+    "value": "Please do NOT include the brand name"
+  },
+  {
+    "name": "brand_name_placeholder",
+    "value": "Brand name"
+  },
+  {
+    "name": "product_name_placeholder",
+    "value": "ex: Chocolate cake"
+  },
+  {
+    "name": "product_name_mandatory_error",
+    "value": "Product name is mandatory"
+  },
+  {
+    "name": "product_brand_label",
+    "value": "Product brand"
+  },
+  {
+    "name": "product_brand_placeholder",
+    "value": "ex: Oreo"
+  },
+  {
+    "name": "product_brand_mandatory_error",
+    "value": "Product brand is mandatory"
+  },
+  {
+    "name": "product_categories_label",
+    "value": "Product categories"
+  },
+  {
+    "name": "product_categories_tip",
+    "value": "Please select from 1 to 3 categories"
+  },
+  {
+    "name": "product_categories_error",
+    "value": "Please select at least one category"
+  },
+  {
+    "name": "none_above",
+    "value": "None of the above"
+  },
+  {
+    "name": "main_picture_label",
+    "value": "Main picture"
+  },
+  {
+    "name": "main_picture_tip_1",
+    "value": "Please choose a picture showing the entire product"
+  },
+  {
+    "name": "main_picture_tip_2",
+    "value": "The picture should only show this product alone and nothing else"
+  },
+  {
+    "name": "main_picture_tip_3",
+    "value": "The picture should be an accurate representation of how the product can be found as it will help the community also finding this product"
+  },
+  {
+    "name": "secondary_picture_label",
+    "value": "Ingredients picture"
+  },
+  {
+    "name": "secondary_picture_tip_1",
+    "value": "The ingredient list including allergens should be easily readable"
+  },
+  {
+    "name": "product_location",
+    "value": "Product location"
+  },
+  {
+    "name": "optional",
+    "value": "Optional"
+  },
+  {
+    "name": "cancel",
+    "value": "Cancel"
+  },
+  {
+    "name": "next",
+    "value": "Next"
+  },
+  {
+    "name": "select",
+    "value": "Select"
+  },
+  {
+    "name": "submit",
+    "value": "Submit"
+  },
+  {
+    "name": "back",
+    "value": "Back"
+  },
+  {
+    "name": "skip",
+    "value": "Skip"
+  },
+  {
+    "name": "search_subtitle",
+    "value": "Product name, brand, etc"
+  },
+  {
+    "name": "search_placeholder",
+    "value": "ex: Seven Eleven Seoul"
+  },
+  {
+    "name": "search_place_placeholder",
+    "value": "ex: Seven Eleven Seoul"
+  },
+  {
+    "name": "categories",
+    "value": "Categories"
+  },
+  {
+    "name": "cat_frozen_food",
+    "value": "Frozen food"
+  },
+  {
+    "name": "cat_drinks_coffee",
+    "value": "Drinks and coffee"
+  },
+  {
+    "name": "cat_meat_alt",
+    "value": "Meat alternatives"
+  },
+  {
+    "name": "cat_dairy_alt",
+    "value": "Dairy alternatives"
+  },
+  {
+    "name": "cat_snacks",
+    "value": "Snacks"
+  },
+  {
+    "name": "rep_inappropriate",
+    "value": "Inappropriate content"
+  },
+  {
+    "name": "rep_not_vegan",
+    "value": "This product is not vegan / not vegan anymore"
+  },
+  {
+    "name": "settings",
+    "value": "Settings"
+  },
+  {
+    "name": "language",
+    "value": "Language"
+  },
+  {
+    "name": "country",
+    "value": "Country"
+  },
+  {
+    "name": "logout",
+    "value": "Log out"
+  },
+  {
+    "name": "save_changes",
+    "value": "Save changes"
+  },
+  {
+    "name": "login",
+    "value": "Login"
+  },
+  {
+    "name": "account_privacy",
+    "value": "Account & Privacy"
+  },
+  {
+    "name": "my_account",
+    "value": "My account"
+  },
+  {
+    "name": "privacy_policy",
+    "value": "Privacy policy"
+  },
+  {
+    "name": "brands",
+    "value": "Brands"
+  },
+  {
+    "name": "test",
+    "value": "Test"
+  },
+  {
+    "name": "label_products_found",
+    "value": "Vegan products found"
+  },
+  {
+    "name": "all_time",
+    "value": "All time"
+  },
+  {
+    "name": "last_days",
+    "value": "Last {LIMIT_DAYS} days"
+  },
+  {
+    "name": "last_seen_today",
+    "value": "Last seen today"
+  },
+  {
+    "name": "last_seen_yesterday",
+    "value": "Last seen yesterday"
+  },
+  {
+    "name": "last_seen",
+    "value": "Last seen"
+  },
+  {
+    "name": "days_ago",
+    "value": "days ago"
+  },
+  {
+    "name": "phone_number",
+    "value": "Phone number"
+  },
+  {
+    "name": "phone_number_placeholder",
+    "value": "Enter phone number"
+  },
+  {
+    "name": "phone_number_stored_info",
+    "value": "Your phone number is the only personnal information that is stored."
+  },
+  {
+    "name": "account_suppression",
+    "value": "Account suppression"
+  },
+  {
+    "name": "warning_account_suppression",
+    "value": "Warning, the account suppression process is irreversible."
+  },
+  {
+    "name": "user_profile",
+    "value": "User profile"
+  },
+  {
+    "name": "no_stores_found",
+    "value": "Sorry, we couldn't find any store with vegan products in this area"
+  },
+  {
+    "name": "add_product",
+    "value": "Add a product"
+  },
+  {
+    "name": "offline_notice",
+    "value": "You are currently offline"
+  },
+  {
+    "name": "offline_tip",
+    "value": "Please check your internet connection"
+  },
+  {
+    "name": "contribution_success",
+    "value": "Thank you for contributing!"
+  },
+  {
+    "name": "contribution_back_homepage",
+    "value": "Go back to Homepage"
+  },
+  {
+    "name": "main_error_message",
+    "value": "Something went wrong"
+  },
+  {
+    "name": "submit_error_prompt",
+    "value": "Would you like to anonimously send the error report to our team ?"
+  },
+  {
+    "name": "submit_error_tip",
+    "value": "This would greatly help us in resolving the problem and making the app better."
+  },
+  {
+    "name": "restart_only",
+    "value": "Don't send and restart"
+  },
+  {
+    "name": "send_and_restart",
+    "value": "Send the crash report and restart"
+  },
+  {
+    "name": "report_prompt",
+    "value": "Why are you reporting this product?"
+  },
+  {
+    "name": "report_complete_notice",
+    "value": "We will carefuly review your report and take the appropriate measures if necessary"
+  },
+
+  {
+    "name": "login_instruction_1",
+    "value": "Please enter your mobile phone number"
+  },
+  {
+    "name": "login_instruction_2",
+    "value": "You will receive a 6 digit code to verify your phone number"
+  },
+  {
+    "name": "log_in",
+    "value": "Log-in"
+  },
+  {
+    "name": "send_verification_code",
+    "value": "Send verification code"
+  },
+  {
+    "name": "error_phone_number",
+    "value": "Please enter a valid phone number"
+  },
+  {
+    "name": "resend_verification_code",
+    "value": "Resend verification code"
+  },
+  {
+    "name": "sms_otp_instruction",
+    "value": "Please type the code you received by message to complete the authentication"
+  },
+  {
+    "name": "verify",
+    "value": "Verify"
+  },
+  {
+    "name": "i_found_product",
+    "value": "I found this product"
+  },
+  {
+    "name": "search_results",
+    "value": "Search results"
+  },
+  {
+    "name": "search_by_name",
+    "value": "Search by name"
+  },
+  {
+    "name": "search_by_categories",
+    "value": "Search by Categories"
+  },
+  {
+    "name": "search_by_brands",
+    "value": "Search by Brands"
+  },
+  {
+    "name": "auth_pop_title",
+    "value": "Join us and contribute to the community!"
+  },
+  {
+    "name": "auth_pop_subtitle",
+    "value": "Add new products, contribute to other products, etc..."
+  },
+  {
+    "name": "delete_account_warning",
+    "value": "Warning, the account suppression process is irreversible."
+  },
+  {
+    "name": "delete_account_user_profile",
+    "value": "Warning, the account suppression process is irreversible."
+  },
+  {
+    "name": "delete_acount_user_profile_info_1",
+    "value": "• Your user profile, including your phone number will be permanently deleted."
+  },
+  {
+    "name": "delete_acount_user_profile_info_2",
+    "value": "• By deleting your profile, all the contributions you made will be anonymized and therefore not linked to your profile anymore."
+  },
+  {
+    "name": "delete_account_photos",
+    "value": "Submitted photos"
+  },
+  {
+    "name": "delete_acount_photos_info_1",
+    "value": "• All the photos that were submitted to Dooboo by this profile"
+  },
+  {
+    "name": "delete_account_confirmation_info_1",
+    "value": "If you choose to log in again using the same phone number, you will be able to register a new account with us."
+  },
+  {
+    "name": "delete_account_confirmation_info_2",
+    "value": "Please note that this will create a new user profile and any previous data associated with your deleted account will not be restored."
+  },
+  {
+    "name": "hold_confirm_suppression",
+    "value": "Hold to confirm suppression"
+  },
+  {
+    "name": "account_screen_phone_info",
+    "value": "Your phone number is the only personnal information that is stored."
+  },
+  {
+    "name": "filters",
+    "value": "Filters"
+  },
+  {
+    "name": "no_results",
+    "value": "No results"
+  },
+  {
+    "name": "or",
+    "value": "Or"
+  },
+  {
+    "name": "report_product",
+    "value": "Report this product"
+  },
+  {
+    "name": "more",
+    "value": "more"
+  },
+  {
+    "name": "location_unavailable",
+    "value": "We could not find your current location. Please make sure that you granted the permissions and that your GPS is turned on."
+  },
+  {
+    "name": "duplicate_warning",
+    "value": "This product may already be registered. To avoid duplicates, please select it if it is present in the list below"
+  },
+  {
+    "name": "intro_title",
+    "value": "Welcome to Dooboo"
+  },
+  {
+    "name": "intro_subtitle",
+    "value": "Shop vegan near you"
+  },
+  {
+    "name": "intro_language_tip",
+    "value": "Choose a language for the app"
+  },
+  {
+    "name": "intro_country_tip",
+    "value": "Tell us where you are from"
+  },
+  {
+    "name": "pick_store_or_skip",
+    "value": "Please pick a store or skip the step"
+  },
+
+  {
+    "name": "accessibility_label_search_input",
+    "value": "Text input to search a product by its name"
+  },
+  {
+    "name": "accessibility_hint_product_duplicate",
+    "value": "Select this already existing product to avoid duplicates"
+  },
+  {
+    "name": "accessibility_hint_none_above",
+    "value": "States that the new product is not already registered in the app"
+  },
+  {
+    "name": "accessibility_hint_search_brand",
+    "value": "Search all the products for this brand"
+  },
+  {
+    "name": "no_submit_label",
+    "value": "This product cannot be submitted for the following reason:"
+  },
+  {
+    "name": "contribution",
+    "value": "Contribution"
+  },
+  {
+    "name": "cat_milk_alt",
+    "value": "Milk alternatives"
+  },
+  {
+    "name": "cat_cheese_alt",
+    "value": "Cheese alternatives"
+  },
+  {
+    "name": "cat_yogurt",
+    "value": "Yogurts"
+  },
+  {
+    "name": "cat_bakery",
+    "value": "Bakery"
+  },
+  {
+    "name": "cat_cream_butter",
+    "value": "Creams & Butters"
+  },
+  {
+    "name": "cat_breads",
+    "value": "Breads"
+  },
+  {
+    "name": "cat_cakes_pastries",
+    "value": "Cakes & Pastries"
+  },
+  {
+    "name": "cat_chocolate_candybars",
+    "value": "Chocolate and Candy Bars"
+  },
+  {
+    "name": "cat_candies",
+    "value": "Candies"
+  },
+  {
+    "name": "cat_baking_chocolate",
+    "value": "Baking Chocolate"
+  },
+  {
+    "name": "cat_chips_crackers",
+    "value": "Chips & Crackers"
+  },
+  {
+    "name": "cat_jerky",
+    "value": "Jerky"
+  },
+  {
+    "name": "cat_popcorns",
+    "value": "Pop-corns"
+  },
+  {
+    "name": "cat_ready_meals",
+    "value": "Ready Meals"
+  },
+  {
+    "name": "cat_ramen",
+    "value": "Ramen"
+  },
+  {
+    "name": "cat_sandwich_wrap",
+    "value": "Sandwich & Wraps"
+  },
+  {
+    "name": "cat_canned_goods",
+    "value": "Canned Goods"
+  },
+  {
+    "name": "cat_soups",
+    "value": "Soups"
+  },
+  {
+    "name": "cat_cereals",
+    "value": "Cereals"
+  },
+  {
+    "name": "cat_condiments",
+    "value": "Condiments"
+  },
+  {
+    "name": "cat_sauces",
+    "value": "Sauces"
+  },
+  {
+    "name": "cat_energy_protein_bars",
+    "value": "Energy & Protein Bars"
+  },
+  {
+    "name": "cat_supplements",
+    "value": "Supplements"
+  },
+  {
+    "name": "cat_biscuits_cookies",
+    "value": "Biscuits & Cookies"
+  },
+  {
+    "name": "cat_seafood_alt",
+    "value": "Seafood Alternatives"
+  },
+  {
+    "name": "cat_chocolate_candy_sweets",
+    "value": "Chocolate, Candies & Sweets"
+  },
+  {
+    "name": "cat_groceries",
+    "value": "Groceries"
+  },
+  {
+    "name": "cat_sport_products",
+    "value": "Sport Products"
+  },
+  {
+    "name": "cat_sport_drinks",
+    "value": "Sport Drinks"
+  },
+  {
+    "name": "cat_ice_cream",
+    "value": "Ice-creams"
+  },
+  {
+    "name": "add_second_brand",
+    "value": "Add a second brand"
+  },
+  {
+    "name": "second_product_brand_label",
+    "value": "Second product brand"
+  },
+  {
+    "name": "store_details",
+    "value": "Store details"
+  },
+  {
+    "name": "label_is_store_vegan",
+    "value": "Is this store completely vegan ?"
+  },
+  {
+    "name": "yes",
+    "value": "Yes"
+  },
+  {
+    "name": "no",
+    "value": "No"
+  },
+  {
+    "name": "start",
+    "value": "Start"
+  },
+  {
+    "name": "cat_alcohol",
+    "value": "Alcohol"
+  },
+  {
+    "name": "cat_wine",
+    "value": "Wine"
+  },
+  {
+    "name": "cat_beer_cider",
+    "value": "Beer & Cider"
+  }
+]

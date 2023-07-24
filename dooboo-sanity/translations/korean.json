@@ -1,0 +1,667 @@
+[
+  {
+    "name": "home",
+    "value": "홈"
+  },
+  {
+    "name": "contribute",
+    "value": "기부"
+  },
+  {
+    "name": "profile",
+    "value": "프로필"
+  },
+  {
+    "name": "welcome",
+    "value": "환영합니다"
+  },
+  {
+    "name": "latest_product",
+    "value": "최신 제품"
+  },
+  {
+    "name": "search",
+    "value": "검색"
+  },
+  {
+    "name": "search_here",
+    "value": "여기에서 검색"
+  },
+  {
+    "name": "product_name_label",
+    "value": "제품 이름"
+  },
+  {
+    "name": "product_name_tip",
+    "value": "브랜드 이름은 포함하지 마세요"
+  },
+  {
+    "name": "brad_name_placeholder",
+    "value": "브랜드 이름"
+  },
+  {
+    "name": "product_name_placeholder",
+    "value": "예: 초콜릿 케이크"
+  },
+  {
+    "name": "product_name_mandatory_error",
+    "value": "제품 이름은 필수 입력 사항입니다"
+  },
+  {
+    "name": "product_brand_label",
+    "value": "제품 브랜드"
+  },
+  {
+    "name": "product_brand_placeholder",
+    "value": "예: 오레오"
+  },
+  {
+    "name": "product_brand_mandatory_error",
+    "value": "제품 브랜드는 필수 입력 사항입니다"
+  },
+  {
+    "name": "product_categories_label",
+    "value": "제품 카테고리"
+  },
+  {
+    "name": "product_categories_tip",
+    "value": "1~3개의 카테고리를 선택하세요"
+  },
+  {
+    "name": "product_categories_error",
+    "value": "최소한 하나의 카테고리를 선택하세요"
+  },
+  {
+    "name": "none_above",
+    "value": "위에 해당하지 않음"
+  },
+  {
+    "name": "main_picture_label",
+    "value": "메인 사진"
+  },
+  {
+    "name": "main_picture_tip_1",
+    "value": "전체 제품이 나온 사진을 선택하세요"
+  },
+  {
+    "name": "main_picture_tip_2",
+    "value": "이 제품만 나온 사진을 선택하세요"
+  },
+  {
+    "name": "main_picture_tip_3",
+    "value": "이 사진은 제품을 찾을 때 도움이 되는 정확한 제품의 모습을 나타내야 합니다"
+  },
+  {
+    "name": "secondary_picture_label",
+    "value": "성분 사진"
+  },
+  {
+    "name": "secondary_picture_tip_1",
+    "value": "알러지 성분을 포함한 성분 리스트가 쉽게 읽히도록 하세요"
+  },
+  {
+    "name": "product_location",
+    "value": "제품 위치"
+  },
+  {
+    "name": "optional",
+    "value": "선택 사항"
+  },
+  {
+    "name": "cancel",
+    "value": "취소"
+  },
+  {
+    "name": "next",
+    "value": "다음"
+  },
+  {
+    "name": "select",
+    "value": "선택"
+  },
+  {
+    "name": "submit",
+    "value": "제출"
+  },
+  {
+    "name": "back",
+    "value": "뒤로"
+  },
+  {
+    "name": "skip",
+    "value": "건너뛰기"
+  },
+  {
+    "name": "search_subtitle",
+    "value": "제품 이름, 브랜드 등"
+  },
+  {
+    "name": "search_placeholder",
+    "value": "예: Seven Eleven Seoul"
+  },
+  {
+    "name": "search_place_placeholder",
+    "value": "예: Seven Eleven Seoul"
+  },
+  {
+    "name": "categories",
+    "value": "카테고리"
+  },
+  {
+    "name": "cat_biscuits_cakes_candies",
+    "value": "비스킷, 케이크 및 캔디"
+  },
+  {
+    "name": "cat_frozen_food",
+    "value": "냉동 식품"
+  },
+  {
+    "name": "cat_ready_meals_noodles",
+    "value": "인스턴트 식품과 면류"
+  },
+  {
+    "name": "cat_drinks_coffee",
+    "value": "음료와 커피"
+  },
+  {
+    "name": "cat_meat_alt",
+    "value": "대체 육류"
+  },
+  {
+    "name": "cat_dairy_alt",
+    "value": "대체 유제품"
+  },
+  {
+    "name": "cat_snacks",
+    "value": "스낵"
+  },
+  {
+    "name": "rep_inappropriate",
+    "value": "부적절한 콘텐츠"
+  },
+  {
+    "name": "rep_not_vegan",
+    "value": "이 제품은 비건이 아닙니다 / 더 이상 비건이 아닙니다"
+  },
+  {
+    "name": "settings",
+    "value": "설정"
+  },
+  {
+    "name": "language",
+    "value": "언어"
+  },
+  {
+    "name": "country",
+    "value": "국가"
+  },
+  {
+    "name": "logout",
+    "value": "로그아웃"
+  },
+  {
+    "name": "save_changes",
+    "value": "변경 사항 저장"
+  },
+  {
+    "name": "login",
+    "value": "로그인"
+  },
+  {
+    "name": "account_privacy",
+    "value": "계정 및 개인 정보"
+  },
+  {
+    "name": "my_account",
+    "value": "내 계정"
+  },
+  {
+    "name": "privacy_policy",
+    "value": "개인 정보 정책"
+  },
+  {
+    "name": "brands",
+    "value": "브랜드"
+  },
+  {
+    "name": "test",
+    "value": "테스트"
+  },
+  {
+    "name": "label_products_found",
+    "value": "채식주의 제품 찾음"
+  },
+  {
+    "name": "all_time",
+    "value": "전체 기간"
+  },
+  {
+    "name": "last_days",
+    "value": "지난 {LIMIT_DAYS}일"
+  },
+  {
+    "name": "last_seen_today",
+    "value": "오늘 본 것"
+  },
+  {
+    "name": "last_seen_yesterday",
+    "value": "어제 본 것"
+  },
+  {
+    "name": "last_seen",
+    "value": "마지막으로 본 것"
+  },
+  {
+    "name": "days_ago",
+    "value": "일 전"
+  },
+  {
+    "name": "phone_number",
+    "value": "전화번호"
+  },
+  {
+    "name": "phone_number_placeholder",
+    "value": "전화번호를 입력하세요"
+  },
+  {
+    "name": "phone_number_stored_info",
+    "value": "당신의 전화번호는 저장되는 유일한 개인정보입니다."
+  },
+  {
+    "name": "account_suppression",
+    "value": "계정 삭제"
+  },
+  {
+    "name": "warning_account_suppression",
+    "value": "경고, 계정 삭제는 복구할 수 없습니다."
+  },
+  {
+    "name": "user_profile",
+    "value": "사용자 프로필"
+  },
+  {
+    "name": "no_stores_found",
+    "value": "죄송합니다, 이 지역에서 채식주의 제품을 판매하는 가게를 찾을 수 없습니다."
+  },
+  {
+    "name": "add_product",
+    "value": "제품 추가"
+  },
+  {
+    "name": "offline_notice",
+    "value": "현재 오프라인 상태입니다"
+  },
+  {
+    "name": "offline_tip",
+    "value": "인터넷 연결을 확인하세요"
+  },
+  {
+    "name": "contribution_success",
+    "value": "기여해 주셔서 감사합니다!"
+  },
+  {
+    "name": "contribution_back_homepage",
+    "value": "홈페이지로 돌아가기"
+  },
+  {
+    "name": "main_error_message",
+    "value": "문제가 발생했습니다"
+  },
+  {
+    "name": "submit_error_prompt",
+    "value": "익명으로 문제 보고서를 팀에 전송하시겠습니까?"
+  },
+  {
+    "name": "submit_error_tip",
+    "value": "이는 문제 해결과 앱 개선에 큰 도움이 됩니다."
+  },
+  {
+    "name": "restart_only",
+    "value": "보고서 전송하지 않고 재시작"
+  },
+  {
+    "name": "send_and_restart",
+    "value": "충돌 보고서 전송 후 재시작"
+  },
+  {
+    "name": "report_prompt",
+    "value": "이 제품을 신고하는 이유는 무엇인가요?"
+  },
+  {
+    "name": "report_complete_notice",
+    "value": "신고 내용을 신중히 검토하고 필요한 조치를 취할 것입니다."
+  },
+
+  {
+    "name": "login_instruction_1",
+    "value": "휴대폰 번호를 입력해주세요"
+  },
+  {
+    "name": "login_instruction_2",
+    "value": "휴대폰 번호 인증을 위해 6자리 코드가 발송됩니다"
+  },
+  {
+    "name": "log_in",
+    "value": "로그인"
+  },
+  {
+    "name": "send_verification_code",
+    "value": "인증 코드 보내기"
+  },
+  {
+    "name": "error_phone_number",
+    "value": "유효한 휴대폰 번호를 입력해주세요"
+  },
+  {
+    "name": "resend_verification_code",
+    "value": "인증 코드 다시 보내기"
+  },
+  {
+    "name": "sms_otp_instruction",
+    "value": "문자로 받은 코드를 입력하여 인증을 완료해주세요"
+  },
+  {
+    "name": "verify",
+    "value": "확인"
+  },
+  {
+    "name": "i_found_product",
+    "value": "이 제품을 찾았습니다"
+  },
+  {
+    "name": "search_results",
+    "value": "검색 결과"
+  },
+  {
+    "name": "search_by_name",
+    "value": "이름으로 검색"
+  },
+  {
+    "name": "search_by_categories",
+    "value": "카테고리별 검색"
+  },
+  {
+    "name": "search_by_brands",
+    "value": "브랜드별 검색"
+  },
+  {
+    "name": "auth_pop_title",
+    "value": "함께 참여하여 커뮤니티에 기여해보세요!"
+  },
+  {
+    "name": "auth_pop_subtitle",
+    "value": "새로운 제품 추가, 다른 제품에 기여하기 등..."
+  },
+  {
+    "name": "delete_account_warning",
+    "value": "주의, 계정 삭제는 되돌릴 수 없습니다"
+  },
+  {
+    "name": "delete_account_user_profile",
+    "value": "Warning, the account suppression process is irreversible."
+  },
+  {
+    "name": "delete_acount_user_profile_info_1",
+    "value": "사용자 프로필과 휴대폰 번호가 영구적으로 삭제됩니다."
+  },
+  {
+    "name": "delete_acount_user_profile_info_2",
+    "value": "프로필 삭제 시 모든 기여가 익명 처리되며 프로필과 연결되지 않습니다"
+  },
+  {
+    "name": "delete_account_photos",
+    "value": "제출한 사진"
+  },
+  {
+    "name": "delete_acount_photos_info_1",
+    "value": "이 프로필로 Dooboo에 제출된 모든 사진"
+  },
+  {
+    "name": "delete_account_confirmation_info_1",
+    "value": "동일한 휴대폰 번호로 다시 로그인하면 새 계정을 등록할 수 있습니다"
+  },
+  {
+    "name": "delete_account_confirmation_info_2",
+    "value": "이로 인해 새로운 사용자 프로필이 생성되며, 삭제된 계정과 관련된 이전 데이터는 복원되지 않습니다"
+  },
+  {
+    "name": "hold_confirm_suppression",
+    "value": "삭제 확인을 위해 누르세요"
+  },
+  {
+    "name": "account_screen_phone_info",
+    "value": "휴대폰 번호는 유일하게 저장되는 개인 정보입니다"
+  },
+  {
+    "name": "filters",
+    "value": "필터"
+  },
+  {
+    "name": "no_results",
+    "value": "검색 결과 없음"
+  },
+  {
+    "name": "or",
+    "value": "또는"
+  },
+  {
+    "name": "report_product",
+    "value": "이 제품 신고하기"
+  },
+  {
+    "name": "more",
+    "value": "더보기"
+  },
+  {
+    "name": "location_unavailable",
+    "value": "현재 위치를 찾을 수 없습니다. 권한을 허용하고 GPS가 켜져 있는지 확인해주세요"
+  },
+  {
+    "name": "duplicate_warning",
+    "value": "이 제품은 이미 등록되어 있을 수 있습니다. 중복을 피하기 위해 아래 목록에 있는 경우 선택해주세요"
+  },
+  {
+    "name": "intro_title",
+    "value": "Dooboo에 오신 것을 환영합니다"
+  },
+  {
+    "name": "intro_subtitle",
+    "value": "근처 비건 상점 찾기"
+  },
+  {
+    "name": "intro_language_tip",
+    "value": "앱 언어 선택"
+  },
+  {
+    "name": "intro_country_tip",
+    "value": "출신 지역을 알려주세요"
+  },
+  {
+    "name": "pick_store_or_skip",
+    "value": "상점을 선택하거나 이 단계를 건너뛰세요"
+  },
+  {
+    "name": "accessibility_label_search_input",
+    "value": "제품 이름으로 검색할 텍스트를 입력하세요"
+  },
+  {
+    "name": "accessibility_hint_product_duplicate",
+    "value": "중복을 피하기 위해 이미 있는 제품을 선택하세요"
+  },
+  {
+    "name": "accessibility_hint_none_above",
+    "value": "새 제품이 이미 앱에 등록되지 않았음을 나타냅니다"
+  },
+  {
+    "name": "accessibility_hint_search_brand",
+    "value": "이 브랜드의 모든 제품 검색"
+  },
+  {
+    "name": "no_submit_label",
+    "value": "다음 이유로 이 제품을 제출할 수 없습니다:"
+  },
+  {
+    "name": "contribution",
+    "value": "기여"
+  },
+  {
+    "name": "cat_milk_alt",
+    "value": "우유 대체제"
+  },
+  {
+    "name": "cat_cheese_alt",
+    "value": "치즈 대체제"
+  },
+  {
+    "name": "cat_yogurt",
+    "value": "요거트"
+  },
+  {
+    "name": "cat_bakery",
+    "value": "베이커리"
+  },
+  {
+    "name": "cat_cream_butter",
+    "value": "크림 및 버터"
+  },
+  {
+    "name": "cat_breads",
+    "value": "빵"
+  },
+  {
+    "name": "cat_cakes_pastries",
+    "value": "케이크 및 페이스트리"
+  },
+  {
+    "name": "cat_chocolate_candybars",
+    "value": "초콜릿 및 캔디 바"
+  },
+  {
+    "name": "cat_candies",
+    "value": "사탕"
+  },
+  {
+    "name": "cat_baking_chocolate",
+    "value": "베이킹 초콜릿"
+  },
+  {
+    "name": "cat_chips_crackers",
+    "value": "간식 및 과자"
+  },
+  {
+    "name": "cat_jerky",
+    "value": "육포"
+  },
+  {
+    "name": "cat_popcorns",
+    "value": "팝콘"
+  },
+  {
+    "name": "cat_ready_meals",
+    "value": "레디 메이드 식품"
+  },
+  {
+    "name": "cat_ramen",
+    "value": "라면"
+  },
+  {
+    "name": "cat_sandwich_wrap",
+    "value": "샌드위치 및 랩"
+  },
+  {
+    "name": "cat_canned_goods",
+    "value": "통조림"
+  },
+  {
+    "name": "cat_soups",
+    "value": "수프"
+  },
+  {
+    "name": "cat_cereals",
+    "value": "시리얼"
+  },
+  {
+    "name": "cat_condiments",
+    "value": "양념"
+  },
+  {
+    "name": "cat_sauces",
+    "value": "소스"
+  },
+  {
+    "name": "cat_energy_protein_bars",
+    "value": "에너지 및 프로틴 바"
+  },
+  {
+    "name": "cat_supplements",
+    "value": "보충제"
+  },
+  {
+    "name": "cat_biscuits_cookies",
+    "value": "비스킷 및 쿠키"
+  },
+  {
+    "name": "cat_seafood_alt",
+    "value": "해산물 대체품"
+  },
+  {
+    "name": "cat_chocolate_candy_sweets",
+    "value": "초콜릿, 사탕 및 과자"
+  },
+  {
+    "name": "cat_groceries",
+    "value": "식료품"
+  },
+  {
+    "name": "cat_sport_products",
+    "value": "스포츠 제품"
+  },
+  {
+    "name": "cat_sport_drinks",
+    "value": "스포츠 음료"
+  },
+  {
+    "name": "cat_ice_cream",
+    "value": "아이스크림"
+  },
+  {
+    "name": "add_second_brand",
+    "value": "두 번째 브랜드 추가"
+  },
+  {
+    "name": "second_product_brand_label",
+    "value": "두 번째 제품 브랜드"
+  },
+  {
+    "name": "store_details",
+    "value": "상점 세부 정보"
+  },
+  {
+    "name": "label_is_store_vegan",
+    "value": "이 상점은 완전히 비건인가요?"
+  },
+  {
+    "name": "yes",
+    "value": "예"
+  },
+  {
+    "name": "no",
+    "value": "아니요"
+  },
+  {
+    "name": "start",
+    "value": "아니요"
+  },
+  {
+    "name": "cat_alcohol",
+    "value": "주류"
+  },
+  {
+    "name": "cat_wine",
+    "value": "와인"
+  },
+  {
+    "name": "cat_beer_cider",
+    "value": "맥주 및 사이다"
+  }
+]

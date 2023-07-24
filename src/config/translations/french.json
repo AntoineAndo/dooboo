@@ -1,0 +1,28 @@
+{
+    "home":"Accueil",
+    "contribute":"Contribuer",
+    "profile":"Profil",
+    "welcome": "Bienvenue",
+    "latest_product": "Derniers produits",
+    "search": "Rechercher",
+    "search_subtitle": "Nom de produit, marque, etc",
+    "search_placeholder": "Saisir ici",
+    "categories": {
+        "cat_biscuits_cakes_candies":"Biscuits, gâteaux et bonbons",
+        "cat_frozen_food":"Surgelé",
+        "cat_ready_meals_noodles":"Plats préparés et nouilles",
+        "cat_drinks_coffee":"Boissons et cafés",
+        "cat_meat_alt":"Viande alternative",
+        "cat_dairy_alt":"Produits laitiers alternatives",
+        "cat_snacks": "Snacks"
+    },
+    "report_categories": {
+        "rep_inappropriate": "Contenu inapproprié",
+        "rep_not_vegan": "Ce produit n'est pas/plus vegan"
+    },
+    "settings":"Paramètres",
+    "language":"Langue",
+    "country":"Pays",
+    "logout":"Déconnexion",
+    "save_changes":"Sauvegarder"
+}
