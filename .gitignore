@@ -1,5 +1,7 @@
 Journal.txt
 
+.env
+
 node_modules/
 .expo/
 dist/
