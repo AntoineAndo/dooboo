@@ -35,13 +35,13 @@
   "submit": {
     "development": {
       "android": {
-        "serviceAccountKeyPath": "./robust-index-122615-5c80ac44cce2.json",
+        "serviceAccountKeyPath": "./robust-index-122615-cc4c28fcbadb.json",
         "track": "internal"
       }
     },
     "beta": {
       "android": {
-        "serviceAccountKeyPath": "./robust-index-122615-5c80ac44cce2.json",
+        "serviceAccountKeyPath": "./robust-index-122615-cc4c28fcbadb.json",
         "track": "beta"
       }
     }
