@@ -726,7 +726,6 @@ export async function linkBrandsCountry(brands: Brand[], countryId: number) {
   // to allow for generic rollback
   let rollbackInfos;
   if (data != null) {
-    console.log("link br country", data);
     rollbackInfos = [
       {
         type: "row",

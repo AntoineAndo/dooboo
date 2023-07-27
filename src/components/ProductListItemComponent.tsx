@@ -38,10 +38,15 @@ function ProductListItemComponent({
   const { translate } = useTranslation();
   const { auth } = useAuth();
   const { patchState } = useAppState();
-  const [seenToday, setSeenToday] = React.useState<boolean>(
-    new Date(product.last_seen_by_user).toDateString() ==
-      new Date().toDateString()
+  const [dayDiff, setDayDiff] = React.useState<number>(
+    dateDiffInDays(new Date(product.last_seen), new Date())
+  ); //The number of days between today and the last time this product was seen
+
+  const [seenByUser, setSeenByUser] = React.useState<boolean>(
+    dateDiffInDays(new Date(), new Date(product.last_seen_by_user)) == 0
   );
+
+  console.log(product.last_seen_by_user);
 
   const {
     isLoading,
@@ -54,20 +59,11 @@ function ProductListItemComponent({
 
   // var romanization = hangulRomanization.convert("행복");
 
-  const dateDiffInDays = (a: Date, b: Date) => {
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-    // Discard the time and time-zone information.
-    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-  };
-
-  const displayLastSeen = (last_seen: string) => {
-    const diff = dateDiffInDays(new Date(last_seen), new Date());
-
-    if (diff == 1) {
-      return `${translate("last_seen_yesterday")}`;
+  const displayLastSeen = (diff: number) => {
+    if (diff == 0) {
+      return translate("last_seen_today");
+    } else if (diff == 1) {
+      return translate("last_seen_yesterday");
     } else {
       return `${translate("last_seen")} ${diff} ${translate("days_ago")}`;
     }
@@ -123,39 +119,25 @@ function ProductListItemComponent({
               </T>
             )}
           </View>
-          <T style={styles.listText}>
-            {/* {seenToday
-              ? translate("last_seen_today")
-              : `${translate("last_seen_the")} ${new Date(
-                  product.last_seen
-                ).toLocaleDateString(config.locale, {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "2-digit",
-                })}`} */}
-            {seenToday
-              ? translate("last_seen_today")
-              : displayLastSeen(product.last_seen)}
-          </T>
+          <T style={styles.listText}>{displayLastSeen(dayDiff)}</T>
         </View>
       </View>
-      {
-        <View style={{ justifyContent: "center" }}>
-          <AnimatedLikeButtonComponent
-            pressed={seenToday}
-            onPress={(e: GestureResponderEvent, cb: Function) => {
-              if (auth.user == undefined) {
-                //If not connected then show the auth popup
-                return patchState("showAuthPop", true);
-              }
-              cb();
-              //Else confirm finding today
-              setSeenToday(true);
-              confirmProductInStore(product.product);
-            }}
-          />
-        </View>
-      }
+      <View style={{ justifyContent: "center" }}>
+        <AnimatedLikeButtonComponent
+          pressed={seenByUser}
+          onPress={(e: GestureResponderEvent, cb: Function) => {
+            if (auth.user == undefined) {
+              //If not connected then show the auth popup
+              return patchState("showAuthPop", true);
+            }
+            cb();
+            //Else confirm finding today
+            setDayDiff(0);
+            setSeenByUser(true);
+            confirmProductInStore(product.product);
+          }}
+        />
+      </View>
     </Pressable>
   );
 }
@@ -204,5 +186,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+const dateDiffInDays = (a: Date, b: Date) => {
+  const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+  // Discard the time and time-zone information.
+  const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+  const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+};
 
 export default ProductListItemComponent;

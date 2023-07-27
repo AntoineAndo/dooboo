@@ -4,6 +4,10 @@ Journal.txt
 *.env
 *.env*
 
+robust-index-*
+
+icons credits.md
+
 node_modules/
 .expo/
 dist/

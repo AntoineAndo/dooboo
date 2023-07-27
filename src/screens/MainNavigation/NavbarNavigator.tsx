@@ -1,22 +1,22 @@
 import React from "react";
-
-import { Animated, StatusBar, StyleSheet, View } from "react-native";
+import { Animated, StatusBar, StyleSheet } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-
 import IonIcons from "react-native-vector-icons/Ionicons";
 
 //Style import
 import colors from "../../config/colors";
-import HomeNavigation from "./main/MainNavigator";
-
-import ProfileNavigation from "./profile/ProfileNavigation";
-import { useAuth } from "../../providers/AuthProvider";
-import AddNavigator from "../AddFlow/AddNavigator";
-import { useTranslation } from "../../hooks/translation";
-import T from "../../components/T";
-import { useAppState } from "../../providers/AppStateProvider";
 import spacing from "../../config/spacing";
+
+//Screens
+import HomeNavigation from "./main/MainNavigator";
+import ProfileNavigation from "./profile/ProfileNavigation";
+import AddNavigator from "../AddFlow/AddNavigator";
 import AuthenticationPopScreen from "./profile/authentication/AuthenticationPopScreen";
+
+//Hooks
+import { useAuth } from "../../providers/AuthProvider";
+import { useTranslation } from "../../hooks/translation";
+import { useAppState } from "../../providers/AppStateProvider";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -98,14 +98,14 @@ function NavbarNavigator({ navigation }: Props) {
       )}
       <Tab.Navigator
         initialRouteName={"HomeNavigation"}
-        labeled={true}
         activeColor={colors.primary}
         inactiveColor={colors.primary}
         barStyle={{
           marginTop: 0,
           backgroundColor: "white",
         }}
-        sceneAnimationEnabled={true}
+        sceneAnimationEnabled={false}
+        shifting={true}
       >
         <Tab.Screen
           name={translate("home")}
@@ -121,7 +121,6 @@ function NavbarNavigator({ navigation }: Props) {
           component={AddNavigator}
           listeners={{
             tabPress: (e) => {
-              console.log(e);
               e.preventDefault();
               //If the user is not connected
               // redirects to the login page
@@ -138,7 +137,7 @@ function NavbarNavigator({ navigation }: Props) {
               return <IonIcons name="add" color={color} size={26} />;
             },
           }}
-        ></Tab.Screen>
+        />
         <Tab.Screen
           name={translate("profile")}
           component={ProfileNavigation}
@@ -147,7 +146,7 @@ function NavbarNavigator({ navigation }: Props) {
               return <IonIcons name="person" color={color} size={26} />;
             },
           }}
-        ></Tab.Screen>
+        />
       </Tab.Navigator>
     </>
   );

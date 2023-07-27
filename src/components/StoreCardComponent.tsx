@@ -230,7 +230,6 @@ function StoreCardComponent({
           {isOpen && (
             <Pressable
               style={{
-                // position: "absolute",
                 top: 5,
                 right: 5,
                 width: 30,

@@ -12,7 +12,7 @@ import storage from "../lib/storage";
 import { getCountries, supabase } from "../lib/supabase";
 import { useAppState } from "../providers/AppStateProvider";
 import OverlayComponent from "../components/OverlayComponent";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useAuth } from "../providers/AuthProvider";
 import AddNavigator from "./AddFlow/AddNavigator";
 
@@ -33,14 +33,9 @@ function GlobalNavigator({}: Props): any {
   const { config, setConfig } = useConfig();
   const { auth, setAuth } = useAuth();
 
-  const statusBarHeight =
-    StatusBar.currentHeight != undefined ? StatusBar.currentHeight : 0;
-
   const styles = StyleSheet.create({
     app: {
       flex: 1,
-      // paddingTop: StatusBar.currentHeight,
-      // paddingTop: statusBarHeight,
       fontFamily: "Milliard-Medium",
       backgroundColor: "white",
     },
@@ -157,12 +152,6 @@ function GlobalNavigator({}: Props): any {
                   //duplicate stored existing conf
                   configurationObject = configuration;
 
-                  //Patch dropdown configuration values
-                  // configurationObject.dropdownValues = {
-                  //   categories: categories.data,
-                  //   countries: countries.data,
-                  // };
-
                   configurationObject.dropdownValues.countries = countries.data;
 
                   //Update translations
@@ -229,7 +218,6 @@ function GlobalNavigator({}: Props): any {
             <Stack.Screen name="AddNavigation" component={AddNavigator} />
           )}
           <Stack.Screen name="Report" component={ReportNavigation} />
-          {/* <Stack.Screen name="Report" component={ReportNavigation} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </View>

@@ -42,8 +42,6 @@ export async function submitForm(
     return br.id == undefined;
   });
 
-  console.log("new brands to insert", newBrandsToInsert);
-
   if (newBrandsToInsert.length > 0) {
     //Creating new brands
     brandInsertResult = await insertBrands(newBrandsToInsert);
@@ -69,7 +67,7 @@ export async function submitForm(
 
     //update the values of the selected brands with the insert results
     //  Filter out the brands with no ID (aka the new ones), and add them back from the inserts result
-    selectedBrands
+    selectedBrands = selectedBrands
       .filter((b) => b.id != undefined)
       .concat(brandInsertResult.data);
   }

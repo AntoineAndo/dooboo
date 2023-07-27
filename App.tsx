@@ -19,18 +19,18 @@ import Constants from "expo-constants";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useTranslation } from "./src/hooks/translation";
 
-//Theme configuration
-const themeConfig = {
-  ...DefaultTheme,
-  roundness: 2,
-  version: 3 | 2,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#36D399",
-    secondary: "tomato",
-    accent: "red",
-  },
-};
+// //Theme configuration
+// const themeConfig = {
+//   ...DefaultTheme,
+//   roundness: 2,
+//   version: 3 | 2,
+//   colors: {
+//     ...DefaultTheme.colors,
+//     primary: "#36D399",
+//     secondary: "tomato",
+//     accent: "red",
+//   },
+// };
 
 // Create a client
 export const queryClient = new QueryClient();
@@ -74,7 +74,7 @@ export default Sentry.Native.wrap(function App() {
         <NetworkProvider>
           <AppStateProvider>
             <QueryClientProvider client={queryClient}>
-              <PaperProvider theme={themeConfig}>
+              <PaperProvider>
                 <AuthProvider>
                   <SafeAreaProvider>
                     <GestureHandlerRootView style={{ flex: 1 }}>
