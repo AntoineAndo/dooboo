@@ -130,8 +130,8 @@ function GlobalNavigator({}: Props): any {
                     language_code = "eng";
                   }
 
-                  //Initial values
-                  configurationObject = {
+                  // New config initialisation
+                  configurationObject = new Config({
                     countryId: defaultCountry.id,
                     locale: locale.split("_").join("-"), //fr_FR to fr-FR
                     language_code: language_code,
@@ -142,7 +142,7 @@ function GlobalNavigator({}: Props): any {
                       countries: countries.data,
                     },
                     translations: translations,
-                  };
+                  });
 
                   storage.storeData(
                     "config",

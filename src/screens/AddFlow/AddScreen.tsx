@@ -162,8 +162,6 @@ function AddScreen({ navigation, route }: Props) {
     //Error check
     let _errors = checkErrors();
 
-    console.log(form);
-
     //si pas d'erreur
     if (Object.values(_errors).length == 0) {
       //If this is an existing product

@@ -50,13 +50,10 @@ function AddScreenImages({ route, navigation }: Props) {
   const isMainImageMandatory = form.existingProduct?.id == undefined;
 
   const pickDocument = async (imageType: "mainImage" | "secondaryImage") => {
-    console.log("image pick");
     let result = await getDocumentAsync({
       type: ["image/png", "image/jpeg"],
       multiple: false,
     });
-
-    console.log(result);
 
     if (result == null) return;
 

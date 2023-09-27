@@ -33,11 +33,8 @@ function DeleteAccountConfirmationScreen({ navigation, route }: Props) {
     patchState("isLoading", true);
 
     if (suppressionForm.photos) {
-      console.log("delete photos");
       await deleteUserImages({ userId: auth?.user?.id });
     }
-
-    console.log("delete user profile");
 
     deleteUser({ userId: auth?.user?.id })
       .then((result) => {

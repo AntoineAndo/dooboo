@@ -127,8 +127,6 @@ function AddScreenStore({ route, navigation }: Props) {
    * Check for errors and if none, navigate to the next page
    */
   const onSubmit = () => {
-    console.log(form.store);
-
     if (!form.store?.id) {
       return;
     }
@@ -185,8 +183,6 @@ function AddScreenStore({ route, navigation }: Props) {
 
     setIsLoading(true);
 
-    console.log(config);
-
     const options: any = {
       country: config.dropdownValues.countries.find(
         (country: any) => country.id == config.countryId
@@ -206,8 +202,6 @@ function AddScreenStore({ route, navigation }: Props) {
       lat: camera.center.latitude,
       lng: camera.center.longitude,
     };
-
-    console.log(options);
 
     searchPlaces(options)
       .then((results: Store[]) => {

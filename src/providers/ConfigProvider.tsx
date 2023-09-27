@@ -21,7 +21,20 @@ export class Config {
     countries: [],
   };
   translations: any;
-  fresh?: boolean;
+  // fresh?: boolean;
+  limitDays?: number = 30;
+
+  constructor(props: Config) {
+    this.categories = props.categories;
+    this.locale = props.locale;
+    this.isAppFirstLauched = props.isAppFirstLauched;
+    this.countryId = props.countryId;
+    this.categories = props.categories;
+    this.dropdownValues = props.dropdownValues;
+    this.translations = props.translations;
+    // this.fresh = props.fresh;
+    this.limitDays = 30;
+  }
 }
 
 //Creation of the Context

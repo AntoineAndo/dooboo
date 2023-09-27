@@ -147,7 +147,6 @@ function AuthenticationScreen({ navigation }: Props) {
     }
 
     if (data.session != undefined) {
-      console.log("data", data);
       setAuth({
         session: data.session,
         user: {

@@ -19,7 +19,6 @@ export function searchPlaces({
   location,
 }: queryOptions): Promise<any> {
   let api: IPlaceFinder;
-  console.log(country.code);
   switch (country.code) {
     case "kr":
       // api = useGoogle();
@@ -28,8 +27,6 @@ export function searchPlaces({
     default:
       api = useGoogle();
   }
-
-  console.log(api);
 
   return api.search({
     searchQuery: searchQuery,

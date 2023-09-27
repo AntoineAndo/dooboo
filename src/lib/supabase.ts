@@ -509,8 +509,6 @@ export async function getContributions({
           return res([]);
         }
 
-        console.log(data);
-
         return res(
           data.map((row: any) => {
             const returnData = {
@@ -638,7 +636,6 @@ export async function getCountries(): Promise<any> {
       .select(`*`)
       .eq("active", true)
       .then((data) => {
-        console.log(data);
         res(data);
       });
   });
@@ -695,8 +692,6 @@ export async function insertBrands(brands: Brand[]) {
   // to allow for generic rollback
   let rollbackInfos;
   if (data != null) {
-    console.log("brand insert data");
-    console.log(data);
     rollbackInfos = [
       {
         type: "row",
@@ -756,7 +751,6 @@ export async function submitReport(
 }
 
 export async function getTopBrands({ countryId }: any): Promise<any> {
-  console.log("country id", countryId);
   return new Promise((res, rej) => {
     supabase
       .from("brand_count_view")
@@ -766,7 +760,6 @@ export async function getTopBrands({ countryId }: any): Promise<any> {
         if (error) {
           rej([]);
         }
-        console.log(data);
         res(data);
       });
   });

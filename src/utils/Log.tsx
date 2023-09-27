@@ -8,11 +8,4 @@ export const Log = (
   showInProd: boolean = false
 ) => {
   console.log(value);
-  // if (state.isDev || showInProd) {
-  // if (showInProd) {
-  //   if (type == "error") {
-  //     return console.error(value);
-  //   }
-  //   console.log(value);
-  // }
 };

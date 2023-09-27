@@ -240,11 +240,8 @@ function HomeScreen({ navigation }: Props) {
 
   const selectStore = useCallback(
     (storeIndex: number) => {
-      console.log("storeIndex", storeIndex);
       //get store from index
       const _selectedStore = stores[storeIndex];
-
-      console.log("sss", _selectedStore);
 
       //update offset ref
       //Used to work around the multiples scrollend events fired

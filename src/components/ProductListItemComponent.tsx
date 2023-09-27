@@ -46,8 +46,6 @@ function ProductListItemComponent({
     dateDiffInDays(new Date(), new Date(product.last_seen_by_user)) == 0
   );
 
-  console.log(product.last_seen_by_user);
-
   const {
     isLoading,
     isError,

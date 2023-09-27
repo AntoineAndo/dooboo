@@ -47,4 +47,7 @@ r
 - Fixed a bug where images could not be added
 - Lightred color changes
 
-<!-- ## V0.0.85 -->
+## V0.0.85
+
+-
+- Limit days in config

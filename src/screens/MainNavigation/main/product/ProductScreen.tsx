@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   Image,
   Linking,
@@ -61,6 +61,7 @@ function ProductScreen({ route, navigation }: Props) {
   const [carouselOpen, setCarouselOpen] = React.useState(false);
   const mapRef = React.useRef<any>(null);
   const [selectedStore, setSelectedStore] = React.useState<any>(undefined);
+  const [daysFilter, setDaysFilter] = React.useState<"last" | "all">("all");
   const [isMapVisible, setIsMapVisible] = React.useState(true);
   const [mapRegion, setMapRegion] = React.useState<
     | {
@@ -77,24 +78,7 @@ function ProductScreen({ route, navigation }: Props) {
     longitudeDelta: 0.05,
   });
 
-  // const isFocused = useIsFocused();
-  // useEffect(() => {
-  //   refetchProduct();
-  // }, [isFocused]);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     // refetchProduct();
-  //     if (!isMapVisible) {
-  //       setIsMapVisible(true);
-  //     }
-
-  //     return () => {
-  //       setIsMapVisible(false);
-  //     };
-  //   }, [])
-  // );
-
+  // Fetch the product's data and then download the images
   const getAllProductsData = async (searchQuery: any): Promise<any> => {
     return new Promise((res, rej) => {
       getProducts(searchQuery).then(async (data: Array<any>) => {
@@ -186,6 +170,7 @@ function ProductScreen({ route, navigation }: Props) {
     setCarouselOpen(false);
   };
 
+  // Fetch all the store within the map's boundaries where this product was found
   const getFindings = () => {
     if (mapRef.current === null) {
       return;
@@ -221,13 +206,18 @@ function ProductScreen({ route, navigation }: Props) {
           max_long,
         })
           .then((data) => {
-            //Extract latitude and longitude from location field
-            data = data.map((finding: any) => {
-              finding.lat = finding.location.match(/(\d+\.\d+)/g)[1];
-              finding.lng = finding.location.match(/(\d+\.\d+)/g)[0];
+            // TODO - Filter out findings based on the current filter ("All"|"Last days")
+            // Then extract latitude and longitude from location field
+            data = data
+              // .filter((finding: any) => {
+              //   return finding;
+              // })
+              .map((finding: any) => {
+                finding.lat = finding.location.match(/(\d+\.\d+)/g)[1];
+                finding.lng = finding.location.match(/(\d+\.\d+)/g)[0];
 
-              return finding;
-            });
+                return finding;
+              });
 
             setFindings(data);
           })
@@ -418,6 +408,18 @@ function ProductScreen({ route, navigation }: Props) {
             {translate("i_found_product")}
           </ButtonComponent>
 
+          {/* <View style={styles.filterContainer}>
+            <ButtonComponent type="secondary">
+              {translate("all_time")}
+            </ButtonComponent>
+            <ButtonComponent type="secondary">
+              {translate("last_days").replace(
+                /({LIMIT_DAYS})/,
+                config?.limitDays?.toString()
+              )}
+            </ButtonComponent>
+          </View> */}
+
           <View style={styles.mapContainer}>
             {findingsLoading && (
               <View style={styles.findingsLoaderContainer}>
@@ -455,18 +457,21 @@ function ProductScreen({ route, navigation }: Props) {
               >
                 {findings.map((store: any, i: number) => {
                   return (
-                    <MarkerComponent
-                      lat={store.lat}
-                      lng={store.lng}
-                      key={store.id}
-                      onPress={() => {
-                        setSelectedStore(store);
-                      }}
-                      isSelected={selectedStore?.id == store.id}
-                      color={
-                        selectedStore?.id == store.id ? "red" : colors.lightred
-                      }
-                    />
+                    <React.Fragment key={i}>
+                      <MarkerComponent
+                        lat={store.lat}
+                        lng={store.lng}
+                        onPress={() => {
+                          setSelectedStore(store);
+                        }}
+                        isSelected={selectedStore?.id == store.id}
+                        color={
+                          selectedStore?.id == store.id
+                            ? "red"
+                            : colors.lightred
+                        }
+                      />
+                    </React.Fragment>
                   );
                 })}
               </MapView>
@@ -624,6 +629,14 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     marginVertical: spacing.s3,
+  },
+  filterContainer: {
+    flex: 1,
+    flexDirection: "row",
+    gap: 10,
+    borderStyle: "solid",
+    borderColor: "black",
+    borderWidth: 1,
   },
 });
 

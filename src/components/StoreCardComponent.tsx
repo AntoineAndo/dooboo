@@ -27,6 +27,7 @@ import ProductListItemComponent from "./ProductListItemComponent";
 import { useTranslation } from "../hooks/translation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import IonIcons from "react-native-vector-icons/Ionicons";
+import { useConfig } from "../providers/ConfigProvider";
 
 type Props = {
   store: any;
@@ -52,6 +53,7 @@ function StoreCardComponent({
   setFilter,
 }: Props) {
   const { auth } = useAuth();
+  const { config } = useConfig();
   const { patchState } = useAppState();
   const { translate } = useTranslation();
   const {
@@ -299,7 +301,7 @@ function StoreCardComponent({
             <T style={styles.label}>
               {translate("last_days").replace(
                 /({LIMIT_DAYS})/,
-                LIMIT_DAYS.toString()
+                config?.limitDays?.toString()
               )}
             </T>
           </TouchableOpacity>

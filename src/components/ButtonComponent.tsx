@@ -4,6 +4,7 @@ import colors from "../config/colors";
 import fontSizes from "../config/fontSizes";
 import T from "./T";
 import commonStyles from "../config/stylesheet";
+import spacing from "../config/spacing";
 
 type Props = {
   onPress?: Function;
@@ -37,6 +38,7 @@ function ButtonComponent({
       minWidth: 100,
       // paddingTop: !slim ? 0 : 0,
       padding: 0,
+      paddingHorizontal: spacing.s2,
       opacity: !disabled ? 1 : 0.3,
       display: "flex",
       justifyContent: "center",

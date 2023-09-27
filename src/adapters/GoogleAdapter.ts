@@ -20,8 +20,6 @@ class GoogleAdapter implements IPlaceFinder {
   }
 
   search({ searchQuery, languageId, country, location }: any): Promise<any> {
-    console.log(searchQuery);
-    console.log(location);
     const endpoint =
       "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
@@ -42,13 +40,10 @@ class GoogleAdapter implements IPlaceFinder {
 
     const url = buildUrl(endpoint, params);
 
-    console.log(url);
-
     return new Promise((res, rej) => {
       axios
         .get(url)
         .then((response) => {
-          console.log(response);
           let results = response.data.results;
 
           //Transform from Google type result to generic Store type
@@ -58,7 +53,6 @@ class GoogleAdapter implements IPlaceFinder {
           res(results);
         })
         .catch((error) => {
-          console.log(error);
           // handle error
           rej(error);
         })

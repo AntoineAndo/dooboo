@@ -45,8 +45,6 @@ function AddInfoScreen({ route, navigation }: Props) {
           data[0].product_image.find((pi: any) => pi.main == true).image_url,
         ]);
 
-        console.log(data);
-
         res({
           ...data[0],
           images,
@@ -56,13 +54,9 @@ function AddInfoScreen({ route, navigation }: Props) {
   };
 
   const goBackToPreviousScreen = () => {
-    console.log(navigation.getState().routes);
-
     let filteredRoutes = navigation.getState().routes.filter((r: any) => {
       return r?.params?.oneWay != true;
     });
-
-    console.log(filteredRoutes);
 
     if (filteredRoutes.length != 0) {
       let action = CommonActions.reset({
